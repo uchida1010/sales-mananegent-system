@@ -1,4 +1,6 @@
 import type { Route } from "./+types/samepage";
+import "../app.css";
+import { DoubleNavbar } from "../components/DoubleNavbar";
 
 export function meta({}: Route.MetaArgs) {
   return [
@@ -8,5 +10,12 @@ export function meta({}: Route.MetaArgs) {
 }
 
 export default function SamplePage() {
-  return <div>This is a sample page.</div>;
+  return (
+    <>
+    <DoubleNavbar />
+      <main>
+        <h1>ホーム画面</h1>
+      </main>
+    </>
+  );
 }
