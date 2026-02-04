@@ -4,6 +4,6 @@ import {
   } from "@react-router/dev/routes";
   
   export default [
-    route("some/path", "./routes/samepage.tsx"),
+    route("user", "./routes/user.tsx"),
     // pattern ^           ^ module file
   ] satisfies RouteConfig;
