@@ -1,43 +1,51 @@
-import { useState } from 'react';
+import { useState } from "react";
 import {
-  IconCalendarStats,
-  IconDeviceDesktopAnalytics,
-  IconFingerprint,
   IconGauge,
-  IconHome2,
+  IconUsers,
+  IconBuildingStore,
+  IconAddressBook,
+  IconHistory,
+  IconFileInvoice,
+  IconFileImport,
+  IconTable,
+  IconPackage,
+  IconTruck,
   IconSettings,
-  IconUser,
-} from '@tabler/icons-react';
-import { Title, Tooltip, UnstyledButton } from '@mantine/core';
-import classes from './DoubleNavbar.module.css';
+} from "@tabler/icons-react";
+import { Title, Tooltip, UnstyledButton } from "@mantine/core";
+import classes from "./DoubleNavbar.module.css";
 
 const mainLinksMockdata = [
-  { icon: IconHome2, label: 'Home' },
-  { icon: IconGauge, label: 'Dashboard' },
-  { icon: IconDeviceDesktopAnalytics, label: 'Analytics' },
-  { icon: IconCalendarStats, label: 'Releases' },
-  { icon: IconUser, label: 'Account' },
-  { icon: IconFingerprint, label: 'Security' },
-  { icon: IconSettings, label: 'Settings' },
+  { icon: IconGauge, label: "ダッシュボード" },
+  { icon: IconUsers, label: "ユーザー管理" },
+  { icon: IconBuildingStore, label: "取引先管理" },
+  { icon: IconAddressBook, label: "連絡先" },
+  { icon: IconHistory, label: "営業履歴" },
+  { icon: IconFileInvoice, label: "受注" },
+  { icon: IconFileImport, label: "発注" },
+  { icon: IconTable, label: "在庫表" },
+  { icon: IconPackage, label: "商品マスタ" },
+  { icon: IconTruck, label: "配車依頼" },
+  { icon: IconSettings, label: "設定" },
 ];
 
 const linksMockdata = [
-  'Security',
-  'Settings',
-  'Dashboard',
-  'Releases',
-  'Account',
-  'Orders',
-  'Clients',
-  'Databases',
-  'Pull Requests',
-  'Open Issues',
-  'Wiki pages',
+  "ダッシュボード",
+  "ユーザー",
+  "取引先",
+  "連絡先",
+  "営業履歴",
+  "受注",
+  "発注",
+  "在庫表",
+  "商品マスタ",
+  "配車依頼",
+  "設定",
 ];
 
 export function DoubleNavbar() {
-  const [active, setActive] = useState('Releases');
-  const [activeLink, setActiveLink] = useState('Settings');
+  const [active, setActive] = useState("販売管理システム");
+  const [activeLink, setActiveLink] = useState("Settings");
 
   const mainLinks = mainLinksMockdata.map((link) => (
     <Tooltip
@@ -77,8 +85,7 @@ export function DoubleNavbar() {
     <nav className={classes.navbar}>
       <div className={classes.wrapper}>
         <div className={classes.aside}>
-          <div className={classes.logo}>
-          </div>
+          <div className={classes.logo}></div>
           {mainLinks}
         </div>
         <div className={classes.main}>
