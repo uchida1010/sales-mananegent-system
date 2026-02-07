@@ -11,7 +11,7 @@ services:
       APACHE_DOCUMENT_ROOT: /var/www/html/backend/public
 
   db:
-    image: mysql:8.4
+    image: mysql:9.6
     environment:
       MYSQL_ROOT_PASSWORD: root
       MYSQL_DATABASE: laraveldb
