@@ -13,10 +13,16 @@ return new class extends Migration
     {
         Schema::create('users', function (Blueprint $table) {
             $table->id();
-            $table->string('name');
-            $table->string('email')->unique();
+            $table->string('user_code')->unique()->comment('ユーザーの識別番号');
+            $table->string('name')->comment('ユーザー名');
+            $table->string('name_kana')->nullable()->comment('よみがな');
+            $table->string('email')->unique()->comment('メールアドレス');
             $table->timestamp('email_verified_at')->nullable();
-            $table->string('password');
+            $table->string('phone', 20)->nullable()->comment('電話番号');
+            $table->string('password')->comment('パスワード');
+            $table->string('status', 20)->index()->comment('雇用状態: active=在職, leave=休職, resigned=退職');
+            $table->date('joined_at')->comment('入社日');
+            $table->date('resigned_at')->nullable()->comment('退職日');
             $table->rememberToken();
             $table->timestamps();
         });
