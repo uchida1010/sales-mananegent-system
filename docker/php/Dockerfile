@@ -6,8 +6,10 @@ RUN apt-get update \
     zip \
     unzip \
     libzip-dev \
+    default-mysql-client \
  && update-ca-certificates \
- && docker-php-ext-install zip
+ && docker-php-ext-install zip \
+ && rm -rf /var/lib/apt/lists/*
 
 RUN a2enmod rewrite
 
