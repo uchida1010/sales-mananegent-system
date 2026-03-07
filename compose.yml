@@ -1,8 +1,10 @@
 services:
   php:
     build:
-      context: .
-      dockerfile: docker/php/Dockerfile
+        context: .
+        dockerfile: docker/php/Dockerfile
+    depends_on:
+      - db
     ports:
       - 8000:80
     volumes:
@@ -11,7 +13,7 @@ services:
       APACHE_DOCUMENT_ROOT: /var/www/html/backend/public
 
   db:
-    image: mysql:8.0
+    image: mysql:9.6
     environment:
       MYSQL_ROOT_PASSWORD: root
       MYSQL_DATABASE: laraveldb
