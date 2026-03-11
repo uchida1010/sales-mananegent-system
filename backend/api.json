@@ -1,0 +1,135 @@
+{
+    "openapi": "3.1.0",
+    "info": {
+        "title": "Laravel",
+        "version": "0.0.1"
+    },
+    "servers": [
+        {
+            "url": "http://localhost/api"
+        }
+    ],
+    "paths": {
+        "/user": {
+            "get": {
+                "responses": {
+                    "200": {
+                        "description": "`User`",
+                        "content": {
+                            "application/json": {
+                                "schema": {
+                                    "$ref": "#/components/schemas/User"
+                                }
+                            }
+                        }
+                    },
+                    "401": {
+                        "$ref": "#/components/responses/AuthenticationException"
+                    }
+                }
+            }
+        }
+    },
+    "components": {
+        "schemas": {
+            "User": {
+                "type": "object",
+                "properties": {
+                    "id": {
+                        "type": "integer"
+                    },
+                    "user_code": {
+                        "type": "string"
+                    },
+                    "name": {
+                        "type": "string"
+                    },
+                    "name_kana": {
+                        "type": [
+                            "string",
+                            "null"
+                        ]
+                    },
+                    "email": {
+                        "type": "string"
+                    },
+                    "email_verified_at": {
+                        "type": [
+                            "string",
+                            "null"
+                        ],
+                        "format": "date-time"
+                    },
+                    "phone": {
+                        "type": [
+                            "string",
+                            "null"
+                        ]
+                    },
+                    "status": {
+                        "type": "string"
+                    },
+                    "joined_at": {
+                        "type": "string"
+                    },
+                    "resigned_at": {
+                        "type": [
+                            "string",
+                            "null"
+                        ]
+                    },
+                    "created_at": {
+                        "type": [
+                            "string",
+                            "null"
+                        ],
+                        "format": "date-time"
+                    },
+                    "updated_at": {
+                        "type": [
+                            "string",
+                            "null"
+                        ],
+                        "format": "date-time"
+                    }
+                },
+                "required": [
+                    "id",
+                    "user_code",
+                    "name",
+                    "name_kana",
+                    "email",
+                    "email_verified_at",
+                    "phone",
+                    "status",
+                    "joined_at",
+                    "resigned_at",
+                    "created_at",
+                    "updated_at"
+                ],
+                "title": "User"
+            }
+        },
+        "responses": {
+            "AuthenticationException": {
+                "description": "Unauthenticated",
+                "content": {
+                    "application/json": {
+                        "schema": {
+                            "type": "object",
+                            "properties": {
+                                "message": {
+                                    "type": "string",
+                                    "description": "Error overview."
+                                }
+                            },
+                            "required": [
+                                "message"
+                            ]
+                        }
+                    }
+                }
+            }
+        }
+    }
+}
