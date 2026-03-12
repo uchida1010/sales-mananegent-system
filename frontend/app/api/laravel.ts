@@ -10,15 +10,13 @@ import type {
   AxiosResponse
 } from 'axios';
 
-export interface User {
+export interface UserResource {
   id: number;
   user_code: string;
   name: string;
   /** @nullable */
   name_kana: string | null;
   email: string;
-  /** @nullable */
-  email_verified_at: string | null;
   /** @nullable */
   phone: string | null;
   status: string;
@@ -31,17 +29,74 @@ export interface User {
   updated_at: string | null;
 }
 
-export type AuthenticationExceptionResponse = {
-  /** Error overview. */
-  message: string;
+export type UserIndex200Links = {
+  /** @nullable */
+  first: string | null;
+  /** @nullable */
+  last: string | null;
+  /** @nullable */
+  prev: string | null;
+  /** @nullable */
+  next: string | null;
 };
 
-export const getUser = (
+export type UserIndex200MetaLinksItem = {
+  /** @nullable */
+  url: string | null;
+  label: string;
+  active: boolean;
+};
+
+export type UserIndex200Meta = {
+  /** @minimum 1 */
+  current_page: number;
+  /**
+   * @minimum 1
+   * @nullable
+   */
+  from: number | null;
+  /** @minimum 1 */
+  last_page: number;
+  /** Generated paginator links. */
+  links: UserIndex200MetaLinksItem[];
+  /**
+   * Base path for paginator generated URLs.
+   * @nullable
+   */
+  path: string | null;
+  /**
+   * Number of items shown per page.
+   * @minimum 0
+   */
+  per_page: number;
+  /**
+   * Number of the last item in the slice.
+   * @minimum 1
+   * @nullable
+   */
+  to: number | null;
+  /**
+   * Total number of items being paginated.
+   * @minimum 0
+   */
+  total: number;
+};
+
+export type UserIndex200 = {
+  data: UserResource[];
+  links: UserIndex200Links;
+  meta: UserIndex200Meta;
+};
+
+/**
+ * @summary Display a listing of the resource
+ */
+export const userIndex = (
      options?: AxiosRequestConfig
- ): Promise<AxiosResponse<User>> => {
+ ): Promise<AxiosResponse<UserIndex200>> => {
     return axios.get(
       `/user`,options
     );
   }
 
-export type GetUserResult = AxiosResponse<User>
+export type UserIndexResult = AxiosResponse<UserIndex200>
