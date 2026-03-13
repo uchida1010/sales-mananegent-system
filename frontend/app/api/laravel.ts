@@ -99,4 +99,52 @@ export const userIndex = (
     );
   }
 
+/**
+ * @summary Store a newly created resource in storage
+ */
+export const userStore = (
+     options?: AxiosRequestConfig
+ ): Promise<AxiosResponse<void>> => {
+    return axios.post(
+      `/user`,undefined,options
+    );
+  }
+
+/**
+ * @summary Display the specified resource
+ */
+export const userShow = (
+    id: string, options?: AxiosRequestConfig
+ ): Promise<AxiosResponse<void>> => {
+    return axios.get(
+      `/user/${id}`,options
+    );
+  }
+
+/**
+ * @summary Update the specified resource in storage
+ */
+export const userUpdate = (
+    id: string, options?: AxiosRequestConfig
+ ): Promise<AxiosResponse<void>> => {
+    return axios.put(
+      `/user/${id}`,undefined,options
+    );
+  }
+
+/**
+ * @summary Remove the specified resource from storage
+ */
+export const userDestroy = (
+    id: string, options?: AxiosRequestConfig
+ ): Promise<AxiosResponse<void>> => {
+    return axios.delete(
+      `/user/${id}`,options
+    );
+  }
+
 export type UserIndexResult = AxiosResponse<UserIndex200>
+export type UserStoreResult = AxiosResponse<void>
+export type UserShowResult = AxiosResponse<void>
+export type UserUpdateResult = AxiosResponse<void>
+export type UserDestroyResult = AxiosResponse<void>
