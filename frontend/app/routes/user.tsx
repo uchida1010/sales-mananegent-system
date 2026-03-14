@@ -1,15 +1,28 @@
-import type { Route } from "./+types/user";
+import { useState, useEffect } from "react";
+import { userIndex, type UserIndex200 } from "../api/salesManagementSystem";
 import "../app.css";
 import { DoubleNavbar } from "../components/DoubleNavbar";
 
 export function meta({}: Route.MetaArgs) {
   return [
-    { title: "Sample Page" },
-    { name: "description", content: "Sample Page" },
+    { title: "ユーザー一覧ページ" },
+    { name: "description", content: "User Index Page" },
   ];
 }
 
-export default function SamplePage() {
+export default function UserIndex() {
+  const [users, setUsers] = useState<UserIndex200>();
+
+  useEffect(() => {
+    const getUsers = async () => {
+      const result = await userIndex();
+      console.log(result);
+      setUsers(result);
+    };
+
+    getUsers();
+  }, []);
+
   return (
     <>
       <div className="flex md:flex-row bg-gray-100">
