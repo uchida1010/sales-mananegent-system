@@ -4,12 +4,7 @@
  * sales-management-system
  * OpenAPI spec version: 0.0.1
  */
-import axios from 'axios';
-import type {
-  AxiosRequestConfig,
-  AxiosResponse
-} from 'axios';
-
+import { customInstance } from './custom-instance';
 export interface UserResource {
   id: number;
   user_code: string;
@@ -92,59 +87,64 @@ export type UserIndex200 = {
  * @summary Display a listing of the resource
  */
 export const userIndex = (
-     options?: AxiosRequestConfig
- ): Promise<AxiosResponse<UserIndex200>> => {
-    return axios.get(
-      `/user`,options
-    );
-  }
-
+    
+ ) => {
+      return customInstance<UserIndex200>(
+      {url: `/user`, method: 'GET'
+    },
+      );
+    }
+  
 /**
  * @summary Store a newly created resource in storage
  */
 export const userStore = (
-     options?: AxiosRequestConfig
- ): Promise<AxiosResponse<void>> => {
-    return axios.post(
-      `/user`,undefined,options
-    );
-  }
-
+    
+ ) => {
+      return customInstance<void>(
+      {url: `/user`, method: 'POST'
+    },
+      );
+    }
+  
 /**
  * @summary Display the specified resource
  */
 export const userShow = (
-    id: string, options?: AxiosRequestConfig
- ): Promise<AxiosResponse<void>> => {
-    return axios.get(
-      `/user/${id}`,options
-    );
-  }
-
+    id: string,
+ ) => {
+      return customInstance<void>(
+      {url: `/user/${id}`, method: 'GET'
+    },
+      );
+    }
+  
 /**
  * @summary Update the specified resource in storage
  */
 export const userUpdate = (
-    id: string, options?: AxiosRequestConfig
- ): Promise<AxiosResponse<void>> => {
-    return axios.put(
-      `/user/${id}`,undefined,options
-    );
-  }
-
+    id: string,
+ ) => {
+      return customInstance<void>(
+      {url: `/user/${id}`, method: 'PUT'
+    },
+      );
+    }
+  
 /**
  * @summary Remove the specified resource from storage
  */
 export const userDestroy = (
-    id: string, options?: AxiosRequestConfig
- ): Promise<AxiosResponse<void>> => {
-    return axios.delete(
-      `/user/${id}`,options
-    );
-  }
-
-export type UserIndexResult = AxiosResponse<UserIndex200>
-export type UserStoreResult = AxiosResponse<void>
-export type UserShowResult = AxiosResponse<void>
-export type UserUpdateResult = AxiosResponse<void>
-export type UserDestroyResult = AxiosResponse<void>
+    id: string,
+ ) => {
+      return customInstance<void>(
+      {url: `/user/${id}`, method: 'DELETE'
+    },
+      );
+    }
+  
+export type UserIndexResult = NonNullable<Awaited<ReturnType<typeof userIndex>>>
+export type UserStoreResult = NonNullable<Awaited<ReturnType<typeof userStore>>>
+export type UserShowResult = NonNullable<Awaited<ReturnType<typeof userShow>>>
+export type UserUpdateResult = NonNullable<Awaited<ReturnType<typeof userUpdate>>>
+export type UserDestroyResult = NonNullable<Awaited<ReturnType<typeof userDestroy>>>
