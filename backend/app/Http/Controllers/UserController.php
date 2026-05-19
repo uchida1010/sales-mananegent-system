@@ -11,9 +11,44 @@ class UserController extends Controller
     /**
      * Display a listing of the resource.
      */
-    public function index()
+    public function index(Request $request)
     {
-        return UserResource::collection(User::paginate(10));
+        $query = User::with('roles');
+
+        if ($request->filled('keyword')) {
+            $keyword = $request->keyword;
+
+            $query->where(function ($q) use ($keyword) {
+                $q->where('name', 'like', "%{$keyword}%")
+                    ->orWhere('name_kana', 'like', "%{$keyword}%");
+            });
+        }
+
+        if ($request->filled('userCode')) {
+            $userCode = $request->userCode;
+
+            $query->where('user_code', $userCode);
+        }
+
+        if ($request->filled('email')) {
+            $email = $request->email;
+
+            $query->where('email', $email);
+        }
+
+        if ($request->boolean('activeOnly')) {
+            $activeOnly = 'active';
+
+            $query->where('status', $activeOnly);
+        }
+
+        if ($request->filled('role')) {
+            $query->whereHas('roles', function ($q) use ($request) {
+                $q->where('code', $request->role);
+            });
+        }
+
+        return UserResource::collection($query->get());
     }
 
     /**
