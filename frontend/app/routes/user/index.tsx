@@ -13,43 +13,33 @@ export function meta({}: Route.MetaArgs) {
 
 export default function UserIndex() {
   const [users, setUsers] = useState<UserIndex200[]>([]);
-  const [searchForm, setSearchForm] = useState({
+  const initialState = {
     keyword: "",
     userCode: "",
     email: "",
     activeOnly: false,
     role: "",
-  });
+  };
+  const [searchForm, setSearchForm] = useState({ initialState });
 
-  useEffect(() => {
-    const getUsers = async () => {
-      const res = await fetchUsers();
-      setUsers(res.data);
-    };
-
-    getUsers();
-  }, []);
-
-  const handleSearch = async () => {
-    const res = await fetchUsers(searchForm);
-
+  const loadUsers = async (params) => {
+    const res = await fetchUsers(params);
     setUsers(res.data);
   };
 
+  useEffect(() => {
+    loadUsers();
+  }, []);
+
+  const handleSearch = async () => {
+    loadUsers(searchForm);
+  };
+
   const clearSearch = async () => {
-    const initialState = {
-      keyword: "",
-      userCode: "",
-      email: "",
-      activeOnly: false,
-      role: "",
-    };
-
-    setSearchForm(initialState);
-
-    const res = await fetchUsers(initialState);
-
-    setUsers(res.data);
+    {
+      setSearchForm(initialState);
+      loadUsers(initialState);
+    }
   };
 
   return (
@@ -233,33 +223,32 @@ export default function UserIndex() {
               </thead>
 
               <tbody className="divide-x divide-gray-200">
-                {users &&
-                  users.map((user) => (
-                    <tr
-                      key={user.id}
-                      className="hover:bg-gray-50 divide-x divide-gray-200"
-                    >
-                      <td className="px-4 py-3">{user.user_code}</td>
-                      <td className="px-4 py-3">{user.name}</td>
-                      <td className="px-4 py-3">{user.email}</td>
-                      <td className="px-4 py-3">{user.roles?.join(", ")}</td>
-                      <td className="px-4 py-3">
-                        {user.status === "active" ? (
-                          <span className="inline-flex items-center rounded-full bg-green-100 px-2 py-0.5 text-xs font-medium text-green-700">
-                            在職
-                          </span>
-                        ) : user.status === "leave" ? (
-                          <span className="inline-flex items-center rounded-full bg-red-100 px-2 py-0.5 text-xs font-medium text-red-700">
-                            退職
-                          </span>
-                        ) : (
-                          <span className="inline-flex items-center rounded-full bg-gray-100 px-2 py-0.5 text-xs font-medium text-gray-700">
-                            休職
-                          </span>
-                        )}
-                      </td>
-                    </tr>
-                  ))}
+                {users.map((user) => (
+                  <tr
+                    key={user.id}
+                    className="hover:bg-gray-50 divide-x divide-gray-200"
+                  >
+                    <td className="px-4 py-3">{user.user_code}</td>
+                    <td className="px-4 py-3">{user.name}</td>
+                    <td className="px-4 py-3">{user.email}</td>
+                    <td className="px-4 py-3">{user.roles?.join(", ")}</td>
+                    <td className="px-4 py-3">
+                      {user.status === "active" ? (
+                        <span className="inline-flex items-center rounded-full bg-green-100 px-2 py-0.5 text-xs font-medium text-green-700">
+                          在職
+                        </span>
+                      ) : user.status === "leave" ? (
+                        <span className="inline-flex items-center rounded-full bg-red-100 px-2 py-0.5 text-xs font-medium text-red-700">
+                          退職
+                        </span>
+                      ) : (
+                        <span className="inline-flex items-center rounded-full bg-gray-100 px-2 py-0.5 text-xs font-medium text-gray-700">
+                          休職
+                        </span>
+                      )}
+                    </td>
+                  </tr>
+                ))}
               </tbody>
             </table>
           </div>
