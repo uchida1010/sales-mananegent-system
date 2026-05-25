@@ -3,6 +3,7 @@ import { userIndex, type UserIndex200 } from "../../api/salesManagementSystem";
 import "../../app.css";
 import { DoubleNavbar } from "../../components/DoubleNavbar";
 import { fetchUsers } from "../../api/userQuery";
+import { useSearchParams } from "react-router";
 
 export function meta({}: Route.MetaArgs) {
   return [
@@ -20,7 +21,17 @@ export default function UserIndex() {
     activeOnly: false,
     role: "",
   };
-  const [searchForm, setSearchForm] = useState({ initialState });
+  const [searchForm, setSearchForm] = useState(initialState);
+  const [searchParams, setSearchParams] = useSearchParams();
+  const getSearchParamsFromUrl = () => {
+    return {
+      keyword: searchParams.get("keyword") || "",
+      userCode: searchParams.get("userCode") || "",
+      email: searchParams.get("email") || "",
+      role: searchParams.get("role") || "",
+      activeOnly: searchParams.get("activeOnly") === "true",
+    };
+  };
 
   const loadUsers = async (params) => {
     const res = await fetchUsers(params);
@@ -28,18 +39,24 @@ export default function UserIndex() {
   };
 
   useEffect(() => {
-    loadUsers();
-  }, []);
+    const params = getSearchParamsFromUrl();
 
-  const handleSearch = async () => {
-    loadUsers(searchForm);
+    setSearchForm(params);
+    loadUsers(params);
+  }, [searchParams]);
+
+  const handleSearch = () => {
+    setSearchParams({
+      keyword: searchForm.keyword,
+      userCode: searchForm.userCode,
+      email: searchForm.email,
+      role: searchForm.role,
+      activeOnly: String(searchForm.activeOnly),
+    });
   };
 
-  const clearSearch = async () => {
-    {
-      setSearchForm(initialState);
-      loadUsers(initialState);
-    }
+  const clearSearch = () => {
+    setSearchParams({});
   };
 
   return (
