@@ -9,88 +9,59 @@ export interface UserResource {
   id: number;
   user_code: string;
   name: string;
-  /** @nullable */
-  name_kana: string | null;
   email: string;
-  /** @nullable */
-  phone: string | null;
   status: string;
-  joined_at: string;
-  /** @nullable */
-  resigned_at: string | null;
-  /** @nullable */
-  created_at: string | null;
-  /** @nullable */
-  updated_at: string | null;
+  roles: string | string[];
 }
 
-export type UserIndex200Links = {
-  /** @nullable */
-  first: string | null;
-  /** @nullable */
-  last: string | null;
-  /** @nullable */
-  prev: string | null;
-  /** @nullable */
-  next: string | null;
+/**
+ * A detailed description of each field that failed validation.
+ */
+export type ValidationExceptionResponseErrors = {[key: string]: string[]};
+
+export type ValidationExceptionResponse = {
+  /** Errors overview. */
+  message: string;
+  /** A detailed description of each field that failed validation. */
+  errors: ValidationExceptionResponseErrors;
 };
 
-export type UserIndex200MetaLinksItem = {
-  /** @nullable */
-  url: string | null;
-  label: string;
-  active: boolean;
-};
-
-export type UserIndex200Meta = {
-  /** @minimum 1 */
-  current_page: number;
-  /**
-   * @minimum 1
-   * @nullable
-   */
-  from: number | null;
-  /** @minimum 1 */
-  last_page: number;
-  /** Generated paginator links. */
-  links: UserIndex200MetaLinksItem[];
-  /**
-   * Base path for paginator generated URLs.
-   * @nullable
-   */
-  path: string | null;
-  /**
-   * Number of items shown per page.
-   * @minimum 0
-   */
-  per_page: number;
-  /**
-   * Number of the last item in the slice.
-   * @minimum 1
-   * @nullable
-   */
-  to: number | null;
-  /**
-   * Total number of items being paginated.
-   * @minimum 0
-   */
-  total: number;
+export type UserIndexParams = {
+/**
+ * @nullable
+ */
+keyword?: string | null;
+/**
+ * @nullable
+ */
+userCode?: string | null;
+/**
+ * @nullable
+ */
+email?: string | null;
+/**
+ * @nullable
+ */
+activeOnly?: boolean | null;
+/**
+ * @nullable
+ */
+role?: string | null;
 };
 
 export type UserIndex200 = {
   data: UserResource[];
-  links: UserIndex200Links;
-  meta: UserIndex200Meta;
 };
 
 /**
  * @summary Display a listing of the resource
  */
 export const userIndex = (
-    
+    params?: UserIndexParams,
  ) => {
       return customInstance<UserIndex200>(
-      {url: `/user`, method: 'GET'
+      {url: `/user`, method: 'GET',
+        params
     },
       );
     }
