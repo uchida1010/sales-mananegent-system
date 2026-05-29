@@ -2,7 +2,7 @@
 
 namespace App\Http\Controllers;
 
-use Illuminate\Http\Request;
+use App\Http\Requests\UserIndexRequest;
 use App\Models\User;
 use App\Http\Resources\UserResource;
 
@@ -11,8 +11,9 @@ class UserController extends Controller
     /**
      * Display a listing of the resource.
      */
-    public function index(Request $request)
+    public function index(UserIndexRequest $request)
     {
+
         $query = User::with('roles');
 
         if ($request->filled('keyword')) {

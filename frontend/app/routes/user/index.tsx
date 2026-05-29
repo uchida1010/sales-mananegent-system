@@ -1,11 +1,10 @@
 import { useState, useEffect } from "react";
-import { userIndex, type UserIndex200 } from "../../api/salesManagementSystem";
+import { userIndex, type UserResource } from "../../api/salesManagementSystem";
 import "../../app.css";
 import { DoubleNavbar } from "../../components/DoubleNavbar";
-import { fetchUsers } from "../../api/userQuery";
 import { useSearchParams } from "react-router";
 
-export function meta({}: Route.MetaArgs) {
+export function meta() {
   return [
     { title: "ユーザー一覧ページ" },
     { name: "description", content: "User Index Page" },
@@ -13,7 +12,7 @@ export function meta({}: Route.MetaArgs) {
 }
 
 export default function UserIndex() {
-  const [users, setUsers] = useState<UserIndex200[]>([]);
+  const [users, setUsers] = useState<UserResource[]>([]);
   const initialState = {
     keyword: "",
     userCode: "",
@@ -29,12 +28,12 @@ export default function UserIndex() {
       userCode: searchParams.get("userCode") || "",
       email: searchParams.get("email") || "",
       role: searchParams.get("role") || "",
-      activeOnly: searchParams.get("activeOnly") === "true",
+      activeOnly: searchParams.get("activeOnly") === "1",
     };
   };
 
-  const loadUsers = async (params) => {
-    const res = await fetchUsers(params);
+  const loadUsers = async (params?: Parameters<typeof userIndex>[0]) => {
+    const res = await userIndex(params);
     setUsers(res.data);
   };
 
@@ -51,7 +50,7 @@ export default function UserIndex() {
       userCode: searchForm.userCode,
       email: searchForm.email,
       role: searchForm.role,
-      activeOnly: String(searchForm.activeOnly),
+      activeOnly: searchForm.activeOnly ? "1" : "0",
     });
   };
 
@@ -68,7 +67,7 @@ export default function UserIndex() {
           <div className="flex gap-4 mt-2">
             <button
               className="bg-blue-500 text-white px-3 py-1 rounded-sm
-                    hover:bg-blue-600 active:bg-blue-700 transition-colors"
+                    hover:bg-blue-600 active:bg-bluze-700 transition-colors"
             >
               <div className="text-sm">新規登録</div>
             </button>
@@ -248,7 +247,7 @@ export default function UserIndex() {
                     <td className="px-4 py-3">{user.user_code}</td>
                     <td className="px-4 py-3">{user.name}</td>
                     <td className="px-4 py-3">{user.email}</td>
-                    <td className="px-4 py-3">{user.roles?.join(", ")}</td>
+                    <td className="px-4 py-3">{user.roles}</td>
                     <td className="px-4 py-3">
                       {user.status === "active" ? (
                         <span className="inline-flex items-center rounded-full bg-green-100 px-2 py-0.5 text-xs font-medium text-green-700">
