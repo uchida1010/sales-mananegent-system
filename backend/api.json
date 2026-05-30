@@ -21,52 +21,43 @@
                     {
                         "name": "keyword",
                         "in": "query",
+                        "description": "\u540d\u524d\u3001\u3088\u307f\u304c\u306a",
                         "schema": {
-                            "type": [
-                                "string",
-                                "null"
-                            ]
+                            "type": "string"
                         }
                     },
                     {
                         "name": "userCode",
                         "in": "query",
                         "schema": {
-                            "type": [
-                                "string",
-                                "null"
-                            ]
+                            "type": "string"
                         }
                     },
                     {
                         "name": "email",
                         "in": "query",
+                        "description": "\u30e1\u30fc\u30eb\u30a2\u30c9\u30ec\u30b9",
                         "schema": {
-                            "type": [
-                                "string",
-                                "null"
-                            ]
-                        }
+                            "type": "string"
+                        },
+                        "example": "abcd@example.com"
                     },
                     {
                         "name": "activeOnly",
                         "in": "query",
+                        "description": "true\u306e\u5834\u5408\u3001\u5728\u8077\u8005\u306e\u307f\u53d6\u5f97\u3059\u308b",
                         "schema": {
-                            "type": [
-                                "boolean",
-                                "null"
-                            ]
+                            "type": "string"
                         }
                     },
                     {
                         "name": "role",
                         "in": "query",
+                        "description": "\u5f79\u8077\u8005",
                         "schema": {
-                            "type": [
-                                "string",
-                                "null"
-                            ]
-                        }
+                            "type": "string"
+                        },
+                        "example": "\u3000\u30b7\u30b9\u30c6\u30e0\u7ba1\u7406\u8005\u3001\u4e8b\u52d9"
                     }
                 ],
                 "responses": {

@@ -28,25 +28,22 @@ export type ValidationExceptionResponse = {
 
 export type UserIndexParams = {
 /**
- * @nullable
+ * 名前、よみがな
  */
-keyword?: string | null;
+keyword?: string;
+userCode?: string;
 /**
- * @nullable
+ * メールアドレス
  */
-userCode?: string | null;
+email?: string;
 /**
- * @nullable
+ * trueの場合、在職者のみ取得する
  */
-email?: string | null;
+activeOnly?: string;
 /**
- * @nullable
+ * 役職者
  */
-activeOnly?: boolean | null;
-/**
- * @nullable
- */
-role?: string | null;
+role?: string;
 };
 
 export type UserIndex200 = {
