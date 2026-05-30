@@ -23,11 +23,29 @@ class UserIndexRequest extends FormRequest
     public function rules(): array
     {
         return [
-            'keyword' => ['nullable', 'string'],
-            'userCode' => ['nullable', 'string'],
-            'email' => ['nullable', 'string'],
-            'activeOnly' => ['nullable', 'in:true,false,1,0'],
-            'role' => ['nullable', 'string'],
+
+            /**
+             * 名前、よみがな
+             */
+            'keyword' => ['sometimes', 'string'],
+            'userCode' => ['sometimes', 'string'],
+
+            /**
+             * メールアドレス
+             * @example abcd@example.com
+             */
+            'email' => ['sometimes', 'string'],
+
+            /**
+             * trueの場合、在職者のみ取得する
+             */
+            'activeOnly' => ['sometimes', 'string'],
+
+            /**
+             * 役職者
+             * @example　システム管理者、事務
+             */
+            'role' => ['sometimes', 'string'],
         ];
     }
 }
