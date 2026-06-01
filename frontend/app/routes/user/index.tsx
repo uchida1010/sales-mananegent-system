@@ -31,9 +31,18 @@ export default function UserIndex() {
       activeOnly: searchParams.get("activeOnly") === "1",
     };
   };
-
+  const toApiParams = (
+    params: ReturnType<typeof getSearchParamsFromUrl>,
+  ): Parameters<typeof userIndex>[0] => ({
+    ...(params.keyword && { keyword: params.keyword }),
+    ...(params.userCode && { userCode: params.userCode }),
+    ...(params.email && { email: params.email }),
+    ...(params.role && { role: params.role }),
+    ...(params.activeOnly && { activeOnly: "1" }),
+  });
   const loadUsers = async (params?: Parameters<typeof userIndex>[0]) => {
     const res = await userIndex(params);
+
     setUsers(res.data);
   };
 
@@ -41,16 +50,16 @@ export default function UserIndex() {
     const params = getSearchParamsFromUrl();
 
     setSearchForm(params);
-    loadUsers(params);
+    loadUsers(toApiParams(params));
   }, [searchParams]);
 
   const handleSearch = () => {
     setSearchParams({
-      keyword: searchForm.keyword,
-      userCode: searchForm.userCode,
-      email: searchForm.email,
-      role: searchForm.role,
-      activeOnly: searchForm.activeOnly ? "1" : "0",
+      ...(searchForm.keyword && { keyword: searchForm.keyword }),
+      ...(searchForm.userCode && { userCode: searchForm.userCode }),
+      ...(searchForm.email && { email: searchForm.email }),
+      ...(searchForm.role && { role: searchForm.role }),
+      ...(searchForm.activeOnly && { activeOnly: "1" }),
     });
   };
 
