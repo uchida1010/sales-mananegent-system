@@ -25,27 +25,80 @@ class UserIndexRequest extends FormRequest
         return [
 
             /**
-             * 名前、よみがな
+             * ユーザー名またはユーザー名（かな）で検索します。
+             *
+             * 部分一致検索を行います。
+             * 名前・よみがなのいずれかに一致するユーザーを取得します。
+             *
+             * 検索例：
+             * - "田中" → 「田中太郎」「田中一郎」
+             * - "たなか" → 「たなかたろう」
+             * - "太郎" → 「山田太郎」
+             *
+             * @example 田中,たなか
              */
-            'keyword' => ['sometimes', 'string'],
+            'keyword' => ['string'],
+
+            /**
+             * ユーザーIDで検索します。
+             *
+             * 完全一致検索を行います。
+             * ユーザーIDを指定してください。
+             *
+             * 検索例：
+             * - 1
+             * - 22
+             *
+             * @example 0,9
+             */
             'userCode' => ['sometimes', 'string'],
 
             /**
-             * メールアドレス
-             * @example abcd@example.com
+             * メールアドレスで検索します。
+             *
+             * 完全一致検索を行います。
+             * 指定したメールアドレスを持つユーザーを取得します。
+             *
+             * 検索例：
+             * - tanaka@example.com
+             * - yamada@example.com
+             *
+             * @example tanaka@example.com
              */
             'email' => ['sometimes', 'string'],
 
             /**
-             * trueの場合、在職者のみ取得する
+             * 在職者のみを取得するかを指定します。
+             *
+             * true を指定した場合は在職中(status:active)のユーザーのみ取得します。
+             * false の場合は退職者、休職者を含む全ユーザーを取得します。
+             *
+             * API仕様上は文字列として受け取ります。
+             *
+             * 指定例：
+             * - true
+             * - false
+             *
+             * @example true
              */
             'activeOnly' => ['sometimes', 'string'],
 
             /**
-             * 役職者
-             * @example　システム管理者、事務
+             * ロールIDで検索します。
+             *
+             * 完全一致検索を行います。
+             * 指定したロールIDを持つユーザーのみ取得します。
+             *
+             * ロールIDは roles テーブルの主キーを指定してください。
+             *
+             * 指定例：
+             * - 1 : システム管理者
+             * - 2 : 事務担当
+             * - 3 : 営業担当
+             *
+             * @example 1
              */
-            'role' => ['sometimes', 'string'],
+            'role_id' => ['sometimes', 'string'],
         ];
     }
 }
