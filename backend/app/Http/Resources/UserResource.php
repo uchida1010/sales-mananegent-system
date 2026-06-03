@@ -15,11 +15,66 @@ class UserResource extends JsonResource
     public function toArray(Request $request): array
     {
         return [
-            'id' => $this->id,
+            /**
+             * ユーザーコード
+             *
+             * システム内で一意となる識別子です。
+             *
+             * @example 1, 22
+             */
             'user_code' => $this->user_code,
+
+            /**
+             * ユーザー名
+             *
+             * 画面上に表示する氏名です。
+             *
+             * @example 田中太郎
+             */
             'name' => $this->name,
+
+            /**
+             * ユーザー名(かな)
+             *
+             * 画面上に表示する氏名のよみがなです。
+             *
+             * @example たなかたろう
+             */
+            'name_kana' => $this->name_kana,
+
+            /**
+             * メールアドレス
+             *
+             * ログインおよび通知に利用します。
+             *
+             * @example tanaka@example.com
+             */
             'email' => $this->email,
+
+            /**
+             * 在籍状態
+             *
+             * 値の意味：
+             * - active : 在職中
+             * - leave : 休職中
+             * - resigned : 退職済
+             *
+             * @example active
+             */
             'status' => $this->status,
+
+            /**
+             * 保有権限一覧
+             *
+             * ユーザーに付与されている権限です。
+             *
+             * 値の例：
+             * - admin
+             * - office_worker
+             * - sales
+             *
+             * @example admin
+             */
             'roles' => $this->roles?->pluck('name')->toArray() ?? [],
         ];
     }
