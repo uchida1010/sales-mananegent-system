@@ -65,9 +65,9 @@
                             }
                         },
                         "example": [
-                            "admin",
-                            "office_worker",
-                            "sales"
+                            "\u30b7\u30b9\u30c6\u30e0\u7ba1\u7406\u8005",
+                            "\u4e8b\u52d9",
+                            "\u55b6\u696d"
                         ]
                     }
                 ],
@@ -228,9 +228,9 @@
                         "description": "\u4fdd\u6709\u6a29\u9650\u4e00\u89a7 \u30e6\u30fc\u30b6\u30fc\u306b\u4ed8\u4e0e\u3055\u308c\u3066\u3044\u308b\u6a29\u9650\u3067\u3059\u3002\n\n\u5024\u306e\u4f8b\uff1a\n- admin\n- office_worker\n- sales",
                         "examples": [
                             [
-                                "admin",
-                                "office_worker",
-                                "sales"
+                                "\u30b7\u30b9\u30c6\u30e0\u7ba1\u7406\u8005",
+                                "\u4e8b\u52d9",
+                                "\u55b6\u696d"
                             ]
                         ],
                         "items": {
