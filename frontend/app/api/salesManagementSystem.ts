@@ -6,11 +6,28 @@
  */
 import { customInstance } from './custom-instance';
 export interface UserResource {
-  id: number;
-  user_code: string;
+  /** ユーザーコード システム内で一意となる識別子です。 */
+  user_code: number;
+  /** ユーザー名 画面上に表示する氏名です。 */
   name: string;
+  /**
+   * ユーザー名(かな) 画面上に表示する氏名のよみがなです。
+   * @nullable
+   */
+  name_kana: string | null;
+  /** メールアドレス ログインおよび通知に利用します。 */
   email: string;
+  /** 在籍状態 値の意味：
+- active : 在職中
+- leave : 休職中
+- resigned : 退職済 */
   status: string;
+  /** 保有権限一覧 ユーザーに付与されている権限です。
+
+値の例：
+- admin
+- office_worker
+- sales */
   roles: string | string[];
 }
 
@@ -45,7 +62,7 @@ keyword?: string;
 - 1
 - 22
  */
-userCode?: string;
+userCode?: number;
 /**
  * メールアドレスで検索します。 完全一致検索を行います。
 指定したメールアドレスを持つユーザーを取得します。
