@@ -95,8 +95,10 @@ class UserIndexRequest extends FormRequest
              * - 1 : システム管理者
              * - 2 : 事務担当
              * - 3 : 営業担当
+             * 
+             * @var array<int, string>
              *
-             * @example 1
+             * @example ["admin", "office_worker", "sales"]
              */
             'role_id' => ['sometimes', 'string'],
         ];

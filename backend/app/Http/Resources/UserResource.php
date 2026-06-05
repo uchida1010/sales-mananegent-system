@@ -72,8 +72,9 @@ class UserResource extends JsonResource
              * - admin
              * - office_worker
              * - sales
+             * @var array<int, string>
              *
-             * @example admin
+             * @example ["admin", "office_worker", "sales"]
              */
             'roles' => $this->roles?->pluck('name')->toArray() ?? [],
         ];
