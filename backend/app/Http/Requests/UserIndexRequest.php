@@ -49,9 +49,9 @@ class UserIndexRequest extends FormRequest
              * - 1
              * - 22
              *
-             * @example 0,9
+             * @example 11
              */
-            'userCode' => ['sometimes', 'string'],
+            'userCode' => ['sometimes', 'int'],
 
             /**
              * メールアドレスで検索します。
