@@ -28,7 +28,7 @@ export interface UserResource {
 - admin
 - office_worker
 - sales */
-  roles: string | string[];
+  roles: string[];
 }
 
 /**
@@ -94,7 +94,7 @@ activeOnly?: string;
 - 2 : 事務担当
 - 3 : 営業担当
  */
-role_id?: string;
+'role_id[]'?: string[];
 };
 
 export type UserIndex200 = {
