@@ -35,7 +35,7 @@ export default function UserIndex() {
     params: ReturnType<typeof getSearchParamsFromUrl>,
   ): Parameters<typeof userIndex>[0] => ({
     ...(params.keyword && { keyword: params.keyword }),
-    ...(params.userCode && { userCode: params.userCode }),
+    ...(params.userCode && { userCode: Number(params.userCode) }),
     ...(params.email && { email: params.email }),
     ...(params.role && { role: params.role }),
     ...(params.activeOnly && { activeOnly: "1" }),
@@ -193,7 +193,7 @@ export default function UserIndex() {
                 >
                   <option value="">すべて</option>
                   <option value="admin">システム管理者</option>
-                  <option value="office_worker">事務員</option>
+                  <option value="office_worker">事務</option>
                   <option value="sales">営業</option>
                 </select>
               </div>
