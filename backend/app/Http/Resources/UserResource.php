@@ -20,9 +20,9 @@ class UserResource extends JsonResource
              *
              * システム内で一意となる識別子です。
              *
-             * @example 1, 22
+             * @example 11
              */
-            'user_code' => $this->user_code,
+            'user_code' => (int)$this->user_code,
 
             /**
              * ユーザー名
