@@ -74,7 +74,7 @@ class UserResource extends JsonResource
              * - sales
              * @var array<int, string>
              *
-             * @example ["admin", "office_worker", "sales"]
+             * @example ["システム管理者", "事務", "営業"]
              */
             'roles' => $this->roles?->pluck('name')->toArray() ?? [],
         ];
