@@ -51,7 +51,7 @@ class UserIndexRequest extends FormRequest
              *
              * @example 11
              */
-            'userCode' => ['sometimes', 'int'],
+            'userCode' => ['sometimes', 'integer'],
 
             /**
              * メールアドレスで検索します。
@@ -96,11 +96,11 @@ class UserIndexRequest extends FormRequest
              * - 2 : 事務担当
              * - 3 : 営業担当
              * 
-             * @var array<int, string>
+             * @var int
              *
-             * @example ["システム管理者", "事務", "営業"]
+             * @example 1
              */
-            'role_id' => ['sometimes', 'string'],
+            'role_id' => ['sometimes', 'integer'],
         ];
     }
 }
