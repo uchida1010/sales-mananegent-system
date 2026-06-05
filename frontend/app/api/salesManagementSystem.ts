@@ -94,7 +94,7 @@ activeOnly?: string;
 - 2 : 事務担当
 - 3 : 営業担当
  */
-'role_id[]'?: string[];
+role_id?: number;
 };
 
 export type UserIndex200 = {
