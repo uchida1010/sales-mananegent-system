@@ -62,7 +62,7 @@ keyword?: string;
 - 1
 - 22
  */
-userCode?: number;
+userCode?: string;
 /**
  * メールアドレスで検索します。 完全一致検索を行います。
 指定したメールアドレスを持つユーザーを取得します。
