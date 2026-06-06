@@ -18,7 +18,7 @@ export default function UserIndex() {
     userCode: "",
     email: "",
     activeOnly: false,
-    role: "",
+    roleId: "",
   };
   const [searchForm, setSearchForm] = useState(initialState);
   const [searchParams, setSearchParams] = useSearchParams();
@@ -27,7 +27,7 @@ export default function UserIndex() {
       keyword: searchParams.get("keyword") || "",
       userCode: searchParams.get("userCode") || "",
       email: searchParams.get("email") || "",
-      role: searchParams.get("role") || "",
+      roleId: searchParams.get("roleId") || "",
       activeOnly: searchParams.get("activeOnly") === "1",
     };
   };
@@ -35,9 +35,9 @@ export default function UserIndex() {
     params: ReturnType<typeof getSearchParamsFromUrl>,
   ): Parameters<typeof userIndex>[0] => ({
     ...(params.keyword && { keyword: params.keyword }),
-    ...(params.userCode && { userCode: Number(params.userCode) }),
+    ...(params.userCode && { userCode: params.userCode }),
     ...(params.email && { email: params.email }),
-    ...(params.role && { role: params.role }),
+    ...(params.roleId && { roleId: params.roleId }),
     ...(params.activeOnly && { activeOnly: "1" }),
   });
   const loadUsers = async (params?: Parameters<typeof userIndex>[0]) => {
@@ -58,7 +58,7 @@ export default function UserIndex() {
       ...(searchForm.keyword && { keyword: searchForm.keyword }),
       ...(searchForm.userCode && { userCode: searchForm.userCode }),
       ...(searchForm.email && { email: searchForm.email }),
-      ...(searchForm.role && { role: searchForm.role }),
+      ...(searchForm.roleId && { roleId: searchForm.roleId }),
       ...(searchForm.activeOnly && { activeOnly: "1" }),
     });
   };
@@ -181,20 +181,20 @@ export default function UserIndex() {
                 </label>
 
                 <select
-                  value={searchForm.role}
+                  value={searchForm.roleId}
                   onChange={(e) =>
                     setSearchForm({
                       ...searchForm,
-                      role: e.target.value,
+                      roleId: e.target.value,
                     })
                   }
                   className="w-48 rounded-md border border-gray-300 bg-white px-3 py-1 text-sm
       focus:border-blue-500 focus:ring-2 focus:ring-blue-200"
                 >
                   <option value="">すべて</option>
-                  <option value="admin">システム管理者</option>
-                  <option value="office_worker">事務</option>
-                  <option value="sales">営業</option>
+                  <option value="1">システム管理者</option>
+                  <option value="2">事務</option>
+                  <option value="3">営業</option>
                 </select>
               </div>
 
