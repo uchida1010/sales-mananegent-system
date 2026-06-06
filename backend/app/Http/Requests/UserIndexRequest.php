@@ -37,7 +37,7 @@ class UserIndexRequest extends FormRequest
              *
              * @example 田中,たなか
              */
-            'keyword' => ['string'],
+            'keyword' => ['sometimes', 'string'],
 
             /**
              * ユーザーIDで検索します。
@@ -51,7 +51,7 @@ class UserIndexRequest extends FormRequest
              *
              * @example 11
              */
-            'userCode' => ['sometimes', 'integer'],
+            'userCode' => ['sometimes', 'string'],
 
             /**
              * メールアドレスで検索します。
@@ -100,7 +100,7 @@ class UserIndexRequest extends FormRequest
              *
              * @example 1
              */
-            'role_id' => ['sometimes', 'integer'],
+            'role_id' => ['sometimes', 'string'],
         ];
     }
 }
