@@ -55,13 +55,13 @@
                         "example": true
                     },
                     {
-                        "name": "role_id",
+                        "name": "roleId",
                         "in": "query",
                         "description": "\u30ed\u30fc\u30ebID\u3067\u691c\u7d22\u3057\u307e\u3059\u3002 \u5b8c\u5168\u4e00\u81f4\u691c\u7d22\u3092\u884c\u3044\u307e\u3059\u3002\n\u6307\u5b9a\u3057\u305f\u30ed\u30fc\u30ebID\u3092\u6301\u3064\u30e6\u30fc\u30b6\u30fc\u306e\u307f\u53d6\u5f97\u3057\u307e\u3059\u3002\n\n\u30ed\u30fc\u30ebID\u306f roles \u30c6\u30fc\u30d6\u30eb\u306e\u4e3b\u30ad\u30fc\u3092\u6307\u5b9a\u3057\u3066\u304f\u3060\u3055\u3044\u3002\n\n\u6307\u5b9a\u4f8b\uff1a\n- 1 : \u30b7\u30b9\u30c6\u30e0\u7ba1\u7406\u8005\n- 2 : \u4e8b\u52d9\u62c5\u5f53\n- 3 : \u55b6\u696d\u62c5\u5f53",
                         "schema": {
-                            "type": "integer"
+                            "type": "string"
                         },
-                        "example": 1
+                        "example": "1"
                     }
                 ],
                 "responses": {
