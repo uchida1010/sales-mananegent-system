@@ -253,7 +253,7 @@ export default function UserIndex() {
                     key={user.id}
                     className="hover:bg-gray-50 divide-x divide-gray-200"
                   >
-                    <td className="px-4 py-3">{user.user_code}</td>
+                    <td className="px-4 py-3">{user.userCode}</td>
                     <td className="px-4 py-3">{user.name}</td>
                     <td className="px-4 py-3">{user.email}</td>
                     <td className="px-4 py-3">{user.roles}</td>

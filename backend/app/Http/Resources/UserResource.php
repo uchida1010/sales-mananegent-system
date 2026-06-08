@@ -22,7 +22,7 @@ class UserResource extends JsonResource
              *
              * @example 11
              */
-            'user_code' => (int)$this->user_code,
+            'userCode' => (int)$this->user_code,
 
             /**
              * ユーザー名
@@ -40,7 +40,7 @@ class UserResource extends JsonResource
              *
              * @example たなかたろう
              */
-            'name_kana' => $this->name_kana,
+            'nameKana' => $this->name_kana,
 
             /**
              * メールアドレス
