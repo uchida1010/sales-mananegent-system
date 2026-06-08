@@ -7,14 +7,14 @@
 import { customInstance } from './custom-instance';
 export interface UserResource {
   /** ユーザーコード システム内で一意となる識別子です。 */
-  user_code: number;
+  userCode: number;
   /** ユーザー名 画面上に表示する氏名です。 */
   name: string;
   /**
    * ユーザー名(かな) 画面上に表示する氏名のよみがなです。
    * @nullable
    */
-  name_kana: string | null;
+  nameKana: string | null;
   /** メールアドレス ログインおよび通知に利用します。 */
   email: string;
   /** 在籍状態 値の意味：
