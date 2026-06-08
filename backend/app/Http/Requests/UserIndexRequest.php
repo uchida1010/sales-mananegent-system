@@ -96,11 +96,10 @@ class UserIndexRequest extends FormRequest
              * - 2 : 事務担当
              * - 3 : 営業担当
              * 
-             * @var int
              *
              * @example 1
              */
-            'role_id' => ['sometimes', 'string'],
+            'roleId' => ['sometimes', 'string'],
         ];
     }
 }
