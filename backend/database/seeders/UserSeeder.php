@@ -28,7 +28,7 @@ class UserSeeder extends Seeder
 
         $admin->roles()->syncWithoutDetaching([$adminRole->id]);
 
-        User::factory(5)->create()->each(function ($user) use ($officeWorkerRole) {
+        User::factory(40)->create()->each(function ($user) use ($officeWorkerRole) {
             $user->roles()->syncWithoutDetaching([$officeWorkerRole->id]);
         });
     }
