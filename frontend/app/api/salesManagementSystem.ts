@@ -95,10 +95,65 @@ activeOnly?: string;
 - 3 : 営業担当
  */
 roleId?: string;
+/**
+ * ページ番号を指定します。 ページネーションされた一覧データの取得対象ページを指定します。
+指定しない場合は1ページ目を取得します。
+
+1ページあたりの取得件数はサーバー側で設定された件数に従います。
+
+指定例：
+- 1 : 1ページ目を取得
+- 2 : 2ページ目を取得
+- 3 : 3ページ目を取得
+
+リクエスト例：
+- /api/user?page=1
+- /api/user?page=2
+ */
+page?: string;
+};
+
+export type UserIndex200Links = {
+  /** @nullable */
+  first: string | null;
+  /** @nullable */
+  last: string | null;
+  /** @nullable */
+  prev: string | null;
+  /** @nullable */
+  next: string | null;
+};
+
+export type UserIndex200Meta = {
+  /** @minimum 1 */
+  current_page: number;
+  /**
+   * @minimum 1
+   * @nullable
+   */
+  from: number | null;
+  /**
+   * Base path for paginator generated URLs.
+   * @nullable
+   */
+  path: string | null;
+  /**
+   * Number of items shown per page.
+   * @minimum 0
+   */
+  per_page: number;
+  /**
+   * Number of the last item in the slice.
+   * @minimum 1
+   * @nullable
+   */
+  to: number | null;
 };
 
 export type UserIndex200 = {
   data: UserResource[];
+  links: UserIndex200Links;
+  meta: UserIndex200Meta;
 };
 
 /**
