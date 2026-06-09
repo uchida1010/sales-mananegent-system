@@ -100,6 +100,27 @@ class UserIndexRequest extends FormRequest
              * @example 1
              */
             'roleId' => ['sometimes', 'string'],
+
+            /**
+             * ページ番号を指定します。
+             *
+             * ページネーションされた一覧データの取得対象ページを指定します。
+             * 指定しない場合は1ページ目を取得します。
+             *
+             * 1ページあたりの取得件数はサーバー側で設定された件数に従います。
+             *
+             * 指定例：
+             * - 1 : 1ページ目を取得
+             * - 2 : 2ページ目を取得
+             * - 3 : 3ページ目を取得
+             *
+             * リクエスト例：
+             * - /api/user?page=1
+             * - /api/user?page=2
+             *
+             * @example 1
+             */
+            'page' => ['sometimes', 'string'],
         ];
     }
 }
