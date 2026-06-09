@@ -3,6 +3,7 @@ import { userIndex, type UserResource } from "../../api/salesManagementSystem";
 import "../../app.css";
 import { DoubleNavbar } from "../../components/DoubleNavbar";
 import { useSearchParams } from "react-router";
+import { Pagination } from "@mantine/core";
 
 export function meta() {
   return [
@@ -29,8 +30,10 @@ export default function UserIndex() {
       email: searchParams.get("email") || "",
       roleId: searchParams.get("roleId") || "",
       activeOnly: searchParams.get("activeOnly") === "1",
+      page: Number(searchParams.get("page") || "1"),
     };
   };
+
   const toApiParams = (
     params: ReturnType<typeof getSearchParamsFromUrl>,
   ): Parameters<typeof userIndex>[0] => ({
@@ -39,28 +42,42 @@ export default function UserIndex() {
     ...(params.email && { email: params.email }),
     ...(params.roleId && { roleId: params.roleId }),
     ...(params.activeOnly && { activeOnly: "1" }),
+    page: String(params.page),
   });
   const loadUsers = async (params?: Parameters<typeof userIndex>[0]) => {
     const res = await userIndex(params);
 
     setUsers(res.data);
+    setHasNextPage(Boolean(res.links?.next));
   };
+  const [page, setPage] = useState(1);
+  const [hasNextPage, setHasNextPage] = useState(false);
 
   useEffect(() => {
     const params = getSearchParamsFromUrl();
 
     setSearchForm(params);
+    setPage(params.page);
     loadUsers(toApiParams(params));
   }, [searchParams]);
 
+  const buildSearchParams = (page?: number) => ({
+    ...(searchForm.keyword && { keyword: searchForm.keyword }),
+    ...(searchForm.userCode && { userCode: searchForm.userCode }),
+    ...(searchForm.email && { email: searchForm.email }),
+    ...(searchForm.roleId && { roleId: searchForm.roleId }),
+    ...(searchForm.activeOnly && { activeOnly: "1" }),
+    ...(page && { page: String(page) }),
+  });
+
   const handleSearch = () => {
-    setSearchParams({
-      ...(searchForm.keyword && { keyword: searchForm.keyword }),
-      ...(searchForm.userCode && { userCode: searchForm.userCode }),
-      ...(searchForm.email && { email: searchForm.email }),
-      ...(searchForm.roleId && { roleId: searchForm.roleId }),
-      ...(searchForm.activeOnly && { activeOnly: "1" }),
-    });
+    setPage(1);
+
+    setSearchParams(buildSearchParams(1));
+  };
+
+  const handlePageChange = (newPage: number) => {
+    setSearchParams(buildSearchParams(newPage));
   };
 
   const clearSearch = () => {
@@ -276,6 +293,15 @@ export default function UserIndex() {
                 ))}
               </tbody>
             </table>
+            <div className="flex justify-center py-4">
+              <Pagination
+                total={hasNextPage ? page + 1 : page}
+                value={page}
+                onChange={handlePageChange}
+                siblings={1}
+                boundaries={1}
+              />
+            </div>
           </div>
         </main>
       </div>
