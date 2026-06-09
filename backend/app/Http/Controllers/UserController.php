@@ -49,7 +49,7 @@ class UserController extends Controller
             });
         }
 
-        return UserResource::collection($query->get());
+        return UserResource::collection($query->simplePaginate(10));
     }
 
     /**
