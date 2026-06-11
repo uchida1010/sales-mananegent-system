@@ -48,10 +48,10 @@ export default function UserIndex() {
     const res = await userIndex(params);
 
     setUsers(res.data);
-    setHasNextPage(Boolean(res.links?.next));
+    setTotalPages(res.meta.last_page);
   };
   const [page, setPage] = useState(1);
-  const [hasNextPage, setHasNextPage] = useState(false);
+  const [totalPages, setTotalPages] = useState(1);
 
   useEffect(() => {
     const params = getSearchParamsFromUrl();
@@ -206,7 +206,7 @@ export default function UserIndex() {
                     })
                   }
                   className="w-48 rounded-md border border-gray-300 bg-white px-3 py-1 text-sm
-      focus:border-blue-500 focus:ring-2 focus:ring-blue-200"
+         focus:border-blue-500 focus:ring-2 focus:ring-blue-200"
                 >
                   <option value="">すべて</option>
                   <option value="1">システム管理者</option>
@@ -252,55 +252,67 @@ export default function UserIndex() {
             </div>
           </form>
 
-          <div className="w-full rounded-lg border border-gray-50 bg-white mt-2">
-            <table className="min-w-full text-left text-sm">
-              <thead className="bg-gray-200 text-gray-600 border-b border-gray-200">
-                <tr className="divide-x divide-white">
-                  <th className="px-4 py-3 font-semibold">ユーザーID</th>
-                  <th className="px-4 py-3 font-semibold">氏名</th>
-                  <th className="px-4 py-3 font-semibold">メール</th>
-                  <th className="px-4 py-3 font-semibold">権限</th>
-                  <th className="px-4 py-3 font-semibold">状態</th>
-                </tr>
-              </thead>
-
-              <tbody className="divide-x divide-gray-200">
-                {users.map((user) => (
-                  <tr
-                    key={user.id}
-                    className="hover:bg-gray-50 divide-x divide-gray-200"
-                  >
-                    <td className="px-4 py-3">{user.userCode}</td>
-                    <td className="px-4 py-3">{user.name}</td>
-                    <td className="px-4 py-3">{user.email}</td>
-                    <td className="px-4 py-3">{user.roles}</td>
-                    <td className="px-4 py-3">
-                      {user.status === "active" ? (
-                        <span className="inline-flex items-center rounded-full bg-green-100 px-2 py-0.5 text-xs font-medium text-green-700">
-                          在職
-                        </span>
-                      ) : user.status === "leave" ? (
-                        <span className="inline-flex items-center rounded-full bg-red-100 px-2 py-0.5 text-xs font-medium text-red-700">
-                          退職
-                        </span>
-                      ) : (
-                        <span className="inline-flex items-center rounded-full bg-gray-100 px-2 py-0.5 text-xs font-medium text-gray-700">
-                          休職
-                        </span>
-                      )}
-                    </td>
+          <div className="w-full rounded-lg border border-gray-50 bg-white mt-2 flex min-h-[560px] flex-col">
+            <div className="flex-1">
+              <table className="min-w-full text-left text-sm">
+                <thead className="bg-gray-200 text-gray-600 border-b border-gray-200">
+                  <tr className="divide-x divide-white">
+                    <th className="px-4 py-3 font-semibold">ユーザーID</th>
+                    <th className="px-4 py-3 font-semibold">氏名</th>
+                    <th className="px-4 py-3 font-semibold">メール</th>
+                    <th className="px-4 py-3 font-semibold">権限</th>
+                    <th className="px-4 py-3 font-semibold">状態</th>
                   </tr>
-                ))}
-              </tbody>
-            </table>
-            <div className="flex justify-center py-4">
+                </thead>
+
+                <tbody className="divide-x divide-gray-200">
+                  {users.map((user) => (
+                    <tr
+                      key={user.id}
+                      className="hover:bg-gray-50 divide-x divide-gray-200"
+                    >
+                      <td className="px-4 py-3">{user.userCode}</td>
+                      <td className="px-4 py-3">{user.name}</td>
+                      <td className="px-4 py-3">{user.email}</td>
+                      <td className="px-4 py-3">{user.roles}</td>
+                      <td className="px-4 py-3">
+                        {user.status === "active" ? (
+                          <span className="inline-flex items-center rounded-full bg-green-100 px-2 py-0.5 text-xs font-medium text-green-700">
+                            在職
+                          </span>
+                        ) : user.status === "leave" ? (
+                          <span className="inline-flex items-center rounded-full bg-red-100 px-2 py-0.5 text-xs font-medium text-red-700">
+                            退職
+                          </span>
+                        ) : (
+                          <span className="inline-flex items-center rounded-full bg-gray-100 px-2 py-0.5 text-xs font-medium text-gray-700">
+                            休職
+                          </span>
+                        )}
+                      </td>
+                    </tr>
+                  ))}
+                </tbody>
+              </table>
+            </div>
+            <div className="mt-auto flex flex-col items-center gap-3 border-t border-gray-100 bg-white px-4 py-5">
               <Pagination
-                total={hasNextPage ? page + 1 : page}
+                total={totalPages}
                 value={page}
                 onChange={handlePageChange}
                 siblings={1}
                 boundaries={1}
+                withEdges
               />
+
+              <div className="inline-flex items-center gap-2 rounded-full px-4 py-1.5 text-sm text-gray-600 shadow-sm">
+                <span className="font-medium text-gray-800">{page}</span>
+                <span>ページ目</span>
+                <span className="text-gray-300">/</span>
+                <span>全</span>
+                <span className="font-medium text-gray-800">{totalPages}</span>
+                <span>ページ</span>
+              </div>
             </div>
           </div>
         </main>
