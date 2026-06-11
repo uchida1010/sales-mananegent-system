@@ -124,6 +124,13 @@ export type UserIndex200Links = {
   next: string | null;
 };
 
+export type UserIndex200MetaLinksItem = {
+  /** @nullable */
+  url: string | null;
+  label: string;
+  active: boolean;
+};
+
 export type UserIndex200Meta = {
   /** @minimum 1 */
   current_page: number;
@@ -132,6 +139,10 @@ export type UserIndex200Meta = {
    * @nullable
    */
   from: number | null;
+  /** @minimum 1 */
+  last_page: number;
+  /** Generated paginator links. */
+  links: UserIndex200MetaLinksItem[];
   /**
    * Base path for paginator generated URLs.
    * @nullable
@@ -148,6 +159,11 @@ export type UserIndex200Meta = {
    * @nullable
    */
   to: number | null;
+  /**
+   * Total number of items being paginated.
+   * @minimum 0
+   */
+  total: number;
 };
 
 export type UserIndex200 = {

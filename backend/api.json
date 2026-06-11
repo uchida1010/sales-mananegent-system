@@ -136,6 +136,36 @@
                                                     ],
                                                     "minimum": 1
                                                 },
+                                                "last_page": {
+                                                    "type": "integer",
+                                                    "minimum": 1
+                                                },
+                                                "links": {
+                                                    "type": "array",
+                                                    "description": "Generated paginator links.",
+                                                    "items": {
+                                                        "type": "object",
+                                                        "properties": {
+                                                            "url": {
+                                                                "type": [
+                                                                    "string",
+                                                                    "null"
+                                                                ]
+                                                            },
+                                                            "label": {
+                                                                "type": "string"
+                                                            },
+                                                            "active": {
+                                                                "type": "boolean"
+                                                            }
+                                                        },
+                                                        "required": [
+                                                            "url",
+                                                            "label",
+                                                            "active"
+                                                        ]
+                                                    }
+                                                },
                                                 "path": {
                                                     "type": [
                                                         "string",
@@ -155,14 +185,22 @@
                                                     ],
                                                     "description": "Number of the last item in the slice.",
                                                     "minimum": 1
+                                                },
+                                                "total": {
+                                                    "type": "integer",
+                                                    "description": "Total number of items being paginated.",
+                                                    "minimum": 0
                                                 }
                                             },
                                             "required": [
                                                 "current_page",
                                                 "from",
+                                                "last_page",
+                                                "links",
                                                 "path",
                                                 "per_page",
-                                                "to"
+                                                "to",
+                                                "total"
                                             ]
                                         }
                                     },
