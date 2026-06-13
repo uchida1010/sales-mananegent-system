@@ -84,12 +84,12 @@ class UserIndexRequest extends FormRequest
             'activeOnly' => ['sometimes', 'string'],
 
             /**
-             * ロールIDで検索します。
+             * 役割IDで検索します。
              *
              * 完全一致検索を行います。
-             * 指定したロールIDを持つユーザーのみ取得します。
+             * 指定した役割IDを持つユーザーのみ取得します。
              *
-             * ロールIDは roles テーブルの主キーを指定してください。
+             * 役割IDは roles テーブルの主キーを指定してください。
              *
              * 指定例：
              * - 1 : システム管理者
