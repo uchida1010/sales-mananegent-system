@@ -5,6 +5,25 @@
  * OpenAPI spec version: 0.0.1
  */
 import { customInstance } from './custom-instance';
+export interface RoleResource {
+  /** 役割ID roles テーブルの主キーです。
+役割を一意に識別するためのIDです。
+
+指定例：
+- 1 : システム管理者
+- 2 : 事務
+- 3 : 営業 */
+  id: number;
+  /** 役割名 利用可能な役割の名称です。
+検索画面のユーザー情報の表示などに利用します。
+
+値の例：
+- システム管理者
+- 事務
+- 営業 */
+  name: string;
+}
+
 export interface UserResource {
   /** ユーザーコード システム内で一意となる識別子です。 */
   userCode: number;
@@ -41,6 +60,10 @@ export type ValidationExceptionResponse = {
   message: string;
   /** A detailed description of each field that failed validation. */
   errors: ValidationExceptionResponseErrors;
+};
+
+export type RolesIndex200 = {
+  data: RoleResource[];
 };
 
 export type UserIndexParams = {
@@ -84,10 +107,10 @@ API仕様上は文字列として受け取ります。
  */
 activeOnly?: string;
 /**
- * ロールIDで検索します。 完全一致検索を行います。
-指定したロールIDを持つユーザーのみ取得します。
+ * 役割IDで検索します。 完全一致検索を行います。
+指定した役割IDを持つユーザーのみ取得します。
 
-ロールIDは roles テーブルの主キーを指定してください。
+役割IDは roles テーブルの主キーを指定してください。
 
 指定例：
 - 1 : システム管理者
@@ -172,6 +195,15 @@ export type UserIndex200 = {
   meta: UserIndex200Meta;
 };
 
+export const rolesIndex = (
+    
+ ) => {
+      return customInstance<RolesIndex200>(
+      {url: `/roles`, method: 'GET'
+    },
+      );
+    }
+  
 /**
  * @summary Display a listing of the resource
  */
@@ -233,6 +265,7 @@ export const userDestroy = (
       );
     }
   
+export type RolesIndexResult = NonNullable<Awaited<ReturnType<typeof rolesIndex>>>
 export type UserIndexResult = NonNullable<Awaited<ReturnType<typeof userIndex>>>
 export type UserStoreResult = NonNullable<Awaited<ReturnType<typeof userStore>>>
 export type UserShowResult = NonNullable<Awaited<ReturnType<typeof userShow>>>
