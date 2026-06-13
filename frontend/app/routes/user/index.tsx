@@ -4,6 +4,7 @@ import "../../app.css";
 import { DoubleNavbar } from "../../components/DoubleNavbar";
 import { useSearchParams } from "react-router";
 import { Pagination } from "@mantine/core";
+import { rolesIndex, type RoleResource } from "~/api/salesManagementSystem";
 
 export function meta() {
   return [
@@ -52,6 +53,7 @@ export default function UserIndex() {
   };
   const [page, setPage] = useState(1);
   const [totalPages, setTotalPages] = useState(1);
+  const [roles, setRoles] = useState<RoleResource[]>([]);
 
   useEffect(() => {
     const params = getSearchParamsFromUrl();
@@ -59,6 +61,7 @@ export default function UserIndex() {
     setSearchForm(params);
     setPage(params.page);
     loadUsers(toApiParams(params));
+    loadRoles();
   }, [searchParams]);
 
   const buildSearchParams = (page?: number) => ({
@@ -82,6 +85,12 @@ export default function UserIndex() {
 
   const clearSearch = () => {
     setSearchParams({});
+  };
+
+  const loadRoles = async () => {
+    const res = await rolesIndex();
+
+    setRoles(res.data);
   };
 
   return (
@@ -209,9 +218,11 @@ export default function UserIndex() {
          focus:border-blue-500 focus:ring-2 focus:ring-blue-200"
                 >
                   <option value="">すべて</option>
-                  <option value="1">システム管理者</option>
-                  <option value="2">事務</option>
-                  <option value="3">営業</option>
+                  {roles.map((role) => (
+                    <option key={role.id} value={role.id}>
+                      {role.name}
+                    </option>
+                  ))}
                 </select>
               </div>
 
