@@ -32,14 +32,17 @@ class RoleControllerTest extends TestCase
             ->assertJsonStructure([
                 'data' => [
                     [
+                        'id',
                         'name',
                     ],
                 ],
             ])
             ->assertJsonFragment([
+                'id' => 1,
                 'name' => 'システム管理者',
             ])
             ->assertJsonFragment([
+                'id' => 2,
                 'name' => '事務',
             ]);
     }
