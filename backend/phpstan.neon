@@ -1,0 +1,23 @@
+includes:
+    - vendor/larastan/larastan/extension.neon
+    - vendor/nesbot/carbon/extension.neon
+
+parameters:
+    level: 5
+
+    paths:
+        - app
+        - config
+        - database/factories
+        - database/seeders
+        - routes
+        - tests
+
+    databaseMigrationsPath:
+        - database/migrations
+
+    checkModelProperties: true
+    checkConfigTypes: true
+    noEnvCallsOutsideOfConfig: true
+    generalizeEnvReturnType: true
+    enableMigrationCache: true
