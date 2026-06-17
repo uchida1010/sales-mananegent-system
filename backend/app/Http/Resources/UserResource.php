@@ -5,6 +5,9 @@ namespace App\Http\Resources;
 use Illuminate\Http\Request;
 use Illuminate\Http\Resources\Json\JsonResource;
 
+/**
+ * @mixin \App\Models\User
+ */
 class UserResource extends JsonResource
 {
     /**
@@ -76,7 +79,9 @@ class UserResource extends JsonResource
              *
              * @example ["システム管理者", "事務", "営業"]
              */
-            'roles' => $this->roles?->pluck('name')->toArray() ?? [],
+            'roles' => $this->whenLoaded('roles', function () {
+                return $this->roles->pluck('name')->toArray();
+            }, []),
         ];
     }
 }
