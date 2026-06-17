@@ -2,11 +2,12 @@
 
 namespace App\Http\Resources;
 
+use App\Models\User;
 use Illuminate\Http\Request;
 use Illuminate\Http\Resources\Json\JsonResource;
 
 /**
- * @mixin \App\Models\User
+ * @mixin User
  */
 class UserResource extends JsonResource
 {
@@ -25,7 +26,7 @@ class UserResource extends JsonResource
              *
              * @example 11
              */
-            'userCode' => (int)$this->user_code,
+            'userCode' => (int) $this->user_code,
 
             /**
              * ユーザー名
@@ -75,6 +76,7 @@ class UserResource extends JsonResource
              * - admin
              * - office_worker
              * - sales
+             *
              * @var array<int, string>
              *
              * @example ["システム管理者", "事務", "営業"]

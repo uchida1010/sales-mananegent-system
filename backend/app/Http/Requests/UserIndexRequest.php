@@ -95,7 +95,7 @@ class UserIndexRequest extends FormRequest
              * - 1 : システム管理者
              * - 2 : 事務担当
              * - 3 : 営業担当
-             * 
+             *
              *
              * @example 1
              */

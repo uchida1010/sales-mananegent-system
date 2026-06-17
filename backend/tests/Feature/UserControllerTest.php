@@ -248,7 +248,7 @@ class UserControllerTest extends TestCase
         ]);
         $officeWorker->roles()->attach($officeWorkerRole->id);
 
-        $response = $this->getJson('/api/user?roleId=' . $adminRole->id);
+        $response = $this->getJson('/api/user?roleId='.$adminRole->id);
 
         $response->assertOk()
             ->assertJsonCount(1, 'data')
