@@ -7,30 +7,36 @@
     "dev": "react-router dev",
     "start": "react-router-serve ./build/server/index.js",
     "typecheck": "react-router typegen && tsc",
-    "gen:api": "orval --config orval.config.ts"
+    "gen:api": "orval --config orval.config.ts",
+    "test": "vitest",
+    "test:run": "vitest run"
   },
   "dependencies": {
     "@mantine/core": "^8.3.13",
     "@mantine/hooks": "^8.3.13",
-    "@react-router/node": "7.12.0",
-    "@react-router/serve": "7.12.0",
+    "@react-router/node": "^8.0.1",
+    "@react-router/serve": "^8.0.1",
     "@tabler/icons-react": "^3.36.1",
     "axios": "^1.13.6",
     "isbot": "^5.1.31",
     "react": "^19.2.3",
     "react-dom": "^19.2.3",
-    "react-router": "7.12.0"
+    "react-router": "^8.0.1"
   },
   "devDependencies": {
-    "@react-router/dev": "7.12.0",
-    "@tailwindcss/vite": "^4.1.13",
+    "@react-router/dev": "^8.0.1",
+    "@tailwindcss/vite": "^4.3.1",
+    "@testing-library/jest-dom": "^6.9.1",
+    "@testing-library/react": "^16.3.2",
+    "@testing-library/user-event": "^14.6.1",
     "@types/node": "^22",
     "@types/react": "^19.2.7",
     "@types/react-dom": "^19.2.3",
+    "jsdom": "^29.1.1",
     "orval": "^8.5.3",
     "tailwindcss": "^4.1.13",
     "typescript": "^5.9.2",
-    "vite": "^7.1.7",
-    "vite-tsconfig-paths": "^5.1.4"
+    "vite": "^8.0.16",
+    "vitest": "^4.1.9"
   }
 }
