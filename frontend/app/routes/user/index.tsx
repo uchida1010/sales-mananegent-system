@@ -1,10 +1,8 @@
-import { useState, useEffect } from "react";
-import { userIndex, type UserResource } from "../../api/salesManagementSystem";
 import "../../app.css";
 import { DoubleNavbar } from "../../components/DoubleNavbar";
-import { useSearchParams } from "react-router";
 import { Pagination } from "@mantine/core";
-import { rolesIndex, type RoleResource } from "~/api/salesManagementSystem";
+
+import { useUserSearch } from "./useUserSearch";
 
 export function meta() {
   return [
@@ -14,84 +12,17 @@ export function meta() {
 }
 
 export default function UserIndex() {
-  const [users, setUsers] = useState<UserResource[]>([]);
-  const initialState = {
-    keyword: "",
-    userCode: "",
-    email: "",
-    activeOnly: false,
-    roleId: "",
-  };
-  const [searchForm, setSearchForm] = useState(initialState);
-  const [searchParams, setSearchParams] = useSearchParams();
-  const getSearchParamsFromUrl = () => {
-    return {
-      keyword: searchParams.get("keyword") || "",
-      userCode: searchParams.get("userCode") || "",
-      email: searchParams.get("email") || "",
-      roleId: searchParams.get("roleId") || "",
-      activeOnly: searchParams.get("activeOnly") === "1",
-      page: Number(searchParams.get("page") || "1"),
-    };
-  };
-
-  const toApiParams = (
-    params: ReturnType<typeof getSearchParamsFromUrl>,
-  ): Parameters<typeof userIndex>[0] => ({
-    ...(params.keyword && { keyword: params.keyword }),
-    ...(params.userCode && { userCode: params.userCode }),
-    ...(params.email && { email: params.email }),
-    ...(params.roleId && { roleId: params.roleId }),
-    ...(params.activeOnly && { activeOnly: "1" }),
-    page: String(params.page),
-  });
-  const loadUsers = async (params?: Parameters<typeof userIndex>[0]) => {
-    const res = await userIndex(params);
-
-    setUsers(res.data);
-    setTotalPages(res.meta.last_page);
-  };
-  const [page, setPage] = useState(1);
-  const [totalPages, setTotalPages] = useState(1);
-  const [roles, setRoles] = useState<RoleResource[]>([]);
-
-  useEffect(() => {
-    const params = getSearchParamsFromUrl();
-
-    setSearchForm(params);
-    setPage(params.page);
-    loadUsers(toApiParams(params));
-    loadRoles();
-  }, [searchParams]);
-
-  const buildSearchParams = (page?: number) => ({
-    ...(searchForm.keyword && { keyword: searchForm.keyword }),
-    ...(searchForm.userCode && { userCode: searchForm.userCode }),
-    ...(searchForm.email && { email: searchForm.email }),
-    ...(searchForm.roleId && { roleId: searchForm.roleId }),
-    ...(searchForm.activeOnly && { activeOnly: "1" }),
-    ...(page && { page: String(page) }),
-  });
-
-  const handleSearch = () => {
-    setPage(1);
-
-    setSearchParams(buildSearchParams(1));
-  };
-
-  const handlePageChange = (newPage: number) => {
-    setSearchParams(buildSearchParams(newPage));
-  };
-
-  const clearSearch = () => {
-    setSearchParams({});
-  };
-
-  const loadRoles = async () => {
-    const res = await rolesIndex();
-
-    setRoles(res.data);
-  };
+  const {
+    users,
+    searchForm,
+    setSearchForm,
+    page,
+    totalPages,
+    roles,
+    handleSearch,
+    handlePageChange,
+    clearSearch,
+  } = useUserSearch();
 
   return (
     <>
