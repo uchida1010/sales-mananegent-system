@@ -136,3 +136,72 @@ describe("useUserSearch", () => {
     expect(result.current.searchForm).toEqual(searchForm);
   });
 });
+
+it("空の検索条件はpage以外のAPIパラメータに含めない", async () => {
+    renderUseUserSearch(["/user?keyword=&userCode=&email=&roleId=&page=1"]);
+
+    await waitFor(() => {
+      expect(mocks.userIndex).toHaveBeenCalledWith({ 
+        page: "1",
+      });
+    });
+});
+
+it("ページ変更時は現在の検索条件を維持して指定ページを取得する", async () => {
+    const { result } = renderUseUserSearch(["/user?keyword=山田&roleId=3&activeOnly=1&page=1"]);
+
+    await waitFor(() => {
+      expect(mocks.userIndex).toHaveBeenCalledWith({
+        keyword: "山田",
+        roleId: "3",
+        activeOnly: "1",
+        page: "1",
+      });
+    });
+
+  act(() => {
+      result.current.handlePageChange(3);
+    });
+
+    await waitFor(() => {
+      expect(mocks.userIndex).toHaveBeenLastCalledWith({
+        activeOnly: "1",
+        keyword: "山田",
+        page: "3",
+        roleId: "3",
+      });
+    });
+
+    expect(result.current.page).toBe(3);
+  });
+
+  it("検索条件をクリアすると初期条件で再取得する", async () => {
+    const { result } = renderUseUserSearch(["/user?keyword=山田&activeOnly=1&page=3"]);
+
+    await waitFor(() => {
+      expect(mocks.userIndex).toHaveBeenCalledWith({
+        keyword: "山田",
+        activeOnly: "1",
+        page: "3",
+      });
+    });
+
+    act(() => {
+      result.current.clearSearch();
+    });
+
+    await waitFor(() => {
+      expect(mocks.userIndex).toHaveBeenLastCalledWith({ 
+        page: "1",
+       });
+    });
+
+    expect(result.current.searchForm).toEqual({
+        keyword: "",
+        userCode: "",
+        email: "",
+        roleId: "",
+        activeOnly: false,
+      });
+    expect(result.current.page).toBe(1);
+  });
