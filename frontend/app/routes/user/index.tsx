@@ -210,7 +210,7 @@ export default function UserIndex() {
                 <tbody className="divide-x divide-gray-200">
                   {users.map((user) => (
                     <tr
-                      key={user.id}
+                      key={user.userCode}
                       className="hover:bg-gray-50 divide-x divide-gray-200"
                     >
                       <td className="px-4 py-3">{user.userCode}</td>
