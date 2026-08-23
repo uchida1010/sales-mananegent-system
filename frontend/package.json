@@ -9,7 +9,10 @@
     "typecheck": "react-router typegen && tsc",
     "gen:api": "orval --config orval.config.ts",
     "test": "vitest",
-    "test:run": "vitest run"
+    "test:run": "vitest run",
+    "lint": "oxlint",
+    "format": "oxfmt",
+    "format:check": "oxfmt --check"
   },
   "dependencies": {
     "@mantine/core": "^9.5.2",
@@ -34,6 +37,8 @@
     "@types/react-dom": "^19.2.3",
     "jsdom": "^30.0.1",
     "orval": "^8.25.0",
+    "oxfmt": "^0.64.0",
+    "oxlint": "^1.79.0",
     "tailwindcss": "^4.3.3",
     "typescript": "^5.9.3",
     "vite": "^8.2.2",
