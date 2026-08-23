@@ -5,10 +5,7 @@ import { Pagination } from "@mantine/core";
 import { useUserSearch } from "./useUserSearch";
 
 export function meta() {
-  return [
-    { title: "ユーザー一覧ページ" },
-    { name: "description", content: "User Index Page" },
-  ];
+  return [{ title: "ユーザー一覧ページ" }, { name: "description", content: "User Index Page" }];
 }
 
 export default function UserIndex() {
@@ -65,11 +62,7 @@ export default function UserIndex() {
                   stroke="currentColor"
                   strokeWidth="2"
                 >
-                  <path
-                    strokeLinecap="round"
-                    strokeLinejoin="round"
-                    d="M6 15l6-6 6 6"
-                  />
+                  <path strokeLinecap="round" strokeLinejoin="round" d="M6 15l6-6 6 6" />
                 </svg>
                 詳細を閉じる
               </div>
@@ -209,10 +202,7 @@ export default function UserIndex() {
 
                 <tbody className="divide-x divide-gray-200">
                   {users.map((user) => (
-                    <tr
-                      key={user.userCode}
-                      className="hover:bg-gray-50 divide-x divide-gray-200"
-                    >
+                    <tr key={user.userCode} className="hover:bg-gray-50 divide-x divide-gray-200">
                       <td className="px-4 py-3">{user.userCode}</td>
                       <td className="px-4 py-3">{user.name}</td>
                       <td className="px-4 py-3">{user.email}</td>
