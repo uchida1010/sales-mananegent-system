@@ -2,11 +2,16 @@ import { act, renderHook, waitFor } from "@testing-library/react";
 import { createElement, type ReactNode } from "react";
 import { MemoryRouter } from "react-router";
 
+import type {
+  rolesIndex as rolesIndexRequest,
+  userIndex as userIndexRequest,
+} from "~/api/salesManagementSystem";
+
 import { useUserSearch, type UserSearchForm } from "./useUserSearch";
 
 const mocks = vi.hoisted(() => ({
-  userIndex: vi.fn(),
-  rolesIndex: vi.fn(),
+  userIndex: vi.fn<typeof userIndexRequest>(),
+  rolesIndex: vi.fn<typeof rolesIndexRequest>(),
 }));
 
 vi.mock("~/api/salesManagementSystem", () => ({

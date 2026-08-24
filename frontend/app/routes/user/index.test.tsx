@@ -2,11 +2,16 @@ import { MantineProvider } from "@mantine/core";
 import { render, screen, waitFor } from "@testing-library/react";
 import { MemoryRouter } from "react-router";
 
+import type {
+  rolesIndex as rolesIndexRequest,
+  userIndex as userIndexRequest,
+} from "~/api/salesManagementSystem";
+
 import UserIndex from "./index";
 
 const mocks = vi.hoisted(() => ({
-  userIndex: vi.fn(),
-  rolesIndex: vi.fn(),
+  userIndex: vi.fn<typeof userIndexRequest>(),
+  rolesIndex: vi.fn<typeof rolesIndexRequest>(),
 }));
 
 vi.mock("~/api/salesManagementSystem", () => ({
