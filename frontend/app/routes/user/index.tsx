@@ -86,10 +86,11 @@ export default function UserIndex() {
           >
             <div className="flex flex-wrap gap-4">
               <div className="flex flex-col">
-                <label className="mb-1 text-gray-600">
+                <label className="mb-1 text-gray-600" htmlFor="user-code">
                   <div className="text-sm font-medium ">ユーザーID</div>
                 </label>
                 <input
+                  id="user-code"
                   type="text"
                   placeholder="0"
                   value={searchForm.userCode}
@@ -106,10 +107,14 @@ export default function UserIndex() {
               </div>
 
               <div className="flex flex-col">
-                <label className="mb-1 text-sm font-medium text-gray-600">
+                <label
+                  className="mb-1 text-sm font-medium text-gray-600"
+                  htmlFor="email"
+                >
                   <div className="text-sm font-medium ">E-mail</div>
                 </label>
                 <input
+                  id="email"
                   type="email"
                   placeholder="example@company.com"
                   value={searchForm.email}
@@ -126,11 +131,12 @@ export default function UserIndex() {
               </div>
 
               <div className="flex flex-col">
-                <label className="mb-1 text-gray-600">
+                <label className="mb-1 text-gray-600" htmlFor="role-id">
                   <div className="text-sm font-medium">権限</div>
                 </label>
 
                 <select
+                  id="role-id"
                   value={searchForm.roleId}
                   onChange={(e) =>
                     setSearchForm({
@@ -152,7 +158,7 @@ export default function UserIndex() {
 
               <div className="flex gap-2 pt-6">
                 <input
-                  id="active"
+                  id="active-only"
                   type="checkbox"
                   checked={searchForm.activeOnly}
                   onChange={(e) =>
@@ -163,7 +169,7 @@ export default function UserIndex() {
                   }
                   className="h-4 w-4 border-gray-300 text-blue-600 focus:ring-blue-400"
                 />
-                <label className="text-gray-700">
+                <label className="text-gray-700" htmlFor="active-only">
                   <div className="text-sm font-medium ">在職者のみ</div>
                 </label>
               </div>

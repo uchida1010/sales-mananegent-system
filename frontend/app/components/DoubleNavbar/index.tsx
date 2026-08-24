@@ -67,18 +67,17 @@ export function DoubleNavbar() {
   ));
 
   const links = linksMockdata.map((link) => (
-    <a
+    <UnstyledButton
+      type="button"
       className={classes.link}
       data-active={activeLink === link || undefined}
-      href="#"
-      onClick={(event) => {
-        event.preventDefault();
+      onClick={() => {
         setActiveLink(link);
       }}
       key={link}
     >
       {link}
-    </a>
+    </UnstyledButton>
   ));
 
   return (
