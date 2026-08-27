@@ -1,9 +1,7 @@
-import { useEffect, useState } from "react";
+import { useState } from "react";
 import { useSearchParams } from "react-router";
 
 import {
-  rolesIndex,
-  userIndex,
   type RoleResource,
   type UserIndexParams,
   type UserResource,
@@ -21,15 +19,7 @@ export type UserSearchParams = UserSearchForm & {
   page: number;
 };
 
-const initialSearchForm: UserSearchForm = {
-  keyword: "",
-  userCode: "",
-  email: "",
-  activeOnly: false,
-  roleId: "",
-};
-
-const parseUserSearchParams = (searchParams: URLSearchParams): UserSearchParams => ({
+export const parseUserSearchParams = (searchParams: URLSearchParams): UserSearchParams => ({
   keyword: searchParams.get("keyword") || "",
   userCode: searchParams.get("userCode") || "",
   email: searchParams.get("email") || "",
@@ -38,7 +28,7 @@ const parseUserSearchParams = (searchParams: URLSearchParams): UserSearchParams 
   page: Number(searchParams.get("page") || "1"),
 });
 
-const toSearchForm = (params: UserSearchParams): UserSearchForm => ({
+export const toSearchForm = (params: UserSearchParams): UserSearchForm => ({
   keyword: params.keyword,
   userCode: params.userCode,
   email: params.email,
@@ -46,7 +36,7 @@ const toSearchForm = (params: UserSearchParams): UserSearchForm => ({
   activeOnly: params.activeOnly,
 });
 
-const buildUserIndexParams = (params: UserSearchParams): UserIndexParams => ({
+export const buildUserIndexParams = (params: UserSearchParams): UserIndexParams => ({
   ...(params.keyword && { keyword: params.keyword }),
   ...(params.userCode && { userCode: params.userCode }),
   ...(params.email && { email: params.email }),
@@ -55,7 +45,7 @@ const buildUserIndexParams = (params: UserSearchParams): UserIndexParams => ({
   page: String(params.page),
 });
 
-const buildSearchParams = (searchForm: UserSearchForm, page: number) => ({
+export const buildSearchParams = (searchForm: UserSearchForm, page: number) => ({
   ...(searchForm.keyword && { keyword: searchForm.keyword }),
   ...(searchForm.userCode && { userCode: searchForm.userCode }),
   ...(searchForm.email && { email: searchForm.email }),
@@ -64,37 +54,25 @@ const buildSearchParams = (searchForm: UserSearchForm, page: number) => ({
   page: String(page),
 });
 
-export const useUserSearch = () => {
-  const [users, setUsers] = useState<UserResource[]>([]);
-  const [searchForm, setSearchForm] = useState<UserSearchForm>(initialSearchForm);
-  const [searchParams, setSearchParams] = useSearchParams();
-  const [page, setPage] = useState(1);
-  const [totalPages, setTotalPages] = useState(1);
-  const [roles, setRoles] = useState<RoleResource[]>([]);
+export type UserSearchData = {
+  users: UserResource[];
+  roles: RoleResource[];
+  page: number;
+  totalPages: number;
+  searchForm: UserSearchForm;
+};
 
-  useEffect(() => {
-    const loadUsers = async (params: UserIndexParams) => {
-      const res = await userIndex(params);
-
-      setUsers(res.data);
-      setTotalPages(res.meta.last_page);
-    };
-    const loadRoles = async () => {
-      const res = await rolesIndex();
-
-      setRoles(res.data);
-    };
-
-    const params = parseUserSearchParams(searchParams);
-
-    setSearchForm(toSearchForm(params));
-    setPage(params.page);
-    loadUsers(buildUserIndexParams(params));
-    loadRoles();
-  }, [searchParams]);
+export const useUserSearch = ({
+  users,
+  roles,
+  page,
+  totalPages,
+  searchForm: initialForm,
+}: UserSearchData) => {
+  const [searchForm, setSearchForm] = useState<UserSearchForm>(initialForm);
+  const [, setSearchParams] = useSearchParams();
 
   const handleSearch = () => {
-    setPage(1);
     setSearchParams(buildSearchParams(searchForm, 1));
   };
 

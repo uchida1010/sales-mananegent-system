@@ -1,14 +1,45 @@
 import "../../app.css";
 import { DoubleNavbar } from "../../components/DoubleNavbar";
 import { Pagination } from "@mantine/core";
-
-import { useUserSearch } from "./useUserSearch";
+import type { Route } from "./+types/index";
+import { rolesIndex, userIndex } from "~/api/salesManagementSystem";
+import {
+  buildUserIndexParams,
+  parseUserSearchParams,
+  toSearchForm,
+  useUserSearch,
+  type UserSearchData,
+} from "./useUserSearch";
 
 export function meta() {
   return [{ title: "ユーザー一覧ページ" }, { name: "description", content: "User Index Page" }];
 }
 
-export default function UserIndex() {
+export async function clientLoader({
+  request,
+}: Route.ClientLoaderArgs): Promise<UserSearchData & { searchKey: string }> {
+  const url = new URL(request.url);
+  const searchParams = parseUserSearchParams(url.searchParams);
+  const [usersResponse, rolesResponse] = await Promise.all([
+    userIndex(buildUserIndexParams(searchParams)),
+    rolesIndex(),
+  ]);
+
+  return {
+    searchKey: url.search,
+    searchForm: toSearchForm(searchParams),
+    page: searchParams.page,
+    totalPages: usersResponse.meta.last_page,
+    users: usersResponse.data,
+    roles: rolesResponse.data,
+  };
+}
+
+export default function UserIndex({
+  loaderData,
+}: {
+  loaderData: Awaited<ReturnType<typeof clientLoader>>;
+}) {
   const {
     users,
     searchForm,
@@ -19,7 +50,7 @@ export default function UserIndex() {
     handleSearch,
     handlePageChange,
     clearSearch,
-  } = useUserSearch();
+  } = useUserSearch(loaderData);
 
   return (
     <>
