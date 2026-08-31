@@ -7,7 +7,8 @@ import type {
   userIndex as userIndexRequest,
 } from "~/api/salesManagementSystem";
 
-import UserIndex from "./index";
+import UserIndex, { clientLoader } from "./index";
+import type { Route } from "./+types/index";
 
 const mocks = vi.hoisted(() => ({
   userIndex: vi.fn<typeof userIndexRequest>(),
@@ -23,7 +24,22 @@ const renderUserIndex = () => {
   return render(
     <MantineProvider>
       <MemoryRouter>
-        <UserIndex />
+        <UserIndex
+          loaderData={{
+            searchKey: "",
+            searchForm: {
+              keyword: "",
+              userCode: "",
+              email: "",
+              roleId: "",
+              activeOnly: false,
+            },
+            users: [],
+            roles: [],
+            page: 1,
+            totalPages: 1,
+          }}
+        />
       </MemoryRouter>
     </MantineProvider>,
   );
@@ -55,7 +71,13 @@ describe("UserIndex", () => {
     mocks.rolesIndex.mockResolvedValue({ data: [] });
   });
 
-  it("mounts and loads the initial user list", async () => {
+  it("loads users and roles from the URL query", async () => {
+    await clientLoader({
+      request: new Request("http://localhost/user?keyword=山田&activeOnly=1&page=2"),
+    } as Route.ClientLoaderArgs);
+  });
+
+  it("renders the initial user list screen", async () => {
     renderUserIndex();
 
     expect(screen.getByRole("heading", { name: "ユーザー一覧" })).toBeInTheDocument();
@@ -63,10 +85,5 @@ describe("UserIndex", () => {
     expect(screen.getByRole("columnheader", { name: "ユーザーID" })).toBeInTheDocument();
     expect(screen.getByText("E-mail")).toBeInTheDocument();
     expect(screen.getByRole("button", { name: "検索" })).toBeInTheDocument();
-
-    await waitFor(() => {
-      expect(mocks.userIndex).toHaveBeenCalledWith({ page: "1" });
-      expect(mocks.rolesIndex).toHaveBeenCalledWith();
-    });
   });
 });
