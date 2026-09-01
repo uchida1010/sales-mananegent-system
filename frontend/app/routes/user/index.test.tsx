@@ -71,7 +71,7 @@ describe("UserIndex", () => {
     mocks.rolesIndex.mockResolvedValue({ data: [] });
   });
 
-it("初期状態のユーザー一覧画面を表示する", async () => {
+  it("初期状態のユーザー一覧画面を表示する", async () => {
     renderUserIndex();
 
     expect(screen.getByRole("heading", { name: "ユーザー一覧" })).toBeInTheDocument();
@@ -82,5 +82,20 @@ it("初期状態のユーザー一覧画面を表示する", async () => {
 
     expect(mocks.userIndex).not.toHaveBeenCalled();
     expect(mocks.rolesIndex).not.toHaveBeenCalled();
+  });
+
+  it("URLクエリを使ってユーザー一覧とロール一覧を取得する", async () => {
+    await clientLoader({
+      request: new Request("http://localhost/user?keyword=山田&activeOnly=1&page=2"),
+    } as Route.ClientLoaderArgs);
+
+    await waitFor(() => {
+      expect(mocks.userIndex).toHaveBeenCalledWith({
+        keyword: "山田",
+        activeOnly: "1",
+        page: "2",
+      });
+      expect(mocks.rolesIndex).toHaveBeenCalledWith();
+    });
   });
 });
