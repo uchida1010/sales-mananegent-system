@@ -71,13 +71,7 @@ describe("UserIndex", () => {
     mocks.rolesIndex.mockResolvedValue({ data: [] });
   });
 
-  it("loads users and roles from the URL query", async () => {
-    await clientLoader({
-      request: new Request("http://localhost/user?keyword=山田&activeOnly=1&page=2"),
-    } as Route.ClientLoaderArgs);
-  });
-
-  it("renders the initial user list screen", async () => {
+it("初期状態のユーザー一覧画面を表示する", async () => {
     renderUserIndex();
 
     expect(screen.getByRole("heading", { name: "ユーザー一覧" })).toBeInTheDocument();
@@ -85,5 +79,8 @@ describe("UserIndex", () => {
     expect(screen.getByRole("columnheader", { name: "ユーザーID" })).toBeInTheDocument();
     expect(screen.getByText("E-mail")).toBeInTheDocument();
     expect(screen.getByRole("button", { name: "検索" })).toBeInTheDocument();
+
+    expect(mocks.userIndex).not.toHaveBeenCalled();
+    expect(mocks.rolesIndex).not.toHaveBeenCalled();
   });
 });
