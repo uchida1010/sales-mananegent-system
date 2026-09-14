@@ -138,10 +138,7 @@ export default function UserIndex({
               </div>
 
               <div className="flex flex-col">
-                <label
-                  className="mb-1 text-sm font-medium text-gray-600"
-                  htmlFor="email"
-                >
+                <label className="mb-1 text-sm font-medium text-gray-600" htmlFor="email">
                   <div className="text-sm font-medium ">E-mail</div>
                 </label>
                 <input
