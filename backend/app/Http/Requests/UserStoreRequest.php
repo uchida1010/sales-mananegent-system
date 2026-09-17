@@ -28,6 +28,7 @@ class UserStoreRequest extends FormRequest
              * ユーザーIDを指定します。
              *
              * 新規登録するユーザーのユーザーIDを指定してください。
+             * すでに登録されているユーザーIDは使用できません。
              *
              * 入力例：
              * - 1
@@ -35,7 +36,7 @@ class UserStoreRequest extends FormRequest
              *
              * @example 11
              */
-            'userCode' => ['required', 'string'],
+            'userCode' => ['required', 'string', 'unique:users,userCode'],
 
             /**
              * ユーザー名を指定します。
@@ -68,6 +69,8 @@ class UserStoreRequest extends FormRequest
              * メールアドレスを指定します。
              *
              * 新規登録するユーザーのメールアドレスを指定してください。
+             * すでに登録されているメールアドレスは使用できません。
+             * RFCに準拠したメールアドレス形式で、ドメインがDNS上に存在する必要があります。
              *
              * 入力例：
              * - tanaka@example.com
@@ -75,12 +78,13 @@ class UserStoreRequest extends FormRequest
              *
              * @example tanaka@example.com
              */
-            'email' => ['required', 'string'],
+            'email' => ['required', 'email:rfc,dns', 'unique:users,email'],
 
             /**
              * 電話番号を指定します。
              *
              * 新規登録するユーザーの電話番号を指定してください。
+             * 最大20文字の登録ができます。
              * 電話番号がない場合は省略できます。
              *
              * 入力例：
@@ -88,32 +92,7 @@ class UserStoreRequest extends FormRequest
              *
              * @example 090-123-456
              */
-            'phone' => ['nullable', 'string'],
-
-            /**
-             * パスワードを指定します。
-             *
-             * 新規登録するユーザーのログイン用パスワードを指定してください。
-             * password_confirmation と同じ値を入力する必要があります。
-             *
-             * 入力例：
-             * - Password123!
-             *
-             * @example Password123!
-             */
-            'password' => ['required', 'string', 'confirmed'],
-
-            /**
-             * 確認用パスワードを指定します。
-             *
-             * password と同じ値を指定してください。
-             *
-             * 入力例：
-             * - Password123!
-             *
-             * @example Password123!
-             */
-            'password_confirmation' => ['required', 'string'],
+            'phone' => ['nullable', 'string', 'max:20'],
 
             /**
              * 役職を指定します。
@@ -129,20 +108,6 @@ class UserStoreRequest extends FormRequest
             'position' => ['nullable', 'string'],
 
             /**
-             * 雇用状態を指定します。
-             *
-             * 新規登録するユーザーの現在の雇用状態を指定してください。
-             *
-             * 指定例
-             * - active: 在職
-             * - leave: 休職
-             * - resigned: 退職
-             *
-             * @example active
-             */
-            'status' => ['required', 'string', Rule::in(['active', 'leave', 'resigned'])],
-
-            /**
              * 入社日を指定します。
              *
              * 新規登録するユーザーの入社日を指定してください。
@@ -154,20 +119,6 @@ class UserStoreRequest extends FormRequest
              * @example 2026-04-01
              */
             'joined_at' => ['required', 'date'],
-
-            /**
-             * 退職日を指定します。
-             *
-             * ユーザーが退職している場合に退職日を指定してください。
-             * YYYY-MM-DD形式で入力します。
-             * 退職していない場合は省略できます。
-             *
-             * 入力例：
-             * - 2026-08-31
-             *
-             * @example 2026-08-31
-             */
-            'resigned_at' => ['nullable', 'date'],
 
             /**
              * 役割IDを指定します。
