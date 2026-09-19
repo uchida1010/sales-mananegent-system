@@ -316,9 +316,7 @@
                         "$ref": "#/components/responses/ModelNotFoundException"
                     }
                 }
-            }
-        },
-        "/user/{id}": {
+            },
             "put": {
                 "operationId": "user.update",
                 "summary": "Update the specified resource in storage",
@@ -327,20 +325,38 @@
                 ],
                 "parameters": [
                     {
-                        "name": "id",
+                        "name": "user",
                         "in": "path",
                         "required": true,
+                        "description": "The user ID",
                         "schema": {
-                            "type": "string"
+                            "type": "integer"
                         }
                     }
                 ],
+                "requestBody": {
+                    "content": {
+                        "application/json": {
+                            "schema": {
+                                "$ref": "#/components/schemas/UserUpdateRequest"
+                            }
+                        }
+                    }
+                },
                 "responses": {
                     "200": {
                         "description": ""
+                    },
+                    "404": {
+                        "$ref": "#/components/responses/ModelNotFoundException"
+                    },
+                    "422": {
+                        "$ref": "#/components/responses/ValidationException"
                     }
                 }
-            },
+            }
+        },
+        "/user/{id}": {
             "delete": {
                 "operationId": "user.destroy",
                 "summary": "Remove the specified resource from storage",
@@ -521,6 +537,83 @@
                     "roleId"
                 ],
                 "title": "UserStoreRequest"
+            },
+            "UserUpdateRequest": {
+                "type": "object",
+                "properties": {
+                    "userCode": {
+                        "type": "string",
+                        "description": "\u30e6\u30fc\u30b6\u30fcID\u3092\u6307\u5b9a\u3057\u307e\u3059\u3002 \u66f4\u65b0\u3059\u308b\u30e6\u30fc\u30b6\u30fc\u306e\u30e6\u30fc\u30b6\u30fcID\u3092\u6307\u5b9a\u3057\u3066\u304f\u3060\u3055\u3044\u3002\n\u3059\u3067\u306b\u767b\u9332\u3055\u308c\u3066\u3044\u308b\u30e6\u30fc\u30b6\u30fcID\u306f\u4f7f\u7528\u3067\u304d\u307e\u305b\u3093\u3002\n\u305f\u3060\u3057\u66f4\u65b0\u3059\u308b\u30e6\u30fc\u30b6\u30fc\u81ea\u8eab\u306e\u30e6\u30fc\u30b6\u30fcID\u306f\u5bfe\u8c61\u304b\u3089\u5916\u3057\u307e\u3059\u3002\n\n\u5165\u529b\u4f8b\uff1a\n- 1\n- 22",
+                        "example": "11"
+                    },
+                    "name": {
+                        "type": "string",
+                        "description": "\u30e6\u30fc\u30b6\u30fc\u540d\u3092\u6307\u5b9a\u3057\u307e\u3059\u3002 \u66f4\u65b0\u3059\u308b\u30e6\u30fc\u30b6\u30fc\u306e\u30e6\u30fc\u30b6\u30fc\u540d\u3092\u6307\u5b9a\u3057\u3066\u304f\u3060\u3055\u3044\u3002\n\n\u5165\u529b\u4f8b\uff1a\n- \u7530\u4e2d \u592a\u90ce\n- \u5c71\u7530 \u82b1\u5b50",
+                        "example": "\u7530\u4e2d \u592a\u90ce"
+                    },
+                    "name_kana": {
+                        "type": [
+                            "string",
+                            "null"
+                        ],
+                        "description": "\u30e6\u30fc\u30b6\u30fc\u540d\u306e\u3088\u307f\u304c\u306a\u3092\u6307\u5b9a\u3057\u307e\u3059\u3002 \u66f4\u65b0\u3059\u308b\u30e6\u30fc\u30b6\u30fc\u306e\u30e6\u30fc\u30b6\u30fc\u540d\u306e\u3088\u307f\u304c\u306a\u3092\u6307\u5b9a\u3057\u3066\u304f\u3060\u3055\u3044\u3002\n\u5fc5\u8981\u304c\u306a\u3044\u5834\u5408\u306f\u7701\u7565\u3067\u304d\u307e\u3059\u3002\n\n\u5165\u529b\u4f8b\uff1a\n- \u305f\u306a\u304b \u305f\u308d\u3046\n- \u3084\u307e\u3060 \u306f\u306a\u3053",
+                        "example": "\u305f\u306a\u304b \u305f\u308d\u3046"
+                    },
+                    "email": {
+                        "type": "string",
+                        "format": "email",
+                        "description": "\u30e1\u30fc\u30eb\u30a2\u30c9\u30ec\u30b9\u3092\u6307\u5b9a\u3057\u307e\u3059\u3002 \u66f4\u65b0\u3059\u308b\u30e6\u30fc\u30b6\u30fc\u306e\u30e1\u30fc\u30eb\u30a2\u30c9\u30ec\u30b9\u3092\u6307\u5b9a\u3057\u3066\u304f\u3060\u3055\u3044\u3002\n\u3059\u3067\u306b\u767b\u9332\u3055\u308c\u3066\u3044\u308b\u30e1\u30fc\u30eb\u30a2\u30c9\u30ec\u30b9\u306b\u66f4\u65b0\u3067\u304d\u307e\u305b\u3093\u3002\n\u305f\u3060\u3057\u66f4\u65b0\u3059\u308b\u30e6\u30fc\u30b6\u30fc\u81ea\u8eab\u306e\u30e1\u30fc\u30eb\u30a2\u30c9\u30ec\u30b9\u306f\u5bfe\u8c61\u304b\u3089\u5916\u3057\u307e\u3059\u3002\nRFC\u306b\u6e96\u62e0\u3057\u305f\u30e1\u30fc\u30eb\u30a2\u30c9\u30ec\u30b9\u5f62\u5f0f\u3067\u3001\u30c9\u30e1\u30a4\u30f3\u304cDNS\u4e0a\u306b\u5b58\u5728\u3059\u308b\u5fc5\u8981\u304c\u3042\u308a\u307e\u3059\u3002\n\n\u5165\u529b\u4f8b\uff1a\n- tanaka@example.com\n- yamada@example.com",
+                        "example": "tanaka@example.com"
+                    },
+                    "phone": {
+                        "type": [
+                            "string",
+                            "null"
+                        ],
+                        "description": "\u96fb\u8a71\u756a\u53f7\u3092\u6307\u5b9a\u3057\u307e\u3059\u3002 \u66f4\u65b0\u3059\u308b\u30e6\u30fc\u30b6\u30fc\u306e\u96fb\u8a71\u756a\u53f7\u3092\u6307\u5b9a\u3057\u3066\u304f\u3060\u3055\u3044\u3002\n\u6700\u592720\u6587\u5b57\u306e\u767b\u9332\u304c\u3067\u304d\u307e\u3059\u3002\n\u96fb\u8a71\u756a\u53f7\u304c\u306a\u3044\u5834\u5408\u306f\u7701\u7565\u3067\u304d\u307e\u3059\u3002\n\n\u5165\u529b\u4f8b\uff1a\n- 090-123-456",
+                        "example": "090-123-456",
+                        "maxLength": 20
+                    },
+                    "position": {
+                        "type": [
+                            "string",
+                            "null"
+                        ],
+                        "description": "\u5f79\u8077\u3092\u6307\u5b9a\u3057\u307e\u3059\u3002 \u66f4\u65b0\u3059\u308b\u30e6\u30fc\u30b6\u30fc\u306e\u5f79\u8077\u3092\u6307\u5b9a\u3057\u3066\u304f\u3060\u3055\u3044\u3002\n\u5f79\u8077\u304c\u306a\u3044\u5834\u5408\u306f\u7701\u7565\u3067\u304d\u307e\u3059\u3002\n\n\u5165\u529b\u4f8b\uff1a\n- \u8ab2\u9577",
+                        "example": "\u8ab2\u9577"
+                    },
+                    "status": {
+                        "type": "string",
+                        "description": "\u96c7\u7528\u72b6\u614b\u3092\u6307\u5b9a\u3057\u307e\u3059\u3002 \u66f4\u65b0\u3059\u308b\u30e6\u30fc\u30b6\u30fc\u306e\u73fe\u5728\u306e\u96c7\u7528\u72b6\u614b\u3092\u6307\u5b9a\u3057\u3066\u304f\u3060\u3055\u3044\u3002\n\n\u6307\u5b9a\u53ef\u80fd\u306a\u5024\uff1a\n- active: \u5728\u8077\n- leave: \u4f11\u8077\n- resigned: \u9000\u8077",
+                        "enum": [
+                            "active",
+                            "leave",
+                            "resigned"
+                        ],
+                        "example": "active"
+                    },
+                    "joined_at": {
+                        "type": "string",
+                        "format": "date-time",
+                        "description": "\u5165\u793e\u65e5\u3092\u6307\u5b9a\u3057\u307e\u3059\u3002 \u66f4\u65b0\u3059\u308b\u30e6\u30fc\u30b6\u30fc\u306e\u5165\u793e\u65e5\u3092\u6307\u5b9a\u3057\u3066\u304f\u3060\u3055\u3044\u3002\nYYYY-MM-DD\u5f62\u5f0f\u3067\u5165\u529b\u3057\u307e\u3059\u3002\n\n\u5165\u529b\u4f8b\uff1a\n- 2026-04-01",
+                        "example": "2026-04-01"
+                    },
+                    "resigned_at": {
+                        "type": [
+                            "string",
+                            "null"
+                        ],
+                        "format": "date-time",
+                        "description": "\u9000\u8077\u65e5\u3092\u6307\u5b9a\u3057\u307e\u3059\u3002 \u66f4\u65b0\u3059\u308b\u30e6\u30fc\u30b6\u30fc\u306e\u9000\u8077\u65e5\u3092\u6307\u5b9a\u3057\u3066\u304f\u3060\u3055\u3044\u3002\nYYYY-MM-DD\u5f62\u5f0f\u3067\u5165\u529b\u3057\u307e\u3059\u3002\n\u9000\u8077\u3057\u3066\u3044\u306a\u3044\u5834\u5408\u306fnull\u3092\u6307\u5b9a\u3067\u304d\u307e\u3059\u3002\n\n\u5165\u529b\u4f8b\uff1a\n- 2026-09-30",
+                        "example": "2026-09-30"
+                    },
+                    "roleId": {
+                        "type": "string",
+                        "description": "\u5f79\u5272ID\u3092\u6307\u5b9a\u3057\u307e\u3059\u3002 \u66f4\u65b0\u3059\u308b\u30e6\u30fc\u30b6\u30fc\u306e\u5f79\u5272ID\u3092\u6307\u5b9a\u3057\u3066\u304f\u3060\u3055\u3044\u3002\n\n\u5f79\u5272ID\u306f roles \u30c6\u30fc\u30d6\u30eb\u306e\u4e3b\u30ad\u30fc\u3092\u6307\u5b9a\u3057\u3066\u304f\u3060\u3055\u3044\u3002\n\n\u6307\u5b9a\u4f8b\uff1a\n- 1 : \u30b7\u30b9\u30c6\u30e0\u7ba1\u7406\u8005\n- 2 : \u4e8b\u52d9\u62c5\u5f53\n- 3 : \u55b6\u696d\u62c5\u5f53",
+                        "example": "1"
+                    }
+                },
+                "title": "UserUpdateRequest"
             }
         },
         "responses": {
