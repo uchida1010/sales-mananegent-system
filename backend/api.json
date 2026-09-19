@@ -354,9 +354,7 @@
                         "$ref": "#/components/responses/ValidationException"
                     }
                 }
-            }
-        },
-        "/user/{id}": {
+            },
             "delete": {
                 "operationId": "user.destroy",
                 "summary": "Remove the specified resource from storage",
@@ -365,17 +363,21 @@
                 ],
                 "parameters": [
                     {
-                        "name": "id",
+                        "name": "user",
                         "in": "path",
                         "required": true,
+                        "description": "The user ID",
                         "schema": {
-                            "type": "string"
+                            "type": "integer"
                         }
                     }
                 ],
                 "responses": {
-                    "200": {
-                        "description": ""
+                    "204": {
+                        "description": "No content"
+                    },
+                    "404": {
+                        "$ref": "#/components/responses/ModelNotFoundException"
                     }
                 }
             }
