@@ -38,7 +38,7 @@ class UserUpdateRequest extends FormRequest
              *
              * @example 11
              */
-            'userCode' => ['sometimes', 'required', 'string', Rule::unique('users', 'userCode')->ignore($this->route('user'))],
+            'userCode' => ['required', 'string', Rule::unique('users', 'userCode')->ignore($this->route('user'))],
 
             /**
              * ユーザー名を指定します。
@@ -51,7 +51,7 @@ class UserUpdateRequest extends FormRequest
              *
              * @example 田中 太郎
              */
-            'name' => ['sometimes', 'required', 'string'],
+            'name' => ['required', 'string'],
 
             /**
              * ユーザー名のよみがなを指定します。
@@ -65,7 +65,7 @@ class UserUpdateRequest extends FormRequest
              *
              * @example たなか たろう
              */
-            'name_kana' => ['sometimes', 'nullable', 'string'],
+            'name_kana' => ['nullable', 'string'],
 
             /**
              * メールアドレスを指定します。
@@ -81,7 +81,7 @@ class UserUpdateRequest extends FormRequest
              *
              * @example tanaka@example.com
              */
-            'email' => ['sometimes', 'required', 'email:rfc,dns', Rule::unique('users', 'email')->ignore($this->route('user'))],
+            'email' => ['required', 'email:rfc,dns', Rule::unique('users', 'email')->ignore($this->route('user'))],
 
             /**
              * 電話番号を指定します。
@@ -95,7 +95,7 @@ class UserUpdateRequest extends FormRequest
              *
              * @example 090-123-456
              */
-            'phone' => ['sometimes', 'nullable', 'string', 'max:20'],
+            'phone' => ['nullable', 'string', 'max:20'],
 
             /**
              * 役職を指定します。
@@ -108,7 +108,7 @@ class UserUpdateRequest extends FormRequest
              *
              * @example 課長
              */
-            'position' => ['sometimes', 'nullable', 'string'],
+            'position' => ['nullable', 'string'],
 
             /**
              * 雇用状態を指定します。
@@ -122,7 +122,7 @@ class UserUpdateRequest extends FormRequest
              *
              * @example active
              */
-            'status' => ['sometimes', 'required', 'string', Rule::in(['active', 'leave', 'resigned'])],
+            'status' => ['required', 'string', Rule::in(['active', 'leave', 'resigned'])],
 
             /**
              * 入社日を指定します。
@@ -137,7 +137,7 @@ class UserUpdateRequest extends FormRequest
              *
              * @example 2026-04-01
              */
-            'joined_at' => ['sometimes', 'required', 'date'],
+            'joined_at' => ['required', 'date'],
 
             /**
              * 退職日を指定します。
@@ -153,7 +153,7 @@ class UserUpdateRequest extends FormRequest
              *
              * @example 2026-09-30
              */
-            'resigned_at' => ['sometimes', 'nullable', 'date'],
+            'resigned_at' => ['nullable', 'date'],
 
             /**
              * 役割IDを指定します。
@@ -170,7 +170,7 @@ class UserUpdateRequest extends FormRequest
              *
              * @example 1
              */
-            'roleId' => ['sometimes', 'required', 'string'],
+            'roleId' => ['required', 'string'],
         ];
     }
 }

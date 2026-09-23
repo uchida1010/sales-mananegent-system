@@ -335,6 +335,7 @@
                     }
                 ],
                 "requestBody": {
+                    "required": true,
                     "content": {
                         "application/json": {
                             "schema": {
@@ -615,6 +616,14 @@
                         "example": "1"
                     }
                 },
+                "required": [
+                    "userCode",
+                    "name",
+                    "email",
+                    "status",
+                    "joined_at",
+                    "roleId"
+                ],
                 "title": "UserUpdateRequest"
             }
         },
