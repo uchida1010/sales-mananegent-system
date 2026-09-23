@@ -266,8 +266,23 @@
                     }
                 },
                 "responses": {
-                    "200": {
-                        "description": ""
+                    "201": {
+                        "description": "`UserResource`",
+                        "content": {
+                            "application/json": {
+                                "schema": {
+                                    "type": "object",
+                                    "properties": {
+                                        "data": {
+                                            "$ref": "#/components/schemas/UserResource"
+                                        }
+                                    },
+                                    "required": [
+                                        "data"
+                                    ]
+                                }
+                            }
+                        }
                     },
                     "422": {
                         "$ref": "#/components/responses/ValidationException"
