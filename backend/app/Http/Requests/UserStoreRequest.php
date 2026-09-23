@@ -116,9 +116,11 @@ class UserStoreRequest extends FormRequest
              * 入力例：
              * - 2026-04-01
              *
+             * @format date
+             *
              * @example 2026-04-01
              */
-            'joined_at' => ['required', 'date'],
+            'joined_at' => ['required', 'date_format:Y-m-d'],
 
             /**
              * 役割IDを指定します。

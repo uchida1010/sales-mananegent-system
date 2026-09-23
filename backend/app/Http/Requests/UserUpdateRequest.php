@@ -133,6 +133,8 @@ class UserUpdateRequest extends FormRequest
              * 入力例：
              * - 2026-04-01
              *
+             * @format date
+             *
              * @example 2026-04-01
              */
             'joined_at' => ['sometimes', 'required', 'date'],
@@ -146,6 +148,8 @@ class UserUpdateRequest extends FormRequest
              *
              * 入力例：
              * - 2026-09-30
+             *
+             * @format date
              *
              * @example 2026-09-30
              */
