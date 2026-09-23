@@ -82,7 +82,11 @@ class UserController extends Controller
      */
     public function update(User $user, UserUpdateRequest $request)
     {
-        //
+        $user->update($request->validated());
+
+        return (new UserResource($user))
+            ->response()
+            ->setStatusCode(200);
     }
 
     /**
