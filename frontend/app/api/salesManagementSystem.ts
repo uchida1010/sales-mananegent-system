@@ -58,6 +58,202 @@ export interface UserResource {
   roles: string[];
 }
 
+export interface UserStoreRequest {
+  /**
+     * ユーザーIDを指定します。 新規登録するユーザーのユーザーIDを指定してください。
+     * すでに登録されているユーザーIDは使用できません。
+     *
+     * 入力例：
+     * - 1
+     * - 22
+     */
+  userCode: string;
+  /**
+     * ユーザー名を指定します。 新規登録するユーザーのユーザー名を指定してください。
+     *
+     * 入力例：
+     * - 田中 太郎
+     * - 山田 花子
+     */
+  name: string;
+  /**
+     * ユーザー名のよみがなを指定します。 新規登録するユーザーのユーザー名のよみがなを指定してください。
+     * 必要がない場合は省略できます。
+     *
+     * 入力例：
+     * - たなか たろう
+     * - やまだ はなこ
+     * @nullable
+     */
+  name_kana?: string | null;
+  /**
+     * メールアドレスを指定します。 新規登録するユーザーのメールアドレスを指定してください。
+     * すでに登録されているメールアドレスは使用できません。
+     * RFCに準拠したメールアドレス形式で、ドメインがDNS上に存在する必要があります。
+     *
+     * 入力例：
+     * - tanaka@example.com
+     * - yamada@example.com
+     */
+  email: string;
+  /**
+     * 電話番号を指定します。 新規登録するユーザーの電話番号を指定してください。
+     * 最大20文字の登録ができます。
+     * 電話番号がない場合は省略できます。
+     *
+     * 入力例：
+     * - 090-123-456
+     * @maxLength 20
+     * @nullable
+     */
+  phone?: string | null;
+  /**
+     * 役職を指定します。 新規登録するユーザーの役職を指定してください。
+     * 役職がない場合は省略できます。
+     *
+     * 入力例：
+     * - 課長
+     * @nullable
+     */
+  position?: string | null;
+  /**
+     * 入社日を指定します。 新規登録するユーザーの入社日を指定してください。
+     * YYYY-MM-DD形式で入力します。
+     *
+     * 入力例：
+     * - 2026-04-01
+     */
+  joined_at: string;
+  /**
+     * 役割IDを指定します。 新規登録するユーザーの役割IDを指定してください。
+     *
+     * 役割IDは roles テーブルの主キーを指定してください。
+     *
+     * 指定例：
+     * - 1 : システム管理者
+     * - 2 : 事務担当
+     * - 3 : 営業担当
+     */
+  roleId: string;
+}
+
+/**
+ * 雇用状態を指定します。 更新するユーザーの現在の雇用状態を指定してください。
+ *
+ * 指定可能な値：
+ * - active: 在職
+ * - leave: 休職
+ * - resigned: 退職
+ */
+export type UserUpdateRequestStatus = typeof UserUpdateRequestStatus[keyof typeof UserUpdateRequestStatus];
+
+
+export const UserUpdateRequestStatus = {
+  active: 'active',
+  leave: 'leave',
+  resigned: 'resigned',
+} as const;
+
+export interface UserUpdateRequest {
+  /**
+     * ユーザーIDを指定します。 更新するユーザーのユーザーIDを指定してください。
+     * すでに登録されているユーザーIDは使用できません。
+     * ただし更新するユーザー自身のユーザーIDは対象から外します。
+     *
+     * 入力例：
+     * - 1
+     * - 22
+     */
+  userCode: string;
+  /**
+     * ユーザー名を指定します。 更新するユーザーのユーザー名を指定してください。
+     *
+     * 入力例：
+     * - 田中 太郎
+     * - 山田 花子
+     */
+  name: string;
+  /**
+     * ユーザー名のよみがなを指定します。 更新するユーザーのユーザー名のよみがなを指定してください。
+     * 必要がない場合は省略できます。
+     *
+     * 入力例：
+     * - たなか たろう
+     * - やまだ はなこ
+     * @nullable
+     */
+  name_kana?: string | null;
+  /**
+     * メールアドレスを指定します。 更新するユーザーのメールアドレスを指定してください。
+     * すでに登録されているメールアドレスに更新できません。
+     * ただし更新するユーザー自身のメールアドレスは対象から外します。
+     * RFCに準拠したメールアドレス形式で、ドメインがDNS上に存在する必要があります。
+     *
+     * 入力例：
+     * - tanaka@example.com
+     * - yamada@example.com
+     */
+  email: string;
+  /**
+     * 電話番号を指定します。 更新するユーザーの電話番号を指定してください。
+     * 最大20文字の登録ができます。
+     * 電話番号がない場合は省略できます。
+     *
+     * 入力例：
+     * - 090-123-456
+     * @maxLength 20
+     * @nullable
+     */
+  phone?: string | null;
+  /**
+     * 役職を指定します。 更新するユーザーの役職を指定してください。
+     * 役職がない場合は省略できます。
+     *
+     * 入力例：
+     * - 課長
+     * @nullable
+     */
+  position?: string | null;
+  /**
+     * 雇用状態を指定します。 更新するユーザーの現在の雇用状態を指定してください。
+     *
+     * 指定可能な値：
+     * - active: 在職
+     * - leave: 休職
+     * - resigned: 退職
+     */
+  status: UserUpdateRequestStatus;
+  /**
+     * 入社日を指定します。 更新するユーザーの入社日を指定してください。
+     * YYYY-MM-DD形式で入力します。
+     *
+     * 入力例：
+     * - 2026-04-01
+     */
+  joined_at: string;
+  /**
+     * 退職日を指定します。 更新するユーザーの退職日を指定してください。
+     * YYYY-MM-DD形式で入力します。
+     * 退職していない場合はnullを指定できます。
+     *
+     * 入力例：
+     * - 2026-09-30
+     * @nullable
+     */
+  resigned_at?: string | null;
+  /**
+     * 役割IDを指定します。 更新するユーザーの役割IDを指定してください。
+     *
+     * 役割IDは roles テーブルの主キーを指定してください。
+     *
+     * 指定例：
+     * - 1 : システム管理者
+     * - 2 : 事務担当
+     * - 3 : 営業担当
+     */
+  roleId: string;
+}
+
 /**
  * A detailed description of each field that failed validation.
  */
@@ -68,6 +264,11 @@ export type ValidationExceptionResponse = {
   message: string;
   /** A detailed description of each field that failed validation. */
   errors: ValidationExceptionResponseErrors;
+};
+
+export type ModelNotFoundExceptionResponse = {
+  /** Error overview. */
+  message: string;
 };
 
 export type RolesIndex200 = {
@@ -203,6 +404,18 @@ export type UserIndex200 = {
   meta: UserIndex200Meta;
 };
 
+export type UserStore201 = {
+  data: UserResource;
+};
+
+export type UserShow200 = {
+  data: UserResource;
+};
+
+export type UserUpdate200 = {
+  data: UserResource;
+};
+
 export const rolesIndex = (
 
  ) => {
@@ -229,10 +442,12 @@ export const userIndex = (
  * @summary Store a newly created resource in storage
  */
 export const userStore = (
-
+    userStoreRequest: UserStoreRequest,
  ) => {
-      return customInstance<void>(
-      {url: `/user`, method: 'POST'
+      return customInstance<UserStore201>(
+      {url: `/user`, method: 'POST',
+      headers: {'Content-Type': 'application/json', },
+      data: userStoreRequest
     },
       );
     }
@@ -241,10 +456,10 @@ export const userStore = (
  * @summary Display the specified resource
  */
 export const userShow = (
-    id: string,
+    user: number,
  ) => {
-      return customInstance<void>(
-      {url: `/user/${id}`, method: 'GET'
+      return customInstance<UserShow200>(
+      {url: `/user/${user}`, method: 'GET'
     },
       );
     }
@@ -253,10 +468,13 @@ export const userShow = (
  * @summary Update the specified resource in storage
  */
 export const userUpdate = (
-    id: string,
+    user: number,
+    userUpdateRequest: UserUpdateRequest,
  ) => {
-      return customInstance<void>(
-      {url: `/user/${id}`, method: 'PUT'
+      return customInstance<UserUpdate200>(
+      {url: `/user/${user}`, method: 'PUT',
+      headers: {'Content-Type': 'application/json', },
+      data: userUpdateRequest
     },
       );
     }
@@ -265,10 +483,10 @@ export const userUpdate = (
  * @summary Remove the specified resource from storage
  */
 export const userDestroy = (
-    id: string,
+    user: number,
  ) => {
       return customInstance<void>(
-      {url: `/user/${id}`, method: 'DELETE'
+      {url: `/user/${user}`, method: 'DELETE'
     },
       );
     }
