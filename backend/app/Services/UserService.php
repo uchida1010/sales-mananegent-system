@@ -10,6 +10,18 @@ use Illuminate\Validation\ValidationException;
 
 class UserService
 {
+    /**
+     * @param array{
+     *     userCode: string,
+     *     name: string,
+     *     name_kana?: string|null,
+     *     email: string,
+     *     phone: string,
+     *     position?: string|null,
+     *     joined_at: date,
+     *     roleId: string
+     * } $data
+     */
     public function create(array $data)
     {
         $data['user_code'] = $data['userCode'];
