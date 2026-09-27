@@ -20,9 +20,9 @@ return new class extends Migration
             $table->string('email')->unique()->comment('メールアドレス');
             $table->timestamp('email_verified_at')->nullable();
             $table->string('phone', 20)->nullable()->comment('電話番号');
-            $table->string('password')->comment('パスワード');
+            $table->string('password')->nullable()->comment('パスワード');
             $table->string('position')->nullable()->comment('役職');
-            $table->string('status', 20)->index()->comment('雇用状態: active=在職, leave=休職, resigned=退職');
+            $table->string('status', 20)->default('active')->index()->comment('雇用状態: active=在職, leave=休職, resigned=退職');
             $table->date('joined_at')->comment('入社日');
             $table->date('resigned_at')->nullable()->comment('退職日');
             $table->foreignId('created_by')->nullable()->constrained('users')->nullOnDelete()->comment('作成者');

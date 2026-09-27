@@ -36,7 +36,7 @@ class UserStoreRequest extends FormRequest
              *
              * @example 11
              */
-            'userCode' => ['required', 'string', 'unique:users,userCode'],
+            'userCode' => ['required', 'string', 'unique:users,user_code'],
 
             /**
              * ユーザー名を指定します。
@@ -134,10 +134,9 @@ class UserStoreRequest extends FormRequest
              * - 2 : 事務担当
              * - 3 : 営業担当
              *
-             *
              * @example 1
              */
-            'roleId' => ['required', 'string'],
+            'roleId' => ['required', 'string', 'exists:roles,id'],
         ];
     }
 }

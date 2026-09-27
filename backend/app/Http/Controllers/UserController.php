@@ -2,14 +2,23 @@
 
 namespace App\Http\Controllers;
 
+use App\Http\Requests\PasswordSetupRequest;
 use App\Http\Requests\UserIndexRequest;
 use App\Http\Requests\UserStoreRequest;
 use App\Http\Requests\UserUpdateRequest;
 use App\Http\Resources\UserResource;
 use App\Models\User;
+use App\Services\UserService;
 
 class UserController extends Controller
 {
+    private UserService $service;
+
+    public function __construct(UserService $service)
+    {
+        $this->service = $service;
+    }
+
     /**
      * Display a listing of the resource.
      */
@@ -59,8 +68,7 @@ class UserController extends Controller
      */
     public function store(UserStoreRequest $request)
     {
-
-        $user = User::create($request->validated());
+        $user = $this->service->create($request->validated());
 
         return (new UserResource($user))
             ->response()
@@ -95,6 +103,13 @@ class UserController extends Controller
     public function destroy(User $user)
     {
         $user->delete();
+
+        return response(null, 204);
+    }
+
+    public function setupPassword(PasswordSetupRequest $request)
+    {
+        $this->service->setupPassword($request->validated());
 
         return response(null, 204);
     }

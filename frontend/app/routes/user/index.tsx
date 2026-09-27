@@ -3,6 +3,7 @@ import { DoubleNavbar } from "../../components/DoubleNavbar";
 import { Pagination } from "@mantine/core";
 import type { Route } from "./+types/index";
 import { rolesIndex, userIndex } from "~/api/salesManagementSystem";
+import { useNavigate } from "react-router";
 import {
   buildUserIndexParams,
   parseUserSearchParams,
@@ -52,6 +53,8 @@ export default function UserIndex({
     clearSearch,
   } = useUserSearch(loaderData);
 
+  const navigate = useNavigate();
+
   return (
     <>
       <div className="flex md:flex-row bg-gray-100">
@@ -60,8 +63,9 @@ export default function UserIndex({
           <h1 className="font-bold"> ユーザー一覧</h1>
           <div className="flex gap-4 mt-2">
             <button
+              onClick={() => navigate("/user/create")}
               className="bg-blue-500 text-white px-3 py-1 rounded-sm
-                    hover:bg-blue-600 active:bg-bluze-700 transition-colors"
+                    hover:bg-blue-600 active:bg-blue-700 transition-colors"
             >
               <div className="text-sm">新規登録</div>
             </button>
