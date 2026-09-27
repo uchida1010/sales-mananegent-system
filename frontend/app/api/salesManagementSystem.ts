@@ -5,6 +5,26 @@
  * OpenAPI spec version: 0.0.1
  */
 import { customInstance } from './custom-instance';
+export interface PasswordSetupRequest {
+  /**
+     * 初期パスワード設定用のトークンを指定します。 ユーザー登録時に発行された初期パスワード設定用の
+     * トークンを指定してください。
+     */
+  token: string;
+  /**
+     * メールアドレスを指定します。 初期パスワードを設定するユーザーの
+     * メールアドレスを指定してください。
+     */
+  email: string;
+  /**
+     * パスワードを指定します。 初期パスワードを設定するユーザーの
+     * パスワードを指定してください。
+     */
+  password: string;
+  /** 確認用パスワードを指定します。 passwordと同じ値を指定してください。 */
+  password_confirmation: string;
+}
+
 export interface RoleResource {
   /**
      * 役割ID roles テーブルの主キーです。
@@ -491,9 +511,21 @@ export const userDestroy = (
       );
     }
 
+export const userSetupPassword = (
+    passwordSetupRequest: PasswordSetupRequest,
+ ) => {
+      return customInstance<void>(
+      {url: `/password/setup`, method: 'POST',
+      headers: {'Content-Type': 'application/json', },
+      data: passwordSetupRequest
+    },
+      );
+    }
+
 export type RolesIndexResult = NonNullable<Awaited<ReturnType<typeof rolesIndex>>>
 export type UserIndexResult = NonNullable<Awaited<ReturnType<typeof userIndex>>>
 export type UserStoreResult = NonNullable<Awaited<ReturnType<typeof userStore>>>
 export type UserShowResult = NonNullable<Awaited<ReturnType<typeof userShow>>>
 export type UserUpdateResult = NonNullable<Awaited<ReturnType<typeof userUpdate>>>
 export type UserDestroyResult = NonNullable<Awaited<ReturnType<typeof userDestroy>>>
+export type UserSetupPasswordResult = NonNullable<Awaited<ReturnType<typeof userSetupPassword>>>

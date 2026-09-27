@@ -412,10 +412,69 @@
                     }
                 }
             }
+        },
+        "/password/setup": {
+            "post": {
+                "operationId": "user.setupPassword",
+                "tags": [
+                    "User"
+                ],
+                "requestBody": {
+                    "required": true,
+                    "content": {
+                        "application/json": {
+                            "schema": {
+                                "$ref": "#/components/schemas/PasswordSetupRequest"
+                            }
+                        }
+                    }
+                },
+                "responses": {
+                    "204": {
+                        "description": "No content"
+                    },
+                    "422": {
+                        "$ref": "#/components/responses/ValidationException"
+                    }
+                }
+            }
         }
     },
     "components": {
         "schemas": {
+            "PasswordSetupRequest": {
+                "type": "object",
+                "properties": {
+                    "token": {
+                        "type": "string",
+                        "description": "\u521d\u671f\u30d1\u30b9\u30ef\u30fc\u30c9\u8a2d\u5b9a\u7528\u306e\u30c8\u30fc\u30af\u30f3\u3092\u6307\u5b9a\u3057\u307e\u3059\u3002 \u30e6\u30fc\u30b6\u30fc\u767b\u9332\u6642\u306b\u767a\u884c\u3055\u308c\u305f\u521d\u671f\u30d1\u30b9\u30ef\u30fc\u30c9\u8a2d\u5b9a\u7528\u306e\n\u30c8\u30fc\u30af\u30f3\u3092\u6307\u5b9a\u3057\u3066\u304f\u3060\u3055\u3044\u3002",
+                        "example": "abcdef1234567890"
+                    },
+                    "email": {
+                        "type": "string",
+                        "format": "email",
+                        "description": "\u30e1\u30fc\u30eb\u30a2\u30c9\u30ec\u30b9\u3092\u6307\u5b9a\u3057\u307e\u3059\u3002 \u521d\u671f\u30d1\u30b9\u30ef\u30fc\u30c9\u3092\u8a2d\u5b9a\u3059\u308b\u30e6\u30fc\u30b6\u30fc\u306e\n\u30e1\u30fc\u30eb\u30a2\u30c9\u30ec\u30b9\u3092\u6307\u5b9a\u3057\u3066\u304f\u3060\u3055\u3044\u3002",
+                        "example": "tanaka@example.com"
+                    },
+                    "password": {
+                        "type": "string",
+                        "description": "\u30d1\u30b9\u30ef\u30fc\u30c9\u3092\u6307\u5b9a\u3057\u307e\u3059\u3002 \u521d\u671f\u30d1\u30b9\u30ef\u30fc\u30c9\u3092\u8a2d\u5b9a\u3059\u308b\u30e6\u30fc\u30b6\u30fc\u306e\n\u30d1\u30b9\u30ef\u30fc\u30c9\u3092\u6307\u5b9a\u3057\u3066\u304f\u3060\u3055\u3044\u3002",
+                        "example": "Password123!"
+                    },
+                    "password_confirmation": {
+                        "type": "string",
+                        "description": "\u78ba\u8a8d\u7528\u30d1\u30b9\u30ef\u30fc\u30c9\u3092\u6307\u5b9a\u3057\u307e\u3059\u3002 password\u3068\u540c\u3058\u5024\u3092\u6307\u5b9a\u3057\u3066\u304f\u3060\u3055\u3044\u3002",
+                        "example": "Password123!"
+                    }
+                },
+                "required": [
+                    "token",
+                    "email",
+                    "password",
+                    "password_confirmation"
+                ],
+                "title": "PasswordSetupRequest"
+            },
             "RoleResource": {
                 "type": "object",
                 "properties": {
