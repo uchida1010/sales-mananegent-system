@@ -18,7 +18,7 @@ class UserService
      *     email: string,
      *     phone: string,
      *     position?: string|null,
-     *     joined_at: date,
+     *     joined_at: string,
      *     roleId: string
      * } $data
      */
