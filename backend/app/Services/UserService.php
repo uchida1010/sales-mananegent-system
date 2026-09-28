@@ -12,7 +12,7 @@ class UserService
 {
     /**
      * @param array{
-     *     user_code: string,
+     *     userCode: string,
      *     name: string,
      *     name_kana?: string|null,
      *     email: string,
