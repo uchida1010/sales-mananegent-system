@@ -122,7 +122,7 @@ export default function UserIndex({
             <div className="flex flex-wrap gap-4">
               <div className="flex flex-col">
                 <label className="mb-1 text-gray-600" htmlFor="user-code">
-                  <div className="text-sm font-medium ">ユーザーID</div>
+                  <div className="text-sm font-medium ">ユーザーコード</div>
                 </label>
                 <input
                   id="user-code"
@@ -230,7 +230,7 @@ export default function UserIndex({
               <table className="min-w-full text-left text-sm">
                 <thead className="bg-gray-200 text-gray-600 border-b border-gray-200">
                   <tr className="divide-x divide-white">
-                    <th className="px-4 py-3 font-semibold">ユーザーID</th>
+                    <th className="px-4 py-3 font-semibold">ユーザーコード</th>
                     <th className="px-4 py-3 font-semibold">氏名</th>
                     <th className="px-4 py-3 font-semibold">メール</th>
                     <th className="px-4 py-3 font-semibold">権限</th>

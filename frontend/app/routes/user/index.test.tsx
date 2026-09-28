@@ -76,7 +76,7 @@ describe("UserIndex", () => {
 
     expect(screen.getByRole("heading", { name: "ユーザー一覧" })).toBeInTheDocument();
     expect(screen.getByPlaceholderText("名前、よみがなで検索")).toBeInTheDocument();
-    expect(screen.getByRole("columnheader", { name: "ユーザーID" })).toBeInTheDocument();
+    expect(screen.getByRole("columnheader", { name: "ユーザーコード" })).toBeInTheDocument();
     expect(screen.getByText("E-mail")).toBeInTheDocument();
     expect(screen.getByRole("button", { name: "検索" })).toBeInTheDocument();
 

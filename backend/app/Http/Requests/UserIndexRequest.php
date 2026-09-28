@@ -40,10 +40,10 @@ class UserIndexRequest extends FormRequest
             'keyword' => ['sometimes', 'string'],
 
             /**
-             * ユーザーIDで検索します。
+             * ユーザーコードで検索します。
              *
              * 完全一致検索を行います。
-             * ユーザーIDを指定してください。
+             * ユーザーコードを指定してください。
              *
              * 検索例：
              * - 1

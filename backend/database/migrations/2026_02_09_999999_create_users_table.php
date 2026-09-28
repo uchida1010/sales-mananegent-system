@@ -14,7 +14,7 @@ return new class extends Migration
         Schema::create('users', function (Blueprint $table) {
             $table->id();
             $table->foreignId('department_id')->nullable()->index()->comment('部署ID');
-            $table->string('user_code')->unique()->comment('ユーザーID');
+            $table->string('user_code')->unique()->comment('ユーザーコード');
             $table->string('name')->comment('ユーザー名');
             $table->string('name_kana')->nullable()->comment('よみがな');
             $table->string('email')->unique()->comment('メールアドレス');
