@@ -26,7 +26,7 @@ class UserResource extends JsonResource
              *
              * @example 11
              */
-            'userCode' => (int) $this->user_code,
+            'userCode' => $this->user_code,
 
             /**
              * ユーザー名
