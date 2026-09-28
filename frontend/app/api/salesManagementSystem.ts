@@ -50,7 +50,7 @@ export interface RoleResource {
 
 export interface UserResource {
   /** ユーザーコード システム内で一意となる識別子です。 */
-  userCode: number;
+  userCode: string;
   /** ユーザー名 画面上に表示する氏名です。 */
   name: string;
   /**
@@ -80,8 +80,8 @@ export interface UserResource {
 
 export interface UserStoreRequest {
   /**
-     * ユーザーIDを指定します。 新規登録するユーザーのユーザーIDを指定してください。
-     * すでに登録されているユーザーIDは使用できません。
+     * ユーザーコードを指定します。 新規登録するユーザーのユーザーコードを指定してください。
+     * すでに登録されているユーザーコードは使用できません。
      *
      * 入力例：
      * - 1
@@ -176,9 +176,9 @@ export const UserUpdateRequestStatus = {
 
 export interface UserUpdateRequest {
   /**
-     * ユーザーIDを指定します。 更新するユーザーのユーザーIDを指定してください。
-     * すでに登録されているユーザーIDは使用できません。
-     * ただし更新するユーザー自身のユーザーIDは対象から外します。
+     * ユーザーコードを指定します。 更新するユーザーのユーザーコードを指定してください。
+     * すでに登録されているユーザーコードは使用できません。
+     * ただし更新するユーザー自身のユーザーコードは対象から外します。
      *
      * 入力例：
      * - 1
@@ -307,8 +307,8 @@ export type UserIndexParams = {
  */
 keyword?: string;
 /**
- * ユーザーIDで検索します。 完全一致検索を行います。
- * ユーザーIDを指定してください。
+ * ユーザーコードで検索します。 完全一致検索を行います。
+ * ユーザーコードを指定してください。
  *
  * 検索例：
  * - 1
