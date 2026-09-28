@@ -1,9 +1,7 @@
 import "../../app.css";
-import { DoubleNavbar } from "../../components/DoubleNavbar";
-import { useState } from "react";
-import { userStore, type UserStoreRequest, rolesIndex } from "~/api/salesManagementSystem";
-import { useNavigate } from "react-router";
-import Axios from "axios";
+import { DoubleNavbar } from "../../components/DoubleNavbar";;
+import { useUserCreate } from "./useUserCreate";
+import { rolesIndex } from "~/api/salesManagementSystem";
 
 export function meta() {
   return [{ title: "ユーザー登録ページ" }, { name: "description", content: "User Create Page" }];
@@ -24,72 +22,7 @@ export default function UserCreate({
 }) {
   const { roles } = loaderData;
 
-  const [storeForm, setStoreForm] = useState<UserStoreRequest>({
-    userCode: "",
-    name: "",
-    name_kana: "",
-    email: "",
-    phone: "",
-    position: "",
-    joined_at: "",
-    roleId: "",
-  });
-
-  const handleChange = (key: keyof UserStoreRequest, value: string) => {
-    setStoreForm({
-      ...storeForm,
-      [key]: value,
-    });
-  };
-
-  type ValidationErrors = {
-    userCode?: string[];
-    name?: string[];
-    name_kana?: string[];
-    email?: string[];
-    phone?: string[];
-    position?: string[];
-    joined_at?: string[];
-    roleId?: string[];
-  };
-
-  type ValidationErrorResponse = {
-    message: string;
-    errors: ValidationErrors;
-  };
-
-  const [error, setError] = useState("");
-
-  const [errors, setErrors] = useState<ValidationErrors>({
-    userCode: [],
-    name: [],
-    name_kana: [],
-    email: [],
-    phone: [],
-    position: [],
-    joined_at: [],
-    roleId: [],
-  });
-
-  const navigate = useNavigate();
-
-  const handleSubmit = async () => {
-    setError("");
-    setErrors({});
-
-    try {
-      await userStore(storeForm);
-
-      navigate("/user");
-    } catch (error) {
-      if (Axios.isAxiosError<ValidationErrorResponse>(error) && error.response?.status === 422) {
-        const validationErrors = error.response.data.errors;
-        setErrors(validationErrors);
-      } else {
-        setError("ユーザー登録に失敗しました");
-      }
-    }
-  };
+  const { storeForm, handleChange,  error, errors, handleSubmit} = useUserCreate();
 
   return (
     <>
@@ -112,7 +45,12 @@ export default function UserCreate({
               )}
               <div className="flex flex-col">
                 <label className="mb-1 text-gray-600" htmlFor="user-code">
-                  <div className="text-sm font-medium ">ユーザーID</div>
+                  <div className="text-sm font-medium ">
+                    ユーザーコード
+                    <span className="ml-2 rounded bg-red-500 px-1.5 py-0.5 text-xs font-semibold text-white">
+                      必須
+                    </span>
+                  </div>
                 </label>
                 <input
                   id="user-code"
@@ -131,7 +69,12 @@ export default function UserCreate({
 
               <div className="flex flex-col">
                 <label className="mb-1 text-gray-600" htmlFor="name">
-                  <div className="text-sm font-medium ">氏名</div>
+                  <div className="text-sm font-medium ">
+                    氏名
+                    <span className="ml-2 rounded bg-red-500 px-1.5 py-0.5 text-xs font-semibold text-white">
+                      必須
+                    </span>
+                  </div>
                 </label>
                 <input
                   id="name"
@@ -169,7 +112,12 @@ export default function UserCreate({
 
               <div className="flex flex-col">
                 <label className="mb-1 text-gray-600" htmlFor="email">
-                  <div className="text-sm font-medium ">メールアドレス</div>
+                  <div className="text-sm font-medium ">
+                    メールアドレス
+                    <span className="ml-2 rounded bg-red-500 px-1.5 py-0.5 text-xs font-semibold text-white">
+                      必須
+                    </span>
+                  </div>
                 </label>
                 <input
                   id="email"
@@ -226,7 +174,12 @@ export default function UserCreate({
 
               <div className="flex flex-col">
                 <label className="mb-1 text-gray-600" htmlFor="roleId">
-                  <div className="text-sm font-medium ">権限</div>
+                  <div className="text-sm font-medium ">
+                    権限
+                    <span className="ml-2 rounded bg-red-500 px-1.5 py-0.5 text-xs font-semibold text-white">
+                      必須
+                    </span>
+                  </div>
                 </label>
                 <select
                   id="roleId"
@@ -251,7 +204,12 @@ export default function UserCreate({
 
               <div className="flex flex-col">
                 <label className="mb-1 text-gray-600" htmlFor="joined_at">
-                  <div className="text-sm font-medium ">入社日</div>
+                  <div className="text-sm font-medium ">
+                    入社日
+                    <span className="ml-2 rounded bg-red-500 px-1.5 py-0.5 text-xs font-semibold text-white">
+                      必須
+                    </span>
+                  </div>
                 </label>
                 <input
                   id="joined_at"
