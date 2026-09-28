@@ -12,7 +12,7 @@ class UserService
 {
     /**
      * @param array{
-     *     userCode: string,
+     *     user_code: string,
      *     name: string,
      *     name_kana?: string|null,
      *     email: string,
@@ -24,25 +24,32 @@ class UserService
      */
     public function create(array $data)
     {
-        $data['user_code'] = $data['userCode'];
-        unset($data['userCode']);
 
         $roleId = $data['roleId'];
-        unset($data['roleId']);
 
-        $user = DB::transaction(function () use ($data, $roleId) {
-            $user = User::create($data);
+        $userData = [
+            'user_code' => $data['userCode'],
+            'name' => $data['name'],
+            'name_kana' => $data['name_kana'],
+            'email' => $data['email'],
+            'phone' => $data['phone'],
+            'position' => $data['position'],
+            'joined_at' => $data['joined_at'],
+        ];
+
+        $user = DB::transaction(function () use ($userData, $roleId) {
+            $user = User::create($userData);
 
             $user->roles()->attach($roleId);
 
+            $token = Password::broker()->createToken($user);
+
+            $user->notify(
+                new InitialPasswordSetupNotification($token)
+            );
+
             return $user;
         });
-
-        $token = Password::broker()->createToken($user);
-
-        $user->notify(
-            new InitialPasswordSetupNotification($token)
-        );
 
         return $user;
     }
