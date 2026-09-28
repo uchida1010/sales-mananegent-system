@@ -25,10 +25,10 @@ class UserStoreRequest extends FormRequest
         return [
 
             /**
-             * ユーザーIDを指定します。
+             * ユーザーコードを指定します。
              *
-             * 新規登録するユーザーのユーザーIDを指定してください。
-             * すでに登録されているユーザーIDは使用できません。
+             * 新規登録するユーザーのユーザーコードを指定してください。
+             * すでに登録されているユーザーコードは使用できません。
              *
              * 入力例：
              * - 1
@@ -137,6 +137,34 @@ class UserStoreRequest extends FormRequest
              * @example 1
              */
             'roleId' => ['required', 'string', 'exists:roles,id'],
+        ];
+    }
+
+    public function messages(): array
+    {
+        return [
+            '*.required' => ':attributeは必須です。',
+            '*.string' => ':attributeは文字列で入力してください。',
+            '*.unique' => ':attributeはすでに使用されています。',
+
+            'email.email' => '正しいメールアドレスを入力してください。',
+            'phone.max' => '電話番号は20文字以内で入力してください。',
+            'joined_at.date_format' => '入社日はYYYY-MM-DD形式で入力してください。',
+            'roleId.exists' => '選択された権限は存在しません。',
+        ];
+    }
+
+    public function attributes(): array
+    {
+        return [
+            'userCode' => 'ユーザーコード',
+            'name' => '氏名',
+            'name_kana' => 'よみがな',
+            'email' => 'メールアドレス',
+            'phone' => '電話番号',
+            'position' => '役職',
+            'joined_at' => '入社日',
+            'roleId' => '権限',
         ];
     }
 }
