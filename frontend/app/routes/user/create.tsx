@@ -1,5 +1,5 @@
 import "../../app.css";
-import { DoubleNavbar } from "../../components/DoubleNavbar";;
+import { DoubleNavbar } from "../../components/DoubleNavbar";
 import { useUserCreate } from "./useUserCreate";
 import { rolesIndex } from "~/api/salesManagementSystem";
 
@@ -22,7 +22,7 @@ export default function UserCreate({
 }) {
   const { roles } = loaderData;
 
-  const { storeForm, handleChange,  error, errors, handleSubmit} = useUserCreate();
+  const { storeForm, handleChange, error, errors, handleSubmit } = useUserCreate();
 
   return (
     <>
