@@ -27,7 +27,7 @@ class UserControllerTest extends TestCase
         ]);
 
         $admin = User::factory()->create([
-            'user_code' => 1001,
+            'user_code' => '1001',
             'name' => '田中太郎',
             'name_kana' => 'たなかたろう',
             'email' => 'tanaka@example.com',
@@ -36,7 +36,7 @@ class UserControllerTest extends TestCase
         $admin->roles()->attach($adminRole->id);
 
         $officeWorker = User::factory()->create([
-            'user_code' => 1002,
+            'user_code' => '1002',
             'name' => '山田花子',
             'name_kana' => 'やまだはなこ',
             'email' => 'yamada@example.com',
@@ -61,7 +61,7 @@ class UserControllerTest extends TestCase
                 ],
             ])
             ->assertJsonFragment([
-                'userCode' => 1001,
+                'userCode' => '1001',
                 'name' => '田中太郎',
                 'nameKana' => 'たなかたろう',
                 'email' => 'tanaka@example.com',
@@ -69,7 +69,7 @@ class UserControllerTest extends TestCase
                 'roles' => ['システム管理者'],
             ])
             ->assertJsonFragment([
-                'userCode' => 1002,
+                'userCode' => '1002',
                 'name' => '山田花子',
                 'nameKana' => 'やまだはなこ',
                 'email' => 'yamada@example.com',
@@ -84,12 +84,12 @@ class UserControllerTest extends TestCase
     public function test_index_filter_by_keyword_search_name(): void
     {
         User::factory()->create([
-            'user_code' => 1001,
+            'user_code' => '1001',
             'name' => '田中太郎',
         ]);
 
         User::factory()->create([
-            'user_code' => 1002,
+            'user_code' => '1002',
             'name' => '山田花子',
         ]);
 
@@ -111,13 +111,13 @@ class UserControllerTest extends TestCase
     public function test_index_filter_by_keyword_search_name_kana(): void
     {
         User::factory()->create([
-            'user_code' => 1001,
+            'user_code' => '1001',
             'name' => '田中太郎',
             'name_kana' => 'たなかたろう',
         ]);
 
         User::factory()->create([
-            'user_code' => 1002,
+            'user_code' => '1002',
             'name' => '山田花子',
             'name_kana' => 'やまだはなこ',
         ]);
@@ -140,13 +140,13 @@ class UserControllerTest extends TestCase
     public function test_index_filter_by_user_code(): void
     {
         User::factory()->create([
-            'user_code' => 1001,
+            'user_code' => '1001',
             'name' => '田中太郎',
             'email' => 'tanaka@example.com',
         ]);
 
         User::factory()->create([
-            'user_code' => 1002,
+            'user_code' => '1002',
             'name' => '山田花子',
             'email' => 'yamada@example.com',
         ]);
@@ -156,10 +156,10 @@ class UserControllerTest extends TestCase
         $response->assertOk()
             ->assertJsonCount(1, 'data')
             ->assertJsonFragment([
-                'userCode' => 1001,
+                'userCode' => '1001',
             ])
             ->assertJsonMissing([
-                'userCode' => 1002,
+                'userCode' => '1002',
             ]);
     }
 
@@ -169,13 +169,13 @@ class UserControllerTest extends TestCase
     public function test_index_filter_by_email(): void
     {
         User::factory()->create([
-            'user_code' => 1001,
+            'user_code' => '1001',
             'name' => '田中太郎',
             'email' => 'tanaka@example.com',
         ]);
 
         User::factory()->create([
-            'user_code' => 1002,
+            'user_code' => '1002',
             'name' => '山田花子',
             'email' => 'yamada@example.com',
         ]);
@@ -198,13 +198,13 @@ class UserControllerTest extends TestCase
     public function test_index_filter_active_users_only(): void
     {
         User::factory()->create([
-            'user_code' => 1001,
+            'user_code' => '1001',
             'name' => '田中太郎',
             'status' => 'active',
         ]);
 
         User::factory()->create([
-            'user_code' => 1002,
+            'user_code' => '1002',
             'name' => '山田花子',
             'status' => 'leave',
         ]);
@@ -237,13 +237,13 @@ class UserControllerTest extends TestCase
         ]);
 
         $admin = User::factory()->create([
-            'user_code' => 1001,
+            'user_code' => '1001',
             'name' => '田中太郎',
         ]);
         $admin->roles()->attach($adminRole->id);
 
         $officeWorker = User::factory()->create([
-            'user_code' => 1002,
+            'user_code' => '1002',
             'name' => '山田花子',
         ]);
         $officeWorker->roles()->attach($officeWorkerRole->id);
