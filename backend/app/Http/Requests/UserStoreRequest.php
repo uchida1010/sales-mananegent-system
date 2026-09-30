@@ -28,15 +28,16 @@ class UserStoreRequest extends FormRequest
              * ユーザーコードを指定します。
              *
              * 新規登録するユーザーのユーザーコードを指定してください。
+             * 「E + 3桁の数字」で指定します。
              * すでに登録されているユーザーコードは使用できません。
              *
              * 入力例：
-             * - 1
-             * - 22
+             * - E001
+             * - E022
              *
-             * @example 11
+             * @example E011
              */
-            'userCode' => ['required', 'string', 'unique:users,user_code'],
+            'userCode' => ['required', 'string', 'unique:users,user_code', 'regex:/^E\d{3}$/'],
 
             /**
              * ユーザー名を指定します。
@@ -144,6 +145,7 @@ class UserStoreRequest extends FormRequest
     {
         return [
             '*.required' => ':attributeは必須です。',
+            '*.regex' => ':attributeを正しい形式で入力してください。',
             '*.string' => ':attributeは文字列で入力してください。',
             '*.unique' => ':attributeはすでに使用されています。',
 

@@ -29,16 +29,17 @@ class UserUpdateRequest extends FormRequest
              * ユーザーコードを指定します。
              *
              * 更新するユーザーのユーザーコードを指定してください。
+             * 「E + 3桁の数字」で指定します。
              * すでに登録されているユーザーコードは使用できません。
              * ただし更新するユーザー自身のユーザーコードは対象から外します。
              *
              * 入力例：
-             * - 1
-             * - 22
+             * - E001
+             * - E022
              *
-             * @example 11
+             * @example E011
              */
-            'userCode' => ['required', 'string', Rule::unique('users', 'userCode')->ignore($this->route('user'))],
+            'userCode' => ['required', 'string', Rule::unique('users', 'userCode')->ignore($this->route('user')), 'regex:/^E\d{3}$/'],
 
             /**
              * ユーザー名を指定します。

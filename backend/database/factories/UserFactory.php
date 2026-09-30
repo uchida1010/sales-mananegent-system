@@ -27,7 +27,7 @@ class UserFactory extends Factory
         $status = ['active', 'leave', 'resigned'];
 
         return [
-            'user_code' => fake()->unique()->numberBetween(1, 100),
+            'user_code' => sprintf('E%03d', fake()->unique()->numberBetween(1, 999)),
             'name' => fake()->name(),
             'email' => fake()->unique()->safeEmail(),
             'email_verified_at' => now(),

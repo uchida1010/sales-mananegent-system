@@ -19,7 +19,7 @@ class UserSeeder extends Seeder
         $status = ['active', 'leave', 'resigned'];
 
         $admin = User::factory()->create([
-            'user_code' => 0,
+            'user_code' => E000,
             'status' => fake()->randomElement($status),
             'email' => 'admin@example.com',
             'joined_at' => '2000-01-01',

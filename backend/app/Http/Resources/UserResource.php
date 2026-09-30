@@ -23,8 +23,9 @@ class UserResource extends JsonResource
              * ユーザーコード
              *
              * システム内で一意となる識別子です。
+             * 形式は「E + 3桁の数字」です。
              *
-             * @example 11
+             * @example E011
              */
             'userCode' => $this->user_code,
 
