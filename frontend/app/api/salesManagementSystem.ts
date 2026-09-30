@@ -49,7 +49,10 @@ export interface RoleResource {
 }
 
 export interface UserResource {
-  /** ユーザーコード システム内で一意となる識別子です。 */
+  /**
+     * ユーザーコード システム内で一意となる識別子です。
+     * 形式は「E + 3桁の数字」です。
+     */
   userCode: string;
   /** ユーザー名 画面上に表示する氏名です。 */
   name: string;
@@ -81,11 +84,13 @@ export interface UserResource {
 export interface UserStoreRequest {
   /**
      * ユーザーコードを指定します。 新規登録するユーザーのユーザーコードを指定してください。
+     * 「E + 3桁の数字」で指定します。
      * すでに登録されているユーザーコードは使用できません。
      *
      * 入力例：
-     * - 1
-     * - 22
+     * - E001
+     * - E022
+     * @pattern ^E\d{3}$
      */
   userCode: string;
   /**
@@ -177,12 +182,14 @@ export const UserUpdateRequestStatus = {
 export interface UserUpdateRequest {
   /**
      * ユーザーコードを指定します。 更新するユーザーのユーザーコードを指定してください。
+     * 「E + 3桁の数字」で指定します。
      * すでに登録されているユーザーコードは使用できません。
      * ただし更新するユーザー自身のユーザーコードは対象から外します。
      *
      * 入力例：
-     * - 1
-     * - 22
+     * - E001
+     * - E022
+     * @pattern ^E\d{3}$
      */
   userCode: string;
   /**
