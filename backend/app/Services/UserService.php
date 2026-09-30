@@ -37,19 +37,19 @@ class UserService
             'joined_at' => $data['joined_at'],
         ];
 
-        $user = DB::transaction(function () use ($userData, $roleId) {
+        [$user, $token] = DB::transaction(function () use ($userData, $roleId) {
             $user = User::create($userData);
 
             $user->roles()->attach($roleId);
 
             $token = Password::broker()->createToken($user);
 
-            $user->notify(
-                new InitialPasswordSetupNotification($token)
-            );
-
-            return $user;
+            return [$user, $token];
         });
+
+        $user->notify(
+            new InitialPasswordSetupNotification($token)
+        );
 
         return $user;
     }
