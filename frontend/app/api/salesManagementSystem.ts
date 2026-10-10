@@ -48,6 +48,11 @@ export interface RoleResource {
   name: string;
 }
 
+export type UserResourceRolesItem = {
+  id: number;
+  name: string;
+};
+
 export interface UserResource {
   /**
      * ユーザーコード システム内で一意となる識別子です。
@@ -64,12 +69,28 @@ export interface UserResource {
   /** メールアドレス ログインおよび通知に利用します。 */
   email: string;
   /**
-     * 在籍状態 値の意味：
+     * 電話番号 画面常に表示する電話番号です。
+     * @nullable
+     */
+  phone: string | null;
+  /**
+     * 役職 ユーザーに与えられている役職です。
+     * @nullable
+     */
+  position: string | null;
+  /**
+     * 在籍状態 ユーザーの在籍状態を表しています。
+     *
+     * 値の意味：
      * - active : 在職中
      * - leave : 休職中
      * - resigned : 退職済
      */
   status: string;
+  /** 入社日 ユーザーが入社する日または予定日です。 */
+  joined_at: string;
+  /** 退職日 ユーザーが退職する日または予定日です。 */
+  resigned_at: string;
   /**
      * 保有権限一覧 ユーザーに付与されている権限です。
      *
@@ -78,7 +99,7 @@ export interface UserResource {
      * - office_worker
      * - sales
      */
-  roles: string[];
+  roles: UserResourceRolesItem[];
 }
 
 export interface UserStoreRequest {
@@ -210,6 +231,19 @@ export interface UserUpdateRequest {
      * @nullable
      */
   name_kana?: string | null;
+  /**
+     * パスワードを指定します。 更新するユーザーのパスワードを指定してください。
+     * 必要がない場合は省略できます。
+     * 8文字以上で入力してください。
+     * @nullable
+     */
+  password?: string | null;
+  /**
+     * 確認用パスワードを指定します。 パスワードの入力内容を確認するための項目です。
+     * パスワードを変更する場合は必須です。
+     * @nullable
+     */
+  password_confirmation?: string | null;
   /**
      * メールアドレスを指定します。 更新するユーザーのメールアドレスを指定してください。
      * すでに登録されているメールアドレスに更新できません。
@@ -483,7 +517,7 @@ export const userStore = (
  * @summary Display the specified resource
  */
 export const userShow = (
-    user: number,
+    user: string,
  ) => {
       return customInstance<UserShow200>(
       {url: `/user/${user}`, method: 'GET'
@@ -495,7 +529,7 @@ export const userShow = (
  * @summary Update the specified resource in storage
  */
 export const userUpdate = (
-    user: number,
+    user: string,
     userUpdateRequest: UserUpdateRequest,
  ) => {
       return customInstance<UserUpdate200>(
@@ -510,7 +544,7 @@ export const userUpdate = (
  * @summary Remove the specified resource from storage
  */
 export const userDestroy = (
-    user: number,
+    user: string,
  ) => {
       return customInstance<void>(
       {url: `/user/${user}`, method: 'DELETE'

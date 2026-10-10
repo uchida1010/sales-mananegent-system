@@ -5,6 +5,7 @@ namespace App\Http\Requests;
 use Illuminate\Contracts\Validation\ValidationRule;
 use Illuminate\Foundation\Http\FormRequest;
 use Illuminate\Validation\Rule;
+use Illuminate\Validation\Rules\Password;
 
 class UserUpdateRequest extends FormRequest
 {
@@ -39,7 +40,7 @@ class UserUpdateRequest extends FormRequest
              *
              * @example E011
              */
-            'userCode' => ['required', 'string', Rule::unique('users', 'userCode')->ignore($this->route('user')), 'regex:/^E\d{3}$/'],
+            'userCode' => ['required', 'string', Rule::unique('users', 'user_code')->ignore($this->route('user')), 'regex:/^E\d{3}$/'],
 
             /**
              * ユーザー名を指定します。
@@ -67,6 +68,27 @@ class UserUpdateRequest extends FormRequest
              * @example たなか たろう
              */
             'name_kana' => ['nullable', 'string'],
+
+            /**
+             * パスワードを指定します。
+             *
+             * 更新するユーザーのパスワードを指定してください。
+             * 必要がない場合は省略できます。
+             * 8文字以上で入力してください。
+             *
+             * @example Password123!
+             */
+            'password' => ['nullable', 'confirmed', Password::min(8), 'string'],
+
+            /**
+             * 確認用パスワードを指定します。
+             *
+             * パスワードの入力内容を確認するための項目です。
+             * パスワードを変更する場合は必須です。
+             *
+             * @example Password123!
+             */
+            'password_confirmation' => ['required_with:password', 'nullable', 'string'],
 
             /**
              * メールアドレスを指定します。
@@ -121,6 +143,8 @@ class UserUpdateRequest extends FormRequest
              * - leave: 休職
              * - resigned: 退職
              *
+             * @format string
+             *
              * @example active
              */
             'status' => ['required', 'string', Rule::in(['active', 'leave', 'resigned'])],
@@ -168,10 +192,46 @@ class UserUpdateRequest extends FormRequest
              * - 2 : 事務担当
              * - 3 : 営業担当
              *
-             *
              * @example 1
              */
             'roleId' => ['required', 'string'],
+        ];
+    }
+
+    public function messages(): array
+    {
+        return [
+            '*.required' => ':attributeは必須です。',
+            '*.regex' => ':attributeを正しい形式で入力してください。',
+            '*.string' => ':attributeは文字列で入力してください。',
+            '*.unique' => ':attributeはすでに使用されています。',
+
+            'email.email' => '正しいメールアドレスを入力してください。',
+            'phone.max' => '電話番号は20文字以内で入力してください。',
+            'joined_at.date_format' => '入社日はYYYY-MM-DD形式で入力してください。',
+            'roleId.exists' => '選択された権限は存在しません。',
+
+            'password.min' => 'パスワードは8文字以上で入力してください。',
+            'password.confirmed' => 'パスワードと確認用パスワードが一致しません。',
+            'password_confirmation.required_with' => '確認用パスワードを入力してください。',
+        ];
+    }
+
+    public function attributes(): array
+    {
+        return [
+            'userCode' => 'ユーザーコード',
+            'name' => '氏名',
+            'name_kana' => 'よみがな',
+            'email' => 'メールアドレス',
+            'password' => 'パスワード',
+            'password_confirmation' => 'パスワード確認用',
+            'phone' => '電話番号',
+            'position' => '役職',
+            'status' => '状態',
+            'joined_at' => '入社日',
+            'resigned_at' => '退職日',
+            'roleId' => '権限',
         ];
     }
 }

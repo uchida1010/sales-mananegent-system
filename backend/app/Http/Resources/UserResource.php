@@ -57,7 +57,27 @@ class UserResource extends JsonResource
             'email' => $this->email,
 
             /**
+             * 電話番号
+             *
+             * 画面常に表示する電話番号です。
+             *
+             * @example 123-456-7890
+             */
+            'phone' => $this->phone,
+
+            /**
+             * 役職
+             *
+             * ユーザーに与えられている役職です。
+             *
+             * @example 123-456-7890
+             */
+            'position' => $this->position,
+
+            /**
              * 在籍状態
+             *
+             * ユーザーの在籍状態を表しています。
              *
              * 値の意味：
              * - active : 在職中
@@ -69,6 +89,24 @@ class UserResource extends JsonResource
             'status' => $this->status,
 
             /**
+             * 入社日
+             *
+             * ユーザーが入社する日または予定日です。
+             *
+             * @example 2026-04-01
+             */
+            'joined_at' => $this->joined_at?->format('Y-m-d'),
+
+            /**
+             * 退職日
+             *
+             *ユーザーが退職する日または予定日です。
+             *
+             * @example 2026-09-30
+             */
+            'resigned_at' => $this->resigned_at?->format('Y-m-d'),
+
+            /**
              * 保有権限一覧
              *
              * ユーザーに付与されている権限です。
@@ -78,12 +116,17 @@ class UserResource extends JsonResource
              * - office_worker
              * - sales
              *
-             * @var array<int, string>
+             * @var array<int, array{id: int, name: string}>
              *
-             * @example ["システム管理者", "事務", "営業"]
+             * @example [{"id": 1, "name": "システム管理者"}]
              */
             'roles' => $this->whenLoaded('roles', function () {
-                return $this->roles->pluck('name')->toArray();
+                return $this->roles->map(function ($role) {
+                    return [
+                        'id' => $role->id,
+                        'name' => $role->name,
+                    ];
+                })->toArray();
             }, []),
         ];
     }

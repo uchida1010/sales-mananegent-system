@@ -71,4 +71,51 @@ class UserService
             ]);
         }
     }
+
+    /**
+     * @param array{
+     *     userCode: string,
+     *     name: string,
+     *     name_kana?: string|null,
+     *     email: string,
+     *     password?: string|null,
+     *     phone: string,
+     *     position?: string|null,
+     *     status: string,
+     *     joined_at: string,
+     *     resigned_at?: string|null,
+     *     roleId: string
+     * } $data
+     */
+    public function update(User $user, array $data): User
+    {
+        $roleId = $data['roleId'];
+
+        if (! empty($data['password'])) {
+            $userData['password'] = $data['password'];
+        }
+
+        $userData = [
+            'user_code' => $data['userCode'],
+            'name' => $data['name'],
+            'name_kana' => $data['name_kana'] ?? null,
+            'email' => $data['email'],
+            'phone' => $data['phone'],
+            'position' => $data['position'] ?? null,
+            'status' => $data['status'],
+            'joined_at' => $data['joined_at'],
+            'resigned_at' => $data['resigned_at'] ?? null,
+        ];
+
+        if (! empty($data['password'])) {
+            $userData['password'] = $data['password'];
+        }
+
+        DB::transaction(function () use ($user, $userData, $roleId) {
+            $user->update($userData);
+            $user->roles()->sync([$roleId]);
+        });
+
+        return $user;
+    }
 }

@@ -90,9 +90,9 @@ class UserController extends Controller
      */
     public function update(User $user, UserUpdateRequest $request)
     {
-        $user->update($request->validated());
+        $updatedUser = $this->service->update($user, $request->validated());
 
-        return (new UserResource($user))
+        return (new UserResource($updatedUser))
             ->response()
             ->setStatusCode(200);
     }

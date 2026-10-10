@@ -4,6 +4,7 @@ import { Pagination } from "@mantine/core";
 import type { Route } from "./+types/index";
 import { rolesIndex, userIndex } from "~/api/salesManagementSystem";
 import { useNavigate } from "react-router";
+import { Link } from "react-router";
 import {
   buildUserIndexParams,
   parseUserSearchParams,
@@ -241,10 +242,17 @@ export default function UserIndex({
                 <tbody className="divide-x divide-gray-200">
                   {users.map((user) => (
                     <tr key={user.userCode} className="hover:bg-gray-50 divide-x divide-gray-200">
-                      <td className="px-4 py-3">{user.userCode}</td>
+                      <td className="px-4 py-3 text-left">
+                        <Link
+                          to={`/users/${user.userCode}/edit`}
+                          className="text-blue-600 hover:text-blue-800 hover:underline"
+                        >
+                          {user.userCode}
+                        </Link>
+                      </td>
                       <td className="px-4 py-3">{user.name}</td>
                       <td className="px-4 py-3">{user.email}</td>
-                      <td className="px-4 py-3">{user.roles}</td>
+                      <td className="px-4 py-3">{user.roles.map((role) => role.name)}</td>
                       <td className="px-4 py-3">
                         {user.status === "active" ? (
                           <span className="inline-flex items-center rounded-full bg-green-100 px-2 py-0.5 text-xs font-medium text-green-700">

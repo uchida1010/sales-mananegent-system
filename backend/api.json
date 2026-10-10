@@ -302,9 +302,9 @@
                         "name": "user",
                         "in": "path",
                         "required": true,
-                        "description": "The user ID",
+                        "description": "The user user code",
                         "schema": {
-                            "type": "integer"
+                            "type": "string"
                         }
                     }
                 ],
@@ -343,9 +343,9 @@
                         "name": "user",
                         "in": "path",
                         "required": true,
-                        "description": "The user ID",
+                        "description": "The user user code",
                         "schema": {
-                            "type": "integer"
+                            "type": "string"
                         }
                     }
                 ],
@@ -397,9 +397,9 @@
                         "name": "user",
                         "in": "path",
                         "required": true,
-                        "description": "The user ID",
+                        "description": "The user user code",
                         "schema": {
-                            "type": "integer"
+                            "type": "string"
                         }
                     }
                 ],
@@ -533,11 +533,45 @@
                             "tanaka@example.com"
                         ]
                     },
+                    "phone": {
+                        "type": [
+                            "string",
+                            "null"
+                        ],
+                        "description": "\u96fb\u8a71\u756a\u53f7 \u753b\u9762\u5e38\u306b\u8868\u793a\u3059\u308b\u96fb\u8a71\u756a\u53f7\u3067\u3059\u3002",
+                        "examples": [
+                            "123-456-7890"
+                        ]
+                    },
+                    "position": {
+                        "type": [
+                            "string",
+                            "null"
+                        ],
+                        "description": "\u5f79\u8077 \u30e6\u30fc\u30b6\u30fc\u306b\u4e0e\u3048\u3089\u308c\u3066\u3044\u308b\u5f79\u8077\u3067\u3059\u3002",
+                        "examples": [
+                            "123-456-7890"
+                        ]
+                    },
                     "status": {
                         "type": "string",
-                        "description": "\u5728\u7c4d\u72b6\u614b \u5024\u306e\u610f\u5473\uff1a\n- active : \u5728\u8077\u4e2d\n- leave : \u4f11\u8077\u4e2d\n- resigned : \u9000\u8077\u6e08",
+                        "description": "\u5728\u7c4d\u72b6\u614b \u30e6\u30fc\u30b6\u30fc\u306e\u5728\u7c4d\u72b6\u614b\u3092\u8868\u3057\u3066\u3044\u307e\u3059\u3002\n\n\u5024\u306e\u610f\u5473\uff1a\n- active : \u5728\u8077\u4e2d\n- leave : \u4f11\u8077\u4e2d\n- resigned : \u9000\u8077\u6e08",
                         "examples": [
                             "active"
+                        ]
+                    },
+                    "joined_at": {
+                        "type": "string",
+                        "description": "\u5165\u793e\u65e5 \u30e6\u30fc\u30b6\u30fc\u304c\u5165\u793e\u3059\u308b\u65e5\u307e\u305f\u306f\u4e88\u5b9a\u65e5\u3067\u3059\u3002",
+                        "examples": [
+                            "2026-04-01"
+                        ]
+                    },
+                    "resigned_at": {
+                        "type": "string",
+                        "description": "\u9000\u8077\u65e5 \u30e6\u30fc\u30b6\u30fc\u304c\u9000\u8077\u3059\u308b\u65e5\u307e\u305f\u306f\u4e88\u5b9a\u65e5\u3067\u3059\u3002",
+                        "examples": [
+                            "2026-09-30"
                         ]
                     },
                     "roles": {
@@ -545,13 +579,26 @@
                         "description": "\u4fdd\u6709\u6a29\u9650\u4e00\u89a7 \u30e6\u30fc\u30b6\u30fc\u306b\u4ed8\u4e0e\u3055\u308c\u3066\u3044\u308b\u6a29\u9650\u3067\u3059\u3002\n\n\u5024\u306e\u4f8b\uff1a\n- admin\n- office_worker\n- sales",
                         "examples": [
                             [
-                                "\u30b7\u30b9\u30c6\u30e0\u7ba1\u7406\u8005",
-                                "\u4e8b\u52d9",
-                                "\u55b6\u696d"
+                                {
+                                    "id": 1,
+                                    "name": "\u30b7\u30b9\u30c6\u30e0\u7ba1\u7406\u8005"
+                                }
                             ]
                         ],
                         "items": {
-                            "type": "string"
+                            "type": "object",
+                            "properties": {
+                                "id": {
+                                    "type": "integer"
+                                },
+                                "name": {
+                                    "type": "string"
+                                }
+                            },
+                            "required": [
+                                "id",
+                                "name"
+                            ]
                         }
                     }
                 },
@@ -560,7 +607,11 @@
                     "name",
                     "nameKana",
                     "email",
+                    "phone",
+                    "position",
                     "status",
+                    "joined_at",
+                    "resigned_at",
                     "roles"
                 ],
                 "title": "UserResource"
@@ -653,6 +704,22 @@
                         "description": "\u30e6\u30fc\u30b6\u30fc\u540d\u306e\u3088\u307f\u304c\u306a\u3092\u6307\u5b9a\u3057\u307e\u3059\u3002 \u66f4\u65b0\u3059\u308b\u30e6\u30fc\u30b6\u30fc\u306e\u30e6\u30fc\u30b6\u30fc\u540d\u306e\u3088\u307f\u304c\u306a\u3092\u6307\u5b9a\u3057\u3066\u304f\u3060\u3055\u3044\u3002\n\u5fc5\u8981\u304c\u306a\u3044\u5834\u5408\u306f\u7701\u7565\u3067\u304d\u307e\u3059\u3002\n\n\u5165\u529b\u4f8b\uff1a\n- \u305f\u306a\u304b \u305f\u308d\u3046\n- \u3084\u307e\u3060 \u306f\u306a\u3053",
                         "example": "\u305f\u306a\u304b \u305f\u308d\u3046"
                     },
+                    "password": {
+                        "type": [
+                            "string",
+                            "null"
+                        ],
+                        "description": "\u30d1\u30b9\u30ef\u30fc\u30c9\u3092\u6307\u5b9a\u3057\u307e\u3059\u3002 \u66f4\u65b0\u3059\u308b\u30e6\u30fc\u30b6\u30fc\u306e\u30d1\u30b9\u30ef\u30fc\u30c9\u3092\u6307\u5b9a\u3057\u3066\u304f\u3060\u3055\u3044\u3002\n\u5fc5\u8981\u304c\u306a\u3044\u5834\u5408\u306f\u7701\u7565\u3067\u304d\u307e\u3059\u3002\n8\u6587\u5b57\u4ee5\u4e0a\u3067\u5165\u529b\u3057\u3066\u304f\u3060\u3055\u3044\u3002",
+                        "example": "Password123!"
+                    },
+                    "password_confirmation": {
+                        "type": [
+                            "string",
+                            "null"
+                        ],
+                        "description": "\u78ba\u8a8d\u7528\u30d1\u30b9\u30ef\u30fc\u30c9\u3092\u6307\u5b9a\u3057\u307e\u3059\u3002 \u30d1\u30b9\u30ef\u30fc\u30c9\u306e\u5165\u529b\u5185\u5bb9\u3092\u78ba\u8a8d\u3059\u308b\u305f\u3081\u306e\u9805\u76ee\u3067\u3059\u3002\n\u30d1\u30b9\u30ef\u30fc\u30c9\u3092\u5909\u66f4\u3059\u308b\u5834\u5408\u306f\u5fc5\u9808\u3067\u3059\u3002",
+                        "example": "Password123!"
+                    },
                     "email": {
                         "type": "string",
                         "format": "email",
@@ -678,6 +745,7 @@
                     },
                     "status": {
                         "type": "string",
+                        "format": "string",
                         "description": "\u96c7\u7528\u72b6\u614b\u3092\u6307\u5b9a\u3057\u307e\u3059\u3002 \u66f4\u65b0\u3059\u308b\u30e6\u30fc\u30b6\u30fc\u306e\u73fe\u5728\u306e\u96c7\u7528\u72b6\u614b\u3092\u6307\u5b9a\u3057\u3066\u304f\u3060\u3055\u3044\u3002\n\n\u6307\u5b9a\u53ef\u80fd\u306a\u5024\uff1a\n- active: \u5728\u8077\n- leave: \u4f11\u8077\n- resigned: \u9000\u8077",
                         "enum": [
                             "active",
