@@ -66,7 +66,12 @@ class UserControllerTest extends TestCase
                 'nameKana' => 'たなかたろう',
                 'email' => 'tanaka@example.com',
                 'status' => 'active',
-                'roles' => ['システム管理者'],
+                'roles' => [
+                    [
+                        'id' => $adminRole->id,
+                        'name' => 'システム管理者',
+                    ],
+                ],
             ])
             ->assertJsonFragment([
                 'userCode' => 'E002',
@@ -74,7 +79,12 @@ class UserControllerTest extends TestCase
                 'nameKana' => 'やまだはなこ',
                 'email' => 'yamada@example.com',
                 'status' => 'leave',
-                'roles' => ['事務'],
+                'roles' => [
+                    [
+                        'id' => $adminRole->id,
+                        'name' => 'システム管理者',
+                    ],
+                ],
             ]);
     }
 
