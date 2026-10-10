@@ -62,9 +62,9 @@ export const useUserCreate = () => {
       await userStore(storeForm);
 
       navigate("/user");
-    } catch (error) {
-      if (Axios.isAxiosError<ValidationErrorResponse>(error) && error.response?.status === 422) {
-        const validationErrors = error.response.data.errors;
+    } catch (err) {
+      if (Axios.isAxiosError<ValidationErrorResponse>(err) && err.response?.status === 422) {
+        const validationErrors = err.response.data.errors;
         setErrors(validationErrors);
       } else {
         setError("ユーザー登録に失敗しました");
