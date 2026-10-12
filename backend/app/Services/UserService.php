@@ -79,7 +79,7 @@ class UserService
      *     name_kana?: string|null,
      *     email: string,
      *     password?: string|null,
-     *     phone: string,
+     *     phone: string|null,
      *     position?: string|null,
      *     status: string,
      *     joined_at: string,
