@@ -6,7 +6,9 @@ RUN apt-get update \
     zip \
     unzip \
     libzip-dev \
+    libicu-dev \
     default-mysql-client \
+ && docker-php-ext-install intl \
  && update-ca-certificates \
  && docker-php-ext-install zip \
  && rm -rf /var/lib/apt/lists/*
