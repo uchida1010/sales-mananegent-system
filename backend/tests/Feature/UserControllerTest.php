@@ -269,4 +269,449 @@ class UserControllerTest extends TestCase
                 'name' => '山田花子',
             ]);
     }
+
+    /**
+     * ユーザーを正常に更新できること
+     */
+    public function test_update_user_successfully(): void
+    {
+        $user = User::factory()->create([
+            'user_code' => 'E001',
+            'name' => '田中太郎',
+            'email' => 'tanaka@example.com',
+        ]);
+
+        $role = Role::create([
+            'name' => 'システム管理者',
+            'code' => 'admin',
+        ]);
+
+        $user->roles()->attach($role->id);
+
+        $response = $this->putJson('/api/user/E001', [
+            'userCode' => 'E001',
+            'name' => '山田太郎',
+            'email' => 'tanaka@gmail.com',
+            'status' => 'active',
+            'joined_at' => '2026-04-01',
+            'roleId' => (string) $role->id,
+        ]);
+
+        $response->assertStatus(200);
+
+        $this->assertDatabaseHas('users', [
+            'user_code' => 'E001',
+            'name' => '山田太郎',
+        ]);
+    }
+
+    /**
+     * 名前が空文字の場合、更新できないこと
+     */
+    public function test_update_fails_when_name_is_empty(): void
+    {
+        $user = User::factory()->create([
+            'user_code' => 'E001',
+            'name' => '田中太郎',
+            'email' => 'tanaka@example.com',
+        ]);
+
+        $role = Role::create([
+            'name' => 'システム管理者',
+            'code' => 'admin',
+        ]);
+
+        $user->roles()->attach($role->id);
+
+        $response = $this->putJson('/api/user/E001', [
+            'userCode' => 'E001',
+            'name' => '',
+            'email' => 'tanaka@gmail.com',
+            'phone' => '09012345678',
+            'status' => 'active',
+            'joined_at' => '2026-04-01',
+            'roleId' => (string) $role->id,
+        ]);
+
+        $response->assertStatus(422);
+        $response->assertJsonValidationErrors(['name']);
+
+        $this->assertDatabaseHas('users', [
+            'user_code' => 'E001',
+            'name' => '田中太郎',
+        ]);
+    }
+
+    /**
+     * 他のユーザーとメールアドレスが重複する場合、更新できないこと
+     */
+    public function test_update_fails_when_email_is_duplicate(): void
+    {
+        $user1 = User::factory()->create([
+            'user_code' => 'E001',
+            'name' => '田中太郎',
+            'email' => 'tanaka@gmail.com',
+        ]);
+
+        $user2 = User::factory()->create([
+            'user_code' => 'E002',
+            'name' => '山田花子',
+            'email' => 'yamada@gmail.com',
+        ]);
+
+        $role = Role::create([
+            'name' => 'システム管理者',
+            'code' => 'admin',
+        ]);
+
+        $user1->roles()->attach($role->id);
+        $user2->roles()->attach($role->id);
+
+        $response = $this->putJson('/api/user/E001', [
+            'userCode' => 'E001',
+            'name' => '田中太郎',
+            'email' => 'yamada@gmail.com',
+            'status' => 'active',
+            'joined_at' => '2026-04-01',
+            'roleId' => (string) $role->id,
+        ]);
+
+        $response->assertStatus(422);
+        $response->assertJsonValidationErrors(['email']);
+
+        $this->assertDatabaseHas('users', [
+            'user_code' => 'E001',
+            'email' => 'tanaka@gmail.com',
+        ]);
+    }
+
+    /**
+     * ユーザー自身のメールアドレスの場合、更新できること
+     */
+    public function test_update_succeeds_with_own_email(): void
+    {
+        $user = User::factory()->create([
+            'user_code' => 'E001',
+            'name' => '田中太郎',
+            'email' => 'tanaka@gmail.com',
+        ]);
+
+        $role = Role::create([
+            'name' => 'システム管理者',
+            'code' => 'admin',
+        ]);
+
+        $user->roles()->attach($role->id);
+
+        $response = $this->putJson('/api/user/E001', [
+            'userCode' => 'E001',
+            'name' => '田中一郎',
+            'email' => 'tanaka@gmail.com',
+            'phone' => '09012345678',
+            'status' => 'active',
+            'joined_at' => '2026-04-01',
+            'roleId' => (string) $role->id,
+        ]);
+
+        $response->assertStatus(200);
+
+        $this->assertDatabaseHas('users', [
+            'user_code' => 'E001',
+            'name' => '田中一郎',
+            'email' => 'tanaka@gmail.com',
+        ]);
+    }
+
+    /**
+     * 存在しないユーザーの更新はできないこと
+     */
+    public function test_update_fails_when_user_not_found(): void
+    {
+        $user = User::factory()->create([
+            'user_code' => 'E001',
+            'name' => '田中太郎',
+            'email' => 'tanaka@gmail.com',
+        ]);
+
+        $role = Role::create([
+            'name' => 'システム管理者',
+            'code' => 'admin',
+        ]);
+
+        $user->roles()->attach($role->id);
+
+        $response = $this->putJson('/api/user/E999', [
+            'userCode' => 'E999',
+            'name' => '山田太郎',
+            'email' => 'yamada@gmail.com',
+            'status' => 'active',
+            'joined_at' => '2026-04-01',
+            'roleId' => '1',
+        ]);
+
+        $response->assertStatus(404);
+
+        $this->assertDatabaseMissing('users', [
+            'user_code' => 'E999',
+        ]);
+    }
+
+    /**
+     * 日付形式ではない入社日の更新はできないこと
+     */
+    public function test_update_fails_when_joined_at_is_invalid(): void
+    {
+        $user = User::factory()->create([
+            'user_code' => 'E001',
+            'name' => '田中太郎',
+            'email' => 'tanaka@gmail.com',
+            'joined_at' => '2026-04-01',
+        ]);
+
+        $role = Role::create([
+            'name' => 'システム管理者',
+            'code' => 'admin',
+        ]);
+
+        $user->roles()->attach($role->id);
+
+        $response = $this->putJson('/api/user/E001', [
+            'userCode' => 'E001',
+            'name' => '田中太郎',
+            'email' => 'tanaka@gmail.com',
+            'phone' => '09012345678',
+            'status' => 'active',
+            'joined_at' => 'abc',
+            'roleId' => (string) $role->id,
+        ]);
+
+        $response->assertStatus(422);
+
+        $response->assertJsonValidationErrors(['joined_at']);
+
+        $this->assertDatabaseHas('users', [
+            'user_code' => 'E001',
+            'joined_at' => '2026-04-01 00:00:00',
+        ]);
+    }
+
+    /**
+     * ユーザーの権限を正常に更新できること
+     */
+    public function test_update_user_role_successfully(): void
+    {
+
+        $user = User::factory()->create([
+            'user_code' => 'E001',
+            'name' => '田中太郎',
+            'email' => 'tanaka@gmail.com',
+        ]);
+
+        $adminRole = Role::create([
+            'name' => 'システム管理者',
+            'code' => 'admin',
+        ]);
+
+        $officeRole = Role::create([
+            'name' => '事務',
+            'code' => 'office_worker',
+        ]);
+
+        $user->roles()->attach($adminRole->id);
+
+        $response = $this->putJson('/api/user/E001', [
+            'userCode' => 'E001',
+            'name' => '田中太郎',
+            'email' => 'tanaka@gmail.com',
+            'phone' => '09012345678',
+            'status' => 'active',
+            'joined_at' => '2026-04-01',
+            'roleId' => (string) $officeRole->id,
+        ]);
+
+        $response->assertStatus(200);
+
+        $this->assertDatabaseHas('role_user', [
+            'user_id' => $user->id,
+            'role_id' => $officeRole->id,
+        ]);
+
+        $this->assertDatabaseMissing('role_user', [
+            'user_id' => $user->id,
+            'role_id' => $adminRole->id,
+        ]);
+    }
+
+    /**
+     * 他のユーザーとユーザーコードが重複する場合、更新できないこと
+     */
+    public function test_update_fails_when_user_code_is_duplicate(): void
+    {
+        $user1 = User::factory()->create([
+            'user_code' => 'E001',
+            'name' => '田中太郎',
+            'email' => 'tanaka@gmail.com',
+        ]);
+
+        $user2 = User::factory()->create([
+            'user_code' => 'E002',
+            'name' => '山田花子',
+            'email' => 'yamada@gmail.com',
+        ]);
+
+        $role = Role::create([
+            'name' => 'システム管理者',
+            'code' => 'admin',
+        ]);
+
+        $user1->roles()->attach($role->id);
+
+        $response = $this->putJson('/api/user/E001', [
+            'userCode' => 'E002',
+            'name' => '田中太郎',
+            'email' => 'tanaka@gmail.com',
+            'phone' => '09012345678',
+            'status' => 'active',
+            'joined_at' => '2026-04-01',
+            'roleId' => (string) $role->id,
+        ]);
+
+        $response->assertStatus(422);
+
+        $response->assertJsonValidationErrors(['userCode']);
+
+        $this->assertDatabaseHas('users', [
+            'user_code' => 'E001',
+            'name' => '田中太郎',
+        ]);
+
+        $this->assertDatabaseMissing('users', [
+            'user_code' => 'E002',
+            'name' => '田中太郎',
+        ]);
+    }
+
+    /**
+     * メールアドレスの形式が不正な場合、更新できないこと
+     */
+    public function test_update_fails_when_email_is_invalid(): void
+    {
+        $user = User::factory()->create([
+            'user_code' => 'E001',
+            'name' => '田中太郎',
+            'email' => 'tanaka@gmail.com',
+        ]);
+
+        $role = Role::create([
+            'name' => 'システム管理者',
+            'code' => 'admin',
+        ]);
+
+        $user->roles()->attach($role->id);
+
+        $response = $this->putJson('/api/user/E001', [
+            'userCode' => 'E001',
+            'name' => '田中太郎',
+            'email' => 'invalid-email',
+            'phone' => '09012345678',
+            'status' => 'active',
+            'joined_at' => '2026-04-01',
+            'roleId' => (string) $role->id,
+        ]);
+
+        $response->assertStatus(422);
+
+        $response->assertJsonValidationErrors(['email']);
+
+        $this->assertDatabaseHas('users', [
+            'user_code' => 'E001',
+            'email' => 'tanaka@gmail.com',
+        ]);
+
+        $this->assertDatabaseMissing('users', [
+            'user_code' => 'E001',
+            'email' => 'invalid-email',
+        ]);
+    }
+
+    /**
+     * ステータスが不正な場合、更新できないこと
+     */
+    public function test_update_fails_when_status_is_invalid(): void
+    {
+        $user = User::factory()->create([
+            'user_code' => 'E001',
+            'name' => '田中太郎',
+            'email' => 'tanaka@gmail.com',
+            'status' => 'active',
+        ]);
+
+        $role = Role::create([
+            'name' => 'システム管理者',
+            'code' => 'admin',
+        ]);
+
+        $user->roles()->attach($role->id);
+
+        $response = $this->putJson('/api/user/E001', [
+            'userCode' => 'E001',
+            'name' => '田中太郎',
+            'email' => 'tanaka@gmail.com',
+            'phone' => '09012345678',
+            'status' => 'invalid_status',
+            'joined_at' => '2026-04-01',
+            'roleId' => (string) $role->id,
+        ]);
+
+        $response->assertStatus(422);
+
+        $response->assertJsonValidationErrors(['status']);
+
+        $this->assertDatabaseHas('users', [
+            'user_code' => 'E001',
+            'status' => 'active',
+        ]);
+
+        $this->assertDatabaseMissing('users', [
+            'user_code' => 'E001',
+            'status' => 'invalid_status',
+        ]);
+    }
+
+    /**
+     * 必須項目が抜けている場合、更新できないこと
+     */
+    public function test_update_fails_when_required_field_is_missing(): void
+    {
+        $user = User::factory()->create([
+            'user_code' => 'E001',
+            'name' => '田中太郎',
+            'email' => 'tanaka@gmail.com',
+        ]);
+
+        $role = Role::create([
+            'name' => 'システム管理者',
+            'code' => 'admin',
+        ]);
+
+        $user->roles()->attach($role->id);
+
+        $response = $this->putJson('/api/user/E001', [
+            'userCode' => 'E001',
+            'email' => 'tanaka@gmail.com',
+            'phone' => '09012345678',
+            'status' => 'active',
+            'joined_at' => '2026-04-01',
+            'roleId' => (string) $role->id,
+        ]);
+
+        $response->assertStatus(422);
+
+        $response->assertJsonValidationErrors(['name']);
+
+        $this->assertDatabaseHas('users', [
+            'user_code' => 'E001',
+            'name' => '田中太郎',
+        ]);
+    }
 }
