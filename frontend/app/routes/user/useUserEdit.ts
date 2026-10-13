@@ -1,5 +1,10 @@
 import { useState, useEffect } from "react";
-import { userShow, userUpdate, type UserUpdateRequest } from "~/api/salesManagementSystem";
+import {
+  userShow,
+  userUpdate,
+  type UserUpdateRequest,
+  userDestroy,
+} from "~/api/salesManagementSystem";
 import { useNavigate } from "react-router";
 import Axios from "axios";
 
@@ -124,11 +129,33 @@ export const useUserEdit = (userCode: string | undefined) => {
     fetchUser();
   }, [userCode]);
 
+  // 新しく追加する削除処理
+  const handleDelete = async () => {
+    if (!userCode) {
+      return;
+    }
+
+    const confirmed = window.confirm("本当にユーザーを削除しますか？");
+
+    if (!confirmed) {
+      return;
+    }
+
+    try {
+      await userDestroy(userCode);
+
+      navigate("/user");
+    } catch {
+      setError("ユーザーの削除に失敗しました");
+    }
+  };
+
   return {
     updateForm,
     handleChange,
     error,
     errors,
     handleSubmit,
+    handleDelete,
   };
 };

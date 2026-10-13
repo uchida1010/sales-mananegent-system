@@ -714,4 +714,32 @@ class UserControllerTest extends TestCase
             'name' => '田中太郎',
         ]);
     }
+
+    /**
+     * ユーザーを正常に削除できること
+     */
+    public function test_destroy_deletes_user(): void
+    {
+        $user = User::factory()->create([
+            'user_code' => 'E001',
+        ]);
+
+        $response = $this->deleteJson('/api/user/E001');
+
+        $response->assertStatus(204);
+
+        $this->assertDatabaseMissing('users', [
+            'user_code' => 'E001',
+        ]);
+    }
+
+    /**
+     * 存在しないユーザーは削除できないこと
+     */
+    public function test_destroy_returns_404_when_user_not_found(): void
+    {
+        $response = $this->deleteJson('/api/user/E999');
+
+        $response->assertStatus(404);
+    }
 }

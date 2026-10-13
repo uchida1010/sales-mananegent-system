@@ -24,7 +24,8 @@ export default function UserEdit({
   const { userCode } = useParams();
   const { roles } = loaderData;
 
-  const { updateForm, handleChange, error, errors, handleSubmit } = useUserEdit(userCode);
+  const { updateForm, handleChange, error, errors, handleSubmit, handleDelete } =
+    useUserEdit(userCode);
 
   return (
     <>
@@ -45,6 +46,15 @@ export default function UserEdit({
                   {error}
                 </div>
               )}
+
+              <button
+                type="button"
+                onClick={handleDelete}
+                className="self-end rounded-md bg-red-400 px-3 py-1 text-sm font-semibold text-white shadow-sm transition hover:bg-red-600 hover:shadow-md"
+              >
+                削除
+              </button>
+
               <div className="flex flex-col">
                 <label className="mb-1 text-gray-600" htmlFor="user-code">
                   <div className="text-sm font-medium ">
