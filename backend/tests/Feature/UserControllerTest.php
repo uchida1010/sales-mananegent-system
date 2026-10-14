@@ -853,7 +853,7 @@ class UserControllerTest extends TestCase
     }
 
     /**
-     * メールが重複している場合、登録できないこと
+     * メールアドレスが重複している場合、登録できないこと
      */
     public function test_store_fails_when_email_is_duplicated(): void
     {
@@ -887,7 +887,7 @@ class UserControllerTest extends TestCase
     }
 
     /**
-     * ユーザーコードが「E+3桁の数字」ではない場合、登録できないこと
+     * ユーザーコードが「E+3桁の数字」以外の場合、登録できないこと
      */
     public function test_store_fails_when_user_code_format_is_invalid(): void
     {
@@ -917,6 +917,9 @@ class UserControllerTest extends TestCase
         Notification::assertNothingSent();
     }
 
+    /**
+     * 権限(roleId)が存在しない場合、登録できないこと
+     */
     public function test_store_fails_when_role_id_does_not_exist(): void
     {
 
@@ -940,6 +943,9 @@ class UserControllerTest extends TestCase
         Notification::assertNothingSent();
     }
 
+    /**
+     * 入社日が不正な場合、登録できないこと
+     */
     public function test_store_fails_when_joined_at_format_is_invalid(): void
     {
         Notification::fake();
