@@ -4,7 +4,9 @@ namespace Tests\Feature;
 
 use App\Models\Role;
 use App\Models\User;
+use App\Notifications\InitialPasswordSetupNotification;
 use Illuminate\Foundation\Testing\RefreshDatabase;
+use Illuminate\Support\Facades\Notification;
 use Tests\TestCase;
 
 class UserControllerTest extends TestCase
@@ -741,5 +743,227 @@ class UserControllerTest extends TestCase
         $response = $this->deleteJson('/api/user/E999');
 
         $response->assertStatus(404);
+    }
+
+    /**
+     * ユーザーが正常に登録されること、
+     * メール通知が正常に行われること
+     */
+    public function test_store_creates_user(): void
+    {
+        Notification::fake();
+
+        $role = Role::create([
+            'name' => 'システム管理者',
+            'code' => 'admin',
+        ]);
+
+        $response = $this->postJson('/api/user', [
+            'userCode' => 'E010',
+            'name' => '佐藤太郎',
+            'email' => 'sato@gmail.com',
+            'joined_at' => '2026-04-01',
+            'roleId' => (string) $role->id,
+        ]);
+
+        $response->assertStatus(201);
+
+        $user = User::where('user_code', 'E010')->first();
+
+        $this->assertNotNull($user);
+
+        $this->assertDatabaseHas('users', [
+            'user_code' => 'E010',
+            'name' => '佐藤太郎',
+            'email' => 'sato@gmail.com',
+        ]);
+
+        $this->assertDatabaseHas('role_user', [
+            'user_id' => $user->id,
+            'role_id' => $role->id,
+        ]);
+
+        Notification::assertSentTo(
+            $user,
+            InitialPasswordSetupNotification::class
+        );
+    }
+
+    /**
+     * 氏名が入力されていない場合、登録ができないこと
+     */
+    public function test_store_fails_when_name_is_missing(): void
+    {
+        Notification::fake();
+
+        $role = Role::create([
+            'name' => 'システム管理者',
+            'code' => 'admin',
+        ]);
+
+        $response = $this->postJson('/api/user', [
+            'userCode' => 'E010',
+            'email' => 'sato@example.com',
+            'joined_at' => '2026-04-01',
+            'roleId' => (string) $role->id,
+        ]);
+
+        $response->assertStatus(422);
+
+        $response->assertJsonValidationErrors(['name']);
+
+        $this->assertDatabaseMissing('users', [
+            'user_code' => 'E010',
+        ]);
+
+        Notification::assertNothingSent();
+    }
+
+    /**
+     * ユーザーコードが重複している場合、登録できないこと
+     */
+    public function test_store_fails_when_user_code_is_duplicated(): void
+    {
+        Notification::fake();
+
+        User::factory()->create([
+            'user_code' => 'E010',
+        ]);
+
+        $role = Role::create([
+            'name' => 'システム管理者',
+            'code' => 'admin',
+        ]);
+
+        $response = $this->postJson('/api/user', [
+            'userCode' => 'E010',
+            'name' => '佐藤太郎',
+            'email' => 'sato@example.com',
+            'joined_at' => '2026-04-01',
+            'roleId' => (string) $role->id,
+        ]);
+
+        $response->assertStatus(422);
+
+        $response->assertJsonValidationErrors(['userCode']);
+
+        $this->assertDatabaseCount('users', 1);
+
+        Notification::assertNothingSent();
+    }
+
+    /**
+     * メールが重複している場合、登録できないこと
+     */
+    public function test_store_fails_when_email_is_duplicated(): void
+    {
+        Notification::fake();
+
+        User::factory()->create([
+            'user_code' => 'E010',
+            'email' => 'sato@example.com',
+        ]);
+
+        $role = Role::create([
+            'name' => 'システム管理者',
+            'code' => 'admin',
+        ]);
+
+        $response = $this->postJson('/api/user', [
+            'userCode' => 'E011',
+            'name' => '佐藤太郎',
+            'email' => 'sato@example.com',
+            'joined_at' => '2026-04-01',
+            'roleId' => (string) $role->id,
+        ]);
+
+        $response->assertStatus(422);
+
+        $response->assertJsonValidationErrors(['email']);
+
+        $this->assertDatabaseCount('users', 1);
+
+        Notification::assertNothingSent();
+    }
+
+    /**
+     * ユーザーコードが「E+3桁の数字」ではない場合、登録できないこと
+     */
+    public function test_store_fails_when_user_code_format_is_invalid(): void
+    {
+        Notification::fake();
+
+        $role = Role::create([
+            'name' => 'システム管理者',
+            'code' => 'admin',
+        ]);
+
+        $response = $this->postJson('/api/user', [
+            'userCode' => 'E12',
+            'name' => '佐藤太郎',
+            'email' => 'sato@example.com',
+            'joined_at' => '2026-04-01',
+            'roleId' => (string) $role->id,
+        ]);
+
+        $response->assertStatus(422);
+
+        $response->assertJsonValidationErrors(['userCode']);
+
+        $this->assertDatabaseMissing('users', [
+            'user_code' => 'E12',
+        ]);
+
+        Notification::assertNothingSent();
+    }
+
+    public function test_store_fails_when_role_id_does_not_exist(): void
+    {
+
+        Notification::fake();
+
+        $response = $this->postJson('/api/user', [
+            'userCode' => 'E010',
+            'name' => '佐藤太郎',
+            'email' => 'sato@example.com',
+            'joined_at' => '2026-04-01',
+            'roleId' => '99999',
+        ]);
+
+        $response->assertStatus(422);
+        $response->assertJsonValidationErrors(['roleId']);
+
+        $this->assertDatabaseMissing('users', [
+            'user_code' => 'E010',
+        ]);
+
+        Notification::assertNothingSent();
+    }
+
+    public function test_store_fails_when_joined_at_format_is_invalid(): void
+    {
+        Notification::fake();
+
+        $role = Role::create([
+            'name' => 'システム管理者',
+            'code' => 'admin',
+        ]);
+
+        $response = $this->postJson('/api/user', [
+            'userCode' => 'E010',
+            'name' => '佐藤太郎',
+            'email' => 'sato@example.com',
+            'joined_at' => '2026/04/01',
+            'roleId' => (string) $role->id,
+        ]);
+
+        $response->assertStatus(422);
+        $response->assertJsonValidationErrors(['joined_at']);
+
+        $this->assertDatabaseMissing('users', [
+            'user_code' => 'E010',
+        ]);
+
+        Notification::assertNothingSent();
     }
 }

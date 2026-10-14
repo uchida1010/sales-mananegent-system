@@ -16,7 +16,7 @@ class UserService
      *     name: string,
      *     name_kana?: string|null,
      *     email: string,
-     *     phone: string,
+     *     phone?: string|null,
      *     position?: string|null,
      *     joined_at: string,
      *     roleId: string
@@ -30,10 +30,10 @@ class UserService
         $userData = [
             'user_code' => $data['userCode'],
             'name' => $data['name'],
-            'name_kana' => $data['name_kana'],
+            'name_kana' => $data['name_kana'] ?? null,
             'email' => $data['email'],
-            'phone' => $data['phone'],
-            'position' => $data['position'],
+            'phone' => $data['phone'] ?? null,
+            'position' => $data['position'] ?? null,
             'joined_at' => $data['joined_at'],
         ];
 
