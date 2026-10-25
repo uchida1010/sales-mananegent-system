@@ -39,7 +39,6 @@
   }
 
   &[data-active] {
-
     &,
     &:hover {
       background-color: var(--mantine-color-blue-light);
@@ -88,7 +87,6 @@
   }
 
   &[data-active] {
-
     &,
     &:hover {
       border-left-color: var(--mantine-color-blue-filled);
