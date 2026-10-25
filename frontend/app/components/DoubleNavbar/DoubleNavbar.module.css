@@ -1,6 +1,5 @@
 .navbar {
   background-color: light-dark(var(--mantine-color-white), var(--mantine-color-dark-6));
-  height: 750px;
   width: 300px;
   display: flex;
   flex-direction: column;
@@ -40,6 +39,7 @@
   }
 
   &[data-active] {
+
     &,
     &:hover {
       background-color: var(--mantine-color-blue-light);
@@ -88,6 +88,7 @@
   }
 
   &[data-active] {
+
     &,
     &:hover {
       border-left-color: var(--mantine-color-blue-filled);

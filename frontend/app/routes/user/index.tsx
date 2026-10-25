@@ -58,9 +58,9 @@ export default function UserIndex({
 
   return (
     <>
-      <div className="flex md:flex-row bg-gray-100">
+      <div className="flex min-h-screen bg-gray-100">
         <DoubleNavbar />
-        <main className="flex-1 p-6">
+        <main className="flex min-w-0 flex-1 flex-col p-6">
           <h1 className="font-bold"> ユーザー一覧</h1>
           <div className="flex gap-4 mt-2">
             <button
@@ -226,7 +226,7 @@ export default function UserIndex({
             </div>
           </form>
 
-          <div className="w-full rounded-lg border border-gray-50 bg-white mt-2 flex min-h-[560px] flex-col">
+          <div className="mt-2 flex min-h-[560px] w-full flex-1 flex-col rounded-lg border border-gray-50 bg-white">
             <div className="flex-1">
               <table className="min-w-full text-left text-sm">
                 <thead className="bg-gray-200 text-gray-600 border-b border-gray-200">
