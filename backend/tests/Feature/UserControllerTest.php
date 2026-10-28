@@ -28,14 +28,14 @@ class UserControllerTest extends TestCase
             'code' => 'office_worker',
         ]);
 
-        $admin = User::factory()->create([
+        $user = User::factory()->create([
             'user_code' => 'E001',
             'name' => '田中太郎',
             'name_kana' => 'たなかたろう',
             'email' => 'tanaka@example.com',
             'status' => 'active',
         ]);
-        $admin->roles()->attach($adminRole->id);
+        $user->roles()->attach($adminRole->id);
 
         $officeWorker = User::factory()->create([
             'user_code' => 'E002',
@@ -46,7 +46,7 @@ class UserControllerTest extends TestCase
         ]);
         $officeWorker->roles()->attach($officeWorkerRole->id);
 
-        $response = $this->getJson('/api/user');
+        $response = $this->actingAs($user, 'web')->getJson('/api/user');
 
         $response->assertOk()
             ->assertJsonCount(2, 'data')
@@ -95,7 +95,7 @@ class UserControllerTest extends TestCase
      */
     public function test_index_filter_by_keyword_search_name(): void
     {
-        User::factory()->create([
+        $user = User::factory()->create([
             'user_code' => 'E001',
             'name' => '田中太郎',
         ]);
@@ -105,7 +105,7 @@ class UserControllerTest extends TestCase
             'name' => '山田花子',
         ]);
 
-        $response = $this->getJson('/api/user?keyword=田中');
+        $response = $this->actingAs($user, 'web')->getJson('/api/user?keyword=田中');
 
         $response->assertOk()
             ->assertJsonCount(1, 'data')
@@ -122,7 +122,7 @@ class UserControllerTest extends TestCase
      */
     public function test_index_filter_by_keyword_search_name_kana(): void
     {
-        User::factory()->create([
+        $user = User::factory()->create([
             'user_code' => 'E001',
             'name' => '田中太郎',
             'name_kana' => 'たなかたろう',
@@ -134,7 +134,7 @@ class UserControllerTest extends TestCase
             'name_kana' => 'やまだはなこ',
         ]);
 
-        $response = $this->getJson('/api/user?keyword=たなか');
+        $response = $this->actingAs($user, 'web')->getJson('/api/user?keyword=たなか');
 
         $response->assertOk()
             ->assertJsonCount(1, 'data')
@@ -151,7 +151,7 @@ class UserControllerTest extends TestCase
      */
     public function test_index_filter_by_user_code(): void
     {
-        User::factory()->create([
+        $user = User::factory()->create([
             'user_code' => 'E001',
             'name' => '田中太郎',
             'email' => 'tanaka@example.com',
@@ -163,7 +163,7 @@ class UserControllerTest extends TestCase
             'email' => 'yamada@example.com',
         ]);
 
-        $response = $this->getJson('/api/user?userCode=E001');
+        $response = $this->actingAs($user, 'web')->getJson('/api/user?userCode=E001');
 
         $response->assertOk()
             ->assertJsonCount(1, 'data')
@@ -180,7 +180,7 @@ class UserControllerTest extends TestCase
      */
     public function test_index_filter_by_email(): void
     {
-        User::factory()->create([
+        $user = User::factory()->create([
             'user_code' => 'E001',
             'name' => '田中太郎',
             'email' => 'tanaka@example.com',
@@ -192,7 +192,7 @@ class UserControllerTest extends TestCase
             'email' => 'yamada@example.com',
         ]);
 
-        $response = $this->getJson('/api/user?email=tanaka@example.com');
+        $response = $this->actingAs($user, 'web')->getJson('/api/user?email=tanaka@example.com');
 
         $response->assertOk()
             ->assertJsonCount(1, 'data')
@@ -209,7 +209,7 @@ class UserControllerTest extends TestCase
      */
     public function test_index_filter_active_users_only(): void
     {
-        User::factory()->create([
+        $user = User::factory()->create([
             'user_code' => 'E001',
             'name' => '田中太郎',
             'status' => 'active',
@@ -221,7 +221,7 @@ class UserControllerTest extends TestCase
             'status' => 'leave',
         ]);
 
-        $response = $this->getJson('/api/user?activeOnly=true');
+        $response = $this->actingAs($user, 'web')->getJson('/api/user?activeOnly=true');
 
         $response->assertOk()
             ->assertJsonCount(1, 'data')
@@ -248,11 +248,11 @@ class UserControllerTest extends TestCase
             'code' => 'office_worker',
         ]);
 
-        $admin = User::factory()->create([
+        $user = User::factory()->create([
             'user_code' => 'E001',
             'name' => '田中太郎',
         ]);
-        $admin->roles()->attach($adminRole->id);
+        $user->roles()->attach($adminRole->id);
 
         $officeWorker = User::factory()->create([
             'user_code' => 'E002',
@@ -260,7 +260,7 @@ class UserControllerTest extends TestCase
         ]);
         $officeWorker->roles()->attach($officeWorkerRole->id);
 
-        $response = $this->getJson('/api/user?roleId='.$adminRole->id);
+        $response = $this->actingAs($user, 'web')->getJson('/api/user?roleId='.$adminRole->id);
 
         $response->assertOk()
             ->assertJsonCount(1, 'data')
@@ -290,7 +290,7 @@ class UserControllerTest extends TestCase
 
         $user->roles()->attach($role->id);
 
-        $response = $this->putJson('/api/user/E001', [
+        $response = $this->actingAs($user, 'web')->putJson('/api/user/E001', [
             'userCode' => 'E001',
             'name' => '山田太郎',
             'email' => 'tanaka@gmail.com',
@@ -325,7 +325,7 @@ class UserControllerTest extends TestCase
 
         $user->roles()->attach($role->id);
 
-        $response = $this->putJson('/api/user/E001', [
+        $response = $this->actingAs($user, 'web')->putJson('/api/user/E001', [
             'userCode' => 'E001',
             'name' => '',
             'email' => 'tanaka@gmail.com',
@@ -369,7 +369,7 @@ class UserControllerTest extends TestCase
         $user1->roles()->attach($role->id);
         $user2->roles()->attach($role->id);
 
-        $response = $this->putJson('/api/user/E001', [
+        $response = $this->actingAs($user1, 'web')->putJson('/api/user/E001', [
             'userCode' => 'E001',
             'name' => '田中太郎',
             'email' => 'yamada@gmail.com',
@@ -405,7 +405,7 @@ class UserControllerTest extends TestCase
 
         $user->roles()->attach($role->id);
 
-        $response = $this->putJson('/api/user/E001', [
+        $response = $this->actingAs($user, 'web')->putJson('/api/user/E001', [
             'userCode' => 'E001',
             'name' => '田中一郎',
             'email' => 'tanaka@gmail.com',
@@ -442,7 +442,7 @@ class UserControllerTest extends TestCase
 
         $user->roles()->attach($role->id);
 
-        $response = $this->putJson('/api/user/E999', [
+        $response = $this->actingAs($user, 'web')->putJson('/api/user/E999', [
             'userCode' => 'E999',
             'name' => '山田太郎',
             'email' => 'yamada@gmail.com',
@@ -477,7 +477,7 @@ class UserControllerTest extends TestCase
 
         $user->roles()->attach($role->id);
 
-        $response = $this->putJson('/api/user/E001', [
+        $response = $this->actingAs($user, 'web')->putJson('/api/user/E001', [
             'userCode' => 'E001',
             'name' => '田中太郎',
             'email' => 'tanaka@gmail.com',
@@ -521,7 +521,7 @@ class UserControllerTest extends TestCase
 
         $user->roles()->attach($adminRole->id);
 
-        $response = $this->putJson('/api/user/E001', [
+        $response = $this->actingAs($user, 'web')->putJson('/api/user/E001', [
             'userCode' => 'E001',
             'name' => '田中太郎',
             'email' => 'tanaka@gmail.com',
@@ -568,7 +568,7 @@ class UserControllerTest extends TestCase
 
         $user1->roles()->attach($role->id);
 
-        $response = $this->putJson('/api/user/E001', [
+        $response = $this->actingAs($user1, 'web')->putJson('/api/user/E001', [
             'userCode' => 'E002',
             'name' => '田中太郎',
             'email' => 'tanaka@gmail.com',
@@ -611,7 +611,7 @@ class UserControllerTest extends TestCase
 
         $user->roles()->attach($role->id);
 
-        $response = $this->putJson('/api/user/E001', [
+        $response = $this->actingAs($user, 'web')->putJson('/api/user/E001', [
             'userCode' => 'E001',
             'name' => '田中太郎',
             'email' => 'invalid-email',
@@ -655,7 +655,7 @@ class UserControllerTest extends TestCase
 
         $user->roles()->attach($role->id);
 
-        $response = $this->putJson('/api/user/E001', [
+        $response = $this->actingAs($user, 'web')->putJson('/api/user/E001', [
             'userCode' => 'E001',
             'name' => '田中太郎',
             'email' => 'tanaka@gmail.com',
@@ -698,7 +698,7 @@ class UserControllerTest extends TestCase
 
         $user->roles()->attach($role->id);
 
-        $response = $this->putJson('/api/user/E001', [
+        $response = $this->actingAs($user, 'web')->putJson('/api/user/E001', [
             'userCode' => 'E001',
             'email' => 'tanaka@gmail.com',
             'phone' => '09012345678',
@@ -726,7 +726,7 @@ class UserControllerTest extends TestCase
             'user_code' => 'E001',
         ]);
 
-        $response = $this->deleteJson('/api/user/E001');
+        $response = $this->actingAs($user, 'web')->deleteJson('/api/user/E001');
 
         $response->assertStatus(204);
 
@@ -740,7 +740,11 @@ class UserControllerTest extends TestCase
      */
     public function test_destroy_returns_404_when_user_not_found(): void
     {
-        $response = $this->deleteJson('/api/user/E999');
+        $user = User::factory()->create([
+            'user_code' => 'E001',
+        ]);
+
+        $response = $this->actingAs($user, 'web')->deleteJson('/api/user/E999');
 
         $response->assertStatus(404);
     }
@@ -758,7 +762,11 @@ class UserControllerTest extends TestCase
             'code' => 'admin',
         ]);
 
-        $response = $this->postJson('/api/user', [
+        $user = User::factory()->create([
+            'user_code' => 'E001',
+        ]);
+
+        $response = $this->actingAs($user, 'web')->postJson('/api/user', [
             'userCode' => 'E010',
             'name' => '佐藤太郎',
             'email' => 'sato@gmail.com',
@@ -801,7 +809,11 @@ class UserControllerTest extends TestCase
             'code' => 'admin',
         ]);
 
-        $response = $this->postJson('/api/user', [
+        $user = User::factory()->create([
+            'user_code' => 'E001',
+        ]);
+
+        $response = $this->actingAs($user, 'web')->postJson('/api/user', [
             'userCode' => 'E010',
             'email' => 'sato@example.com',
             'joined_at' => '2026-04-01',
@@ -826,7 +838,7 @@ class UserControllerTest extends TestCase
     {
         Notification::fake();
 
-        User::factory()->create([
+        $user = User::factory()->create([
             'user_code' => 'E010',
         ]);
 
@@ -835,7 +847,7 @@ class UserControllerTest extends TestCase
             'code' => 'admin',
         ]);
 
-        $response = $this->postJson('/api/user', [
+        $response = $this->actingAs($user, 'web')->postJson('/api/user', [
             'userCode' => 'E010',
             'name' => '佐藤太郎',
             'email' => 'sato@example.com',
@@ -859,7 +871,7 @@ class UserControllerTest extends TestCase
     {
         Notification::fake();
 
-        User::factory()->create([
+        $user = User::factory()->create([
             'user_code' => 'E010',
             'email' => 'sato@example.com',
         ]);
@@ -869,7 +881,7 @@ class UserControllerTest extends TestCase
             'code' => 'admin',
         ]);
 
-        $response = $this->postJson('/api/user', [
+        $response = $this->actingAs($user, 'web')->postJson('/api/user', [
             'userCode' => 'E011',
             'name' => '佐藤太郎',
             'email' => 'sato@example.com',
@@ -898,7 +910,11 @@ class UserControllerTest extends TestCase
             'code' => 'admin',
         ]);
 
-        $response = $this->postJson('/api/user', [
+        $user = User::factory()->create([
+            'user_code' => 'E001',
+        ]);
+
+        $response = $this->actingAs($user, 'web')->postJson('/api/user', [
             'userCode' => 'E12',
             'name' => '佐藤太郎',
             'email' => 'sato@example.com',
@@ -925,7 +941,11 @@ class UserControllerTest extends TestCase
 
         Notification::fake();
 
-        $response = $this->postJson('/api/user', [
+        $user = User::factory()->create([
+            'user_code' => 'E001',
+        ]);
+
+        $response = $this->actingAs($user, 'web')->postJson('/api/user', [
             'userCode' => 'E010',
             'name' => '佐藤太郎',
             'email' => 'sato@example.com',
@@ -955,7 +975,11 @@ class UserControllerTest extends TestCase
             'code' => 'admin',
         ]);
 
-        $response = $this->postJson('/api/user', [
+        $user = User::factory()->create([
+            'user_code' => 'E001',
+        ]);
+
+        $response = $this->actingAs($user, 'web')->postJson('/api/user', [
             'userCode' => 'E010',
             'name' => '佐藤太郎',
             'email' => 'sato@example.com',

@@ -3,6 +3,7 @@
 namespace Tests\Feature;
 
 use App\Models\Role;
+use App\Models\User;
 use Illuminate\Foundation\Testing\RefreshDatabase;
 use Tests\TestCase;
 
@@ -25,7 +26,11 @@ class RoleControllerTest extends TestCase
             'code' => 'office_worker',
         ]);
 
-        $response = $this->getJson('/api/roles');
+        $user = User::factory()->create([
+            'user_code' => 'E001',
+        ]);
+
+        $response = $this->actingAs($user, 'web')->getJson('/api/roles');
 
         $response->assertOk()
             ->assertJsonCount(2, 'data')
