@@ -2,6 +2,9 @@
 
 namespace App\Providers;
 
+use App\OpenApi\AuthOperationTransformer;
+use Dedoc\Scramble\Scramble;
+use Illuminate\Routing\Route;
 use Illuminate\Support\ServiceProvider;
 
 class AppServiceProvider extends ServiceProvider
@@ -19,6 +22,9 @@ class AppServiceProvider extends ServiceProvider
      */
     public function boot(): void
     {
-        //
+        Scramble::configure()
+            ->routes(fn (Route $route): bool => str_starts_with($route->uri(), 'api/')
+                || in_array($route->uri(), AuthOperationTransformer::PATHS, true))
+            ->withOperationTransformers(AuthOperationTransformer::class);
     }
 }

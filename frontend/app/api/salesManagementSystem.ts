@@ -5,6 +5,12 @@
  * OpenAPI spec version: 0.0.1
  */
 import { customInstance } from './custom-instance';
+export interface LoginRequest {
+  email: string;
+  password: string;
+  remember?: string;
+}
+
 export interface PasswordSetupRequest {
   /**
      * 初期パスワード設定用のトークンを指定します。 ユーザー登録時に発行された初期パスワード設定用の
@@ -327,9 +333,35 @@ export type ValidationExceptionResponse = {
   errors: ValidationExceptionResponseErrors;
 };
 
+export type AuthenticationExceptionResponse = {
+  /** Error overview. */
+  message: string;
+};
+
 export type ModelNotFoundExceptionResponse = {
   /** Error overview. */
   message: string;
+};
+
+export type LoginStoreBody = {
+  email: string;
+  password: string;
+  remember?: boolean;
+};
+
+export type LoginStore200 = {
+  two_factor: boolean;
+};
+
+export type LoginStore422Errors = {[key: string]: string[]};
+
+export type LoginStore422 = {
+  message: string;
+  errors: LoginStore422Errors;
+};
+
+export type Me200 = {
+  data: UserResource;
 };
 
 export type RolesIndex200 = {
@@ -477,11 +509,72 @@ export type UserUpdate200 = {
   data: UserResource;
 };
 
+/**
+ * Accept: application/json を指定し、セッションCookieを保持してください。
+ * @summary ログイン
+ */
+export const loginStore = (
+    loginStoreBody: LoginStoreBody,
+ ) => {
+      return customInstance<LoginStore200>(
+      {url: `/login`, method: 'POST',
+      headers: {'Content-Type': 'application/json', },
+      data: loginStoreBody
+    },
+      );
+    }
+
+/**
+ * Accept: application/json を指定し、セッションCookieを保持してください。
+ * @summary ログアウト
+ */
+export const logout = (
+
+ ) => {
+      return customInstance<void>(
+      {url: `/logout`, method: 'POST'
+    },
+      );
+    }
+
+/**
+ * Accept: application/json を指定し、セッションCookieを保持してください。
+ * @summary CSRF Cookieを取得する
+ */
+export const sanctumCsrfCookie = (
+
+ ) => {
+      return customInstance<void>(
+      {url: `/sanctum/csrf-cookie`, method: 'GET'
+    },
+      );
+    }
+
+export const me = (
+
+ ) => {
+      return customInstance<Me200>(
+      {url: `/me`, method: 'GET'
+    },
+      );
+    }
+
 export const rolesIndex = (
 
  ) => {
       return customInstance<RolesIndex200>(
       {url: `/roles`, method: 'GET'
+    },
+      );
+    }
+
+export const userSetupPassword = (
+    passwordSetupRequest: PasswordSetupRequest,
+ ) => {
+      return customInstance<void>(
+      {url: `/password/setup`, method: 'POST',
+      headers: {'Content-Type': 'application/json', },
+      data: passwordSetupRequest
     },
       );
     }
@@ -552,21 +645,14 @@ export const userDestroy = (
       );
     }
 
-export const userSetupPassword = (
-    passwordSetupRequest: PasswordSetupRequest,
- ) => {
-      return customInstance<void>(
-      {url: `/password/setup`, method: 'POST',
-      headers: {'Content-Type': 'application/json', },
-      data: passwordSetupRequest
-    },
-      );
-    }
-
+export type LoginStoreResult = NonNullable<Awaited<ReturnType<typeof loginStore>>>
+export type LogoutResult = NonNullable<Awaited<ReturnType<typeof logout>>>
+export type SanctumCsrfCookieResult = NonNullable<Awaited<ReturnType<typeof sanctumCsrfCookie>>>
+export type MeResult = NonNullable<Awaited<ReturnType<typeof me>>>
 export type RolesIndexResult = NonNullable<Awaited<ReturnType<typeof rolesIndex>>>
+export type UserSetupPasswordResult = NonNullable<Awaited<ReturnType<typeof userSetupPassword>>>
 export type UserIndexResult = NonNullable<Awaited<ReturnType<typeof userIndex>>>
 export type UserStoreResult = NonNullable<Awaited<ReturnType<typeof userStore>>>
 export type UserShowResult = NonNullable<Awaited<ReturnType<typeof userShow>>>
 export type UserUpdateResult = NonNullable<Awaited<ReturnType<typeof userUpdate>>>
 export type UserDestroyResult = NonNullable<Awaited<ReturnType<typeof userDestroy>>>
-export type UserSetupPasswordResult = NonNullable<Awaited<ReturnType<typeof userSetupPassword>>>
