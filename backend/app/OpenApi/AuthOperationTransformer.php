@@ -22,7 +22,7 @@ class AuthOperationTransformer
     {
         $path = $routeInfo->route->uri();
 
-        if (!in_array($path, self::PATHS, true)) {
+        if (! in_array($path, self::PATHS, true)) {
             return;
         }
 
@@ -44,7 +44,7 @@ class AuthOperationTransformer
         $csrf = Parameter::make('X-XSRF-TOKEN', 'header');
         $csrf->required = true;
         $csrf->description = 'XSRF-TOKEN CookieをURLデコードした値。先に /sanctum/csrf-cookie を取得してください。';
-        $csrf->schema = Schema::fromType(new StringType());
+        $csrf->schema = Schema::fromType(new StringType);
         $operation->addParameters([$csrf]);
 
         if ($path === 'logout') {
@@ -66,9 +66,9 @@ class AuthOperationTransformer
                     'application/json',
                     Schema::fromType(
                         new ObjectType()
-                            ->addProperty('email', new StringType())
+                            ->addProperty('email', new StringType)
                             ->addProperty('password', new StringType()->format('password'))
-                            ->addProperty('remember', new BooleanType())
+                            ->addProperty('remember', new BooleanType)
                             ->setRequired(['email', 'password']),
                     ),
                 ),
@@ -80,7 +80,7 @@ class AuthOperationTransformer
                     'application/json',
                     Schema::fromType(
                         new ObjectType()
-                            ->addProperty('two_factor', new BooleanType())
+                            ->addProperty('two_factor', new BooleanType)
                             ->setRequired(['two_factor']),
                     ),
                 ),
@@ -90,10 +90,10 @@ class AuthOperationTransformer
                     'application/json',
                     Schema::fromType(
                         new ObjectType()
-                            ->addProperty('message', new StringType())
+                            ->addProperty('message', new StringType)
                             ->addProperty(
                                 'errors',
-                                new ObjectType()->additionalProperties(new ArrayType()->setItems(new StringType())),
+                                new ObjectType()->additionalProperties(new ArrayType()->setItems(new StringType)),
                             )
                             ->setRequired(['message', 'errors']),
                     ),
