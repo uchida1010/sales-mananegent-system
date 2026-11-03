@@ -1,4 +1,3 @@
-
 export default function Login() {
   return (
     <div className="flex min-h-screen items-center justify-center bg-slate-100 px-4 py-8">
@@ -22,27 +21,18 @@ export default function Login() {
             </svg>
           </div>
 
-          <h1 className="text-xl font-bold tracking-tight text-slate-800">
-            販売管理システム
-          </h1>
+          <h1 className="text-xl font-bold tracking-tight text-slate-800">販売管理システム</h1>
         </div>
 
         <div className="rounded-2xl border border-slate-200 bg-white p-8 shadow-lg shadow-slate-200/60 sm:p-10">
           <div className="mb-8 text-center">
-            <h2 className="text-2xl font-bold text-slate-800">
-              ログイン
-            </h2>
-            <p className="mt-2 text-sm text-slate-500">
-              アカウント情報を入力してください
-            </p>
+            <h2 className="text-2xl font-bold text-slate-800">ログイン</h2>
+            <p className="mt-2 text-sm text-slate-500">アカウント情報を入力してください</p>
           </div>
 
           <form className="space-y-6">
             <div>
-              <label
-                htmlFor="email"
-                className="mb-2 block text-sm font-semibold text-slate-700"
-              >
+              <label htmlFor="email" className="mb-2 block text-sm font-semibold text-slate-700">
                 メールアドレス
               </label>
 
@@ -58,10 +48,7 @@ export default function Login() {
             </div>
 
             <div>
-              <label
-                htmlFor="password"
-                className="mb-2 block text-sm font-semibold text-slate-700"
-              >
+              <label htmlFor="password" className="mb-2 block text-sm font-semibold text-slate-700">
                 パスワード
               </label>
 
@@ -85,10 +72,7 @@ export default function Login() {
                 className="h-4 w-4 cursor-pointer rounded border-slate-300 accent-blue-600"
               />
 
-              <label
-                htmlFor="remember"
-                className="cursor-pointer text-sm text-slate-600"
-              >
+              <label htmlFor="remember" className="cursor-pointer text-sm text-slate-600">
                 ログイン状態を保持する
               </label>
             </div>
@@ -101,10 +85,8 @@ export default function Login() {
             </button>
           </form>
         </div>
-        
-        <p className="mt-8 text-center text-xs text-slate-400">
-          © 2026 Sales Management System
-        </p>
+
+        <p className="mt-8 text-center text-xs text-slate-400">© 2026 Sales Management System</p>
       </div>
     </div>
   );
