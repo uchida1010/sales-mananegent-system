@@ -2,17 +2,27 @@ import "../../app.css";
 import { DoubleNavbar } from "../../components/DoubleNavbar";
 import { useUserCreate } from "./useUserCreate";
 import { rolesIndex } from "~/api/salesManagementSystem";
+import Axios from "axios";
+import { redirect } from "react-router";
 
 export function meta() {
   return [{ title: "ユーザー登録ページ" }, { name: "description", content: "User Create Page" }];
 }
 
 export async function clientLoader() {
-  const rolesResponse = await rolesIndex();
+  try {
+    const rolesResponse = await rolesIndex();
 
-  return {
-    roles: rolesResponse.data,
-  };
+    return {
+      roles: rolesResponse.data,
+    };
+  } catch (error) {
+    if (Axios.isAxiosError(error) && error.response?.status === 401) {
+      throw redirect("/login");
+    }
+
+    throw error;
+  }
 }
 
 export default function UserCreate({

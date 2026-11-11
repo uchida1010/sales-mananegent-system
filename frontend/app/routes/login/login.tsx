@@ -1,4 +1,18 @@
+import { useLogin } from "./useLogin";
+
 export default function Login() {
+  const {
+    email,
+    setEmail,
+    password,
+    setPassword,
+    remember,
+    setRemember,
+    handleSubmit,
+    isSubmitting,
+    error,
+  } = useLogin();
+
   return (
     <div className="flex min-h-screen items-center justify-center bg-slate-100 px-4 py-8">
       <div className="w-full max-w-md">
@@ -30,7 +44,13 @@ export default function Login() {
             <p className="mt-2 text-sm text-slate-500">アカウント情報を入力してください</p>
           </div>
 
-          <form className="space-y-6">
+          <form
+            className="space-y-6"
+            onSubmit={(e) => {
+              e.preventDefault();
+              handleSubmit();
+            }}
+          >
             <div>
               <label htmlFor="email" className="mb-2 block text-sm font-semibold text-slate-700">
                 メールアドレス
@@ -44,6 +64,8 @@ export default function Login() {
                 autoComplete="email"
                 required
                 className="w-full rounded-lg border border-slate-300 bg-white px-4 py-3 text-sm text-slate-800 outline-none transition placeholder:text-slate-400 focus:border-blue-500 focus:ring-2 focus:ring-blue-500/20"
+                value={email}
+                onChange={(e) => setEmail(e.target.value)}
               />
             </div>
 
@@ -60,6 +82,8 @@ export default function Login() {
                 autoComplete="current-password"
                 required
                 className="w-full rounded-lg border border-slate-300 bg-white px-4 py-3 text-sm text-slate-800 outline-none transition placeholder:text-slate-400 focus:border-blue-500 focus:ring-2 focus:ring-blue-500/20"
+                value={password}
+                onChange={(e) => setPassword(e.target.value)}
               />
             </div>
 
@@ -68,8 +92,9 @@ export default function Login() {
                 id="remember"
                 type="checkbox"
                 name="remember"
-                defaultChecked
                 className="h-4 w-4 cursor-pointer rounded border-slate-300 accent-blue-600"
+                checked={remember}
+                onChange={(e) => setRemember(e.target.checked)}
               />
 
               <label htmlFor="remember" className="cursor-pointer text-sm text-slate-600">
@@ -77,11 +102,14 @@ export default function Login() {
               </label>
             </div>
 
+            {error && <p className="text-sm text-red-600">{error}</p>}
+
             <button
-              type="button"
+              type="submit"
               className="w-full rounded-lg bg-slate-800 px-4 py-3 text-sm font-semibold text-white shadow-sm transition hover:bg-slate-700 focus-visible:outline-2 focus-visible:outline-offset-2 focus-visible:outline-slate-800"
+              disabled={isSubmitting}
             >
-              ログイン
+              {isSubmitting ? "ログイン中..." : "ログイン"}
             </button>
           </form>
         </div>

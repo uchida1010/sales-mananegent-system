@@ -3,7 +3,7 @@ import { DoubleNavbar } from "../../components/DoubleNavbar";
 import { Pagination } from "@mantine/core";
 import type { Route } from "./+types/index";
 import { rolesIndex, userIndex } from "~/api/salesManagementSystem";
-import { useNavigate } from "react-router";
+import { useNavigate, redirect } from "react-router";
 import { Link } from "react-router";
 import {
   buildUserIndexParams,
@@ -12,6 +12,7 @@ import {
   useUserSearch,
   type UserSearchData,
 } from "./useUserSearch";
+import Axios from "axios";
 
 export function meta() {
   return [{ title: "ユーザー一覧ページ" }, { name: "description", content: "User Index Page" }];
@@ -22,19 +23,28 @@ export async function clientLoader({
 }: Route.ClientLoaderArgs): Promise<UserSearchData & { searchKey: string }> {
   const url = new URL(request.url);
   const searchParams = parseUserSearchParams(url.searchParams);
-  const [usersResponse, rolesResponse] = await Promise.all([
-    userIndex(buildUserIndexParams(searchParams)),
-    rolesIndex(),
-  ]);
 
-  return {
-    searchKey: url.search,
-    searchForm: toSearchForm(searchParams),
-    page: searchParams.page,
-    totalPages: usersResponse.meta.last_page,
-    users: usersResponse.data,
-    roles: rolesResponse.data,
-  };
+  try {
+    const [usersResponse, rolesResponse] = await Promise.all([
+      userIndex(buildUserIndexParams(searchParams)),
+      rolesIndex(),
+    ]);
+
+    return {
+      searchKey: url.search,
+      searchForm: toSearchForm(searchParams),
+      page: searchParams.page,
+      totalPages: usersResponse.meta.last_page,
+      users: usersResponse.data,
+      roles: rolesResponse.data,
+    };
+  } catch (error) {
+    if (Axios.isAxiosError(error) && error.response?.status === 401) {
+      throw redirect("/login");
+    }
+
+    throw error;
+  }
 }
 
 export default function UserIndex({
