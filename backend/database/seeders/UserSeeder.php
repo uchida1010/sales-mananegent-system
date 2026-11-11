@@ -5,6 +5,7 @@ namespace Database\Seeders;
 use App\Models\Role;
 use App\Models\User;
 use Illuminate\Database\Seeder;
+use Illuminate\Support\Facades\Hash;
 
 class UserSeeder extends Seeder
 {
@@ -22,6 +23,7 @@ class UserSeeder extends Seeder
             'user_code' => 'E000',
             'status' => fake()->randomElement($status),
             'email' => 'admin@example.com',
+            'password' => Hash::make('password'),
             'joined_at' => '2000-01-01',
         ]);
 
