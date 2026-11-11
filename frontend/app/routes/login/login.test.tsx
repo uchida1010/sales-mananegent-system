@@ -11,12 +11,10 @@ vi.mock("~/api/salesManagementSystem", () => ({
 }));
 
 beforeEach(() => {
-    vi.resetAllMocks();
+  vi.resetAllMocks();
 });
 
-const mockNavigate = vi.fn<
-  (to: string, options?: { replace?: boolean }) => void
->();
+const mockNavigate = vi.fn<(to: string, options?: { replace?: boolean }) => void>();
 
 vi.mock("react-router", async (importOriginal) => {
   const actual = await importOriginal<typeof import("react-router")>();
