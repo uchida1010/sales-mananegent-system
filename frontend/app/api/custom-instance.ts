@@ -9,6 +9,27 @@ export const AXIOS_INSTANCE = Axios.create({
   },
 });
 
+let isRedirecting = false;
+
+AXIOS_INSTANCE.interceptors.response.use(
+  (response) => {
+    return response;
+  },
+  (error) => {
+    if (
+      error.response?.status === 401 &&
+      window.location.pathname !== "/login" &&
+      !isRedirecting &&
+      error.config?.url !== "/logout"
+    ) {
+      isRedirecting = true;
+      window.location.href = "/login";
+    }
+
+    return Promise.reject(error);
+  },
+);
+
 export const customInstance = <T>(config: AxiosRequestConfig): Promise<T> => {
   const authPaths = [
     "/login",

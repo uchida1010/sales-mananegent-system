@@ -14,6 +14,7 @@ import {
 } from "@tabler/icons-react";
 import { Title, Tooltip, UnstyledButton } from "@mantine/core";
 import classes from "./DoubleNavbar.module.css";
+import { useLogout } from "../../hooks/useLogout";
 
 const mainLinksMockdata = [
   { icon: IconGauge, label: "ダッシュボード" },
@@ -46,6 +47,8 @@ const linksMockdata = [
 export function DoubleNavbar() {
   const [active, setActive] = useState("販売管理システム");
   const [activeLink, setActiveLink] = useState("Settings");
+
+  const { handleLogout, isSubmitting, error } = useLogout();
 
   const mainLinks = mainLinksMockdata.map((link) => (
     <Tooltip
@@ -94,6 +97,13 @@ export function DoubleNavbar() {
 
           {links}
         </div>
+      </div>
+      <div>
+        <UnstyledButton type="button" onClick={handleLogout} disabled={isSubmitting}>
+          {isSubmitting ? "ログアウト中..." : "ログアウト"}
+        </UnstyledButton>
+
+        {error && <p role="alert">{error}</p>}
       </div>
     </nav>
   );

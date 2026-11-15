@@ -73,11 +73,14 @@ export const useUserEdit = (userCode: string | undefined) => {
 
       navigate("/user");
     } catch (err) {
+      if (Axios.isAxiosError(err) && err.response?.status === 401) {
+        return;
+      }
       if (Axios.isAxiosError<ValidationErrorResponse>(err) && err.response?.status === 422) {
         const validationErrors = err.response.data.errors;
         setErrors(validationErrors);
       } else {
-        setError("ユーザー登録に失敗しました");
+        setError("ユーザー更新に失敗しました");
       }
     }
   };
@@ -120,8 +123,11 @@ export const useUserEdit = (userCode: string | undefined) => {
         resigned_at: response.data.resigned_at ?? "",
         roleId: String(response.data.roles?.[0]?.id ?? ""),
       });
-    } catch {
-      setError("ユーザー登録に失敗しました");
+    } catch (err) {
+      if (Axios.isAxiosError(err) && err.response?.status === 401) {
+        return;
+      }
+      setError("ユーザー情報の取得に失敗しました");
     }
   };
 
@@ -145,7 +151,10 @@ export const useUserEdit = (userCode: string | undefined) => {
       await userDestroy(userCode);
 
       navigate("/user");
-    } catch {
+    } catch (err) {
+      if (Axios.isAxiosError(err) && err.response?.status === 401) {
+        return;
+      }
       setError("ユーザーの削除に失敗しました");
     }
   };

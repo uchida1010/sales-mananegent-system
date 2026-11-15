@@ -63,6 +63,9 @@ export const useUserCreate = () => {
 
       navigate("/user");
     } catch (err) {
+      if (Axios.isAxiosError(err) && err.response?.status === 401) {
+        return;
+      }
       if (Axios.isAxiosError<ValidationErrorResponse>(err) && err.response?.status === 422) {
         const validationErrors = err.response.data.errors;
         setErrors(validationErrors);
