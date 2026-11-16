@@ -11,6 +11,7 @@ import {
   IconPackage,
   IconTruck,
   IconSettings,
+  IconLogout,
 } from "@tabler/icons-react";
 import { Title, Tooltip, UnstyledButton } from "@mantine/core";
 import classes from "./DoubleNavbar.module.css";
@@ -96,14 +97,26 @@ export function DoubleNavbar() {
           </Title>
 
           {links}
-        </div>
-      </div>
-      <div>
-        <UnstyledButton type="button" onClick={handleLogout} disabled={isSubmitting}>
-          {isSubmitting ? "ログアウト中..." : "ログアウト"}
-        </UnstyledButton>
 
-        {error && <p role="alert">{error}</p>}
+          <div className={classes.logoutArea}>
+            <UnstyledButton
+              type="button"
+              className={classes.logoutButton}
+              onClick={handleLogout}
+              disabled={isSubmitting}
+            >
+              <IconLogout size={20} stroke={1.5} />
+
+              <span>{isSubmitting ? "ログアウト中..." : "ログアウト"}</span>
+            </UnstyledButton>
+
+            {error && (
+              <p className={classes.logoutError} role="alert">
+                {error}
+              </p>
+            )}
+          </div>
+        </div>
       </div>
     </nav>
   );
