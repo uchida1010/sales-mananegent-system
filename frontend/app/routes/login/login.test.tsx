@@ -1,5 +1,5 @@
 import { render, screen, waitFor } from "@testing-library/react";
-import Login from "./login";
+import Login, { clientLoader } from "./login";
 import { MemoryRouter } from "react-router";
 import userEvent from "@testing-library/user-event";
 import { sanctumCsrfCookie, loginStore, me } from "~/api/salesManagementSystem";
@@ -334,7 +334,7 @@ test("ログイン成功後にユーザー一覧へ遷移すること", async ()
     config: { headers: {} },
   } as AxiosResponse);
 
-  vi.mocked(me).mockRejectedValueOnce(error401);
+  vi.mocked(me).mockResolvedValue(undefined as never);
 
   render(
     <MemoryRouter>
@@ -358,10 +358,10 @@ test("ログイン成功後にユーザー一覧へ遷移すること", async ()
     expect(mockNavigate).toHaveBeenCalledWith("/user");
   });
 
-  expect(me).toHaveBeenCalledTimes(2);
+  expect(me).toHaveBeenCalledTimes(1);
 
   expect(vi.mocked(loginStore).mock.invocationCallOrder[0]).toBeLessThan(
-    vi.mocked(me).mock.invocationCallOrder[1],
+    vi.mocked(me).mock.invocationCallOrder[0],
   );
 });
 
@@ -563,23 +563,46 @@ test("ログイン後の認証確認に失敗した場合は画面遷移しな�
 
   await user.click(screen.getByRole("button", { name: "ログイン" }));
 
-  expect(me).toHaveBeenCalledTimes(2);
+  await waitFor(() => {
+    expect(me).toHaveBeenCalledTimes(1);
+  });
+
+  expect(mockNavigate).not.toHaveBeenCalled();
 
   expect(mockNavigate).not.toHaveBeenCalled();
 });
 
-test("ログイン済みの場合はユーザー一覧へ自動遷移すること", async () => {
+test("ログイン済みの場合はユーザー一覧へリダイレクトすること", async () => {
   vi.mocked(me).mockResolvedValue(undefined as never);
 
-  render(
-    <MemoryRouter>
-      <Login />
-    </MemoryRouter>,
-  );
+  const result = await clientLoader();
 
-  await waitFor(() => {
-    expect(mockNavigate).toHaveBeenCalledWith("/user");
+  expect(me).toHaveBeenCalledTimes(1);
+  expect(result).toBeInstanceOf(Response);
 
-    expect(loginStore).not.toHaveBeenCalled();
-  });
+  if (!(result instanceof Response)) {
+    throw new Error("リダイレクトレスポンスが返されませんでした");
+  }
+
+  expect(result.status).toBe(302);
+  expect(result.headers.get("Location")).toBe("/user");
+
+  expect(loginStore).not.toHaveBeenCalled();
+});
+
+test("未ログインの場合はログイン画面を表示できること", async () => {
+  const error401 = new AxiosError("未認証", "ERR_BAD_REQUEST", undefined, undefined, {
+    data: {},
+    status: 401,
+    statusText: "Unauthorized",
+    headers: {},
+    config: { headers: {} },
+  } as AxiosResponse);
+
+  vi.mocked(me).mockRejectedValue(error401);
+
+  const result = await clientLoader();
+
+  expect(result).toBeUndefined();
+  expect(me).toHaveBeenCalledTimes(1);
 });
