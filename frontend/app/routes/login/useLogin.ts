@@ -1,4 +1,4 @@
-import { useState, useEffect, useRef } from "react";
+import { useState, useRef } from "react";
 import { sanctumCsrfCookie, loginStore, me } from "~/api/salesManagementSystem";
 import { useNavigate } from "react-router";
 import Axios from "axios";
@@ -61,24 +61,6 @@ export const useLogin = () => {
       isSubmittingRef.current = false;
     }
   };
-
-  useEffect(() => {
-    const checkAuth = async () => {
-      try {
-        await me();
-
-        navigate("/user");
-      } catch (error) {
-        if (Axios.isAxiosError(error) && error.response?.status === 401) {
-          return;
-        }
-
-        setError("認証状態の確認に失敗しました");
-      }
-    };
-
-    checkAuth();
-  }, [navigate]);
 
   return {
     email,

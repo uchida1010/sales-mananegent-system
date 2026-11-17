@@ -1,4 +1,35 @@
 import { useLogin } from "./useLogin";
+import { me } from "~/api/salesManagementSystem";
+import { redirect } from "react-router";
+import Axios from "axios";
+
+export async function clientLoader() {
+  try {
+    await me();
+
+    return redirect("/user");
+  } catch (error) {
+    if (Axios.isAxiosError(error) && error.response?.status === 401) {
+      return;
+    }
+
+    throw error;
+  }
+}
+
+clientLoader.hydrate = true as const;
+
+export function HydrateFallback() {
+  return (
+    <div className="flex min-h-screen items-center justify-center bg-slate-100">
+      <div
+        className="h-10 w-10 animate-spin rounded-full border-4 border-slate-300 border-t-blue-600"
+        role="status"
+        aria-label="認証状態を確認中"
+      />
+    </div>
+  );
+}
 
 export default function Login() {
   const {

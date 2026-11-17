@@ -28,9 +28,21 @@ export default function ProtectedRoute() {
     void checkAuth();
   }, [navigate]);
 
-  if (isLoading) {
-    return <p>認証確認中...</p>;
-  }
+if (isLoading) {
+  return (
+    <div className="flex min-h-screen flex-col items-center justify-center gap-4 bg-slate-50">
+      <div
+        className="h-10 w-10 animate-spin rounded-full border-4 border-slate-200 border-t-blue-600"
+        role="status"
+        aria-label="認証確認中"
+      />
+
+      <p className="text-sm font-medium text-slate-600">
+        認証確認中...
+      </p>
+    </div>
+  );
+}
 
   if (error) {
     return <p>{error}</p>;
