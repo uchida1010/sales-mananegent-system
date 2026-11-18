@@ -9,5 +9,7 @@ export default [
     route("user", "./routes/user/index.tsx"),
     route("user/create", "./routes/user/create.tsx"),
     route("users/:userCode/edit", "./routes/user/edit.tsx"),
+
+    route("customer", "./routes/customer/index.tsx"),
   ]),
 ] satisfies RouteConfig;
