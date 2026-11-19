@@ -176,6 +176,145 @@
                 }
             ]
         },
+        "/customer": {
+            "get": {
+                "operationId": "customer.index",
+                "summary": "Display a listing of the resource",
+                "tags": [
+                    "Customer"
+                ],
+                "responses": {
+                    "200": {
+                        "description": "Array of `CustomerResource`",
+                        "content": {
+                            "application/json": {
+                                "schema": {
+                                    "type": "object",
+                                    "properties": {
+                                        "data": {
+                                            "type": "array",
+                                            "items": {
+                                                "$ref": "#/components/schemas/CustomerResource"
+                                            }
+                                        }
+                                    },
+                                    "required": [
+                                        "data"
+                                    ]
+                                }
+                            }
+                        }
+                    },
+                    "401": {
+                        "$ref": "#/components/responses/AuthenticationException"
+                    }
+                }
+            },
+            "post": {
+                "operationId": "customer.store",
+                "summary": "Store a newly created resource in storage",
+                "tags": [
+                    "Customer"
+                ],
+                "responses": {
+                    "200": {
+                        "description": ""
+                    },
+                    "401": {
+                        "$ref": "#/components/responses/AuthenticationException"
+                    }
+                }
+            }
+        },
+        "/customer/{customer}": {
+            "get": {
+                "operationId": "customer.show",
+                "summary": "Display the specified resource",
+                "tags": [
+                    "Customer"
+                ],
+                "parameters": [
+                    {
+                        "name": "customer",
+                        "in": "path",
+                        "required": true,
+                        "description": "The customer ID",
+                        "schema": {
+                            "type": "integer"
+                        }
+                    }
+                ],
+                "responses": {
+                    "200": {
+                        "description": ""
+                    },
+                    "404": {
+                        "$ref": "#/components/responses/ModelNotFoundException"
+                    },
+                    "401": {
+                        "$ref": "#/components/responses/AuthenticationException"
+                    }
+                }
+            },
+            "put": {
+                "operationId": "customer.update",
+                "summary": "Update the specified resource in storage",
+                "tags": [
+                    "Customer"
+                ],
+                "parameters": [
+                    {
+                        "name": "customer",
+                        "in": "path",
+                        "required": true,
+                        "description": "The customer ID",
+                        "schema": {
+                            "type": "integer"
+                        }
+                    }
+                ],
+                "responses": {
+                    "200": {
+                        "description": ""
+                    },
+                    "404": {
+                        "$ref": "#/components/responses/ModelNotFoundException"
+                    },
+                    "401": {
+                        "$ref": "#/components/responses/AuthenticationException"
+                    }
+                }
+            },
+            "delete": {
+                "operationId": "customer.destroy",
+                "summary": "Remove the specified resource from storage",
+                "tags": [
+                    "Customer"
+                ],
+                "parameters": [
+                    {
+                        "name": "customer",
+                        "in": "path",
+                        "required": true,
+                        "description": "The customer ID",
+                        "schema": {
+                            "type": "integer"
+                        }
+                    }
+                ],
+                "responses": {
+                    "200": {
+                        "description": ""
+                    },
+                    "404": {
+                        "$ref": "#/components/responses/ModelNotFoundException"
+                    },
+                    "401": {
+                        "$ref": "#/components/responses/AuthenticationException"
+                    }
+                }
+            }
+        },
         "/me": {
             "get": {
                 "operationId": "me",
@@ -657,6 +796,91 @@
     },
     "components": {
         "schemas": {
+            "CustomerResource": {
+                "type": "object",
+                "properties": {
+                    "id": {
+                        "type": "integer",
+                        "description": "\u53d6\u5f15\u5148ID \u30b7\u30b9\u30c6\u30e0\u5185\u3067\u53d6\u5f15\u5148\u3092\u4e00\u610f\u3067\u8b58\u5225\u3059\u308b\u756a\u53f7\u3067\u3059\u3002",
+                        "examples": [
+                            1
+                        ]
+                    },
+                    "name": {
+                        "type": "string",
+                        "description": "\u53d6\u5f15\u5148\u540d \u753b\u9762\u4e0a\u306b\u8868\u793a\u3059\u308b\u53d6\u5f15\u5148\u540d\u3067\u3059\u3002",
+                        "examples": [
+                            "ABC\u682a\u5f0f\u4f1a\u793e"
+                        ]
+                    },
+                    "address": {
+                        "type": [
+                            "string",
+                            "null"
+                        ],
+                        "description": "\u4f4f\u6240 \u753b\u9762\u4e0a\u306b\u8868\u793a\u3059\u308b\u53d6\u5f15\u5148\u306e\u4f4f\u6240\u3067\u3059\u3002",
+                        "examples": [
+                            "\u5927\u962a\u5e9c\u5927\u962a\u5e02"
+                        ]
+                    },
+                    "person_in_charge": {
+                        "type": "object",
+                        "description": "\u62c5\u5f53\u8005 \u753b\u9762\u4e0a\u306b\u8868\u793a\u3059\u308b\u62c5\u5f53\u8005\u3067\u3059\u3002\n\u53d6\u5f15\u5148\u306f\u8ab0\u304c\u62c5\u5f53\u3059\u308b\u306e\u304b\u3092\u7ba1\u7406\u3057\u307e\u3059\u3002",
+                        "examples": [
+                            {
+                                "id": 1,
+                                "name": "\u5c71\u7530\u592a\u90ce"
+                            }
+                        ],
+                        "properties": {
+                            "id": {
+                                "type": [
+                                    "integer",
+                                    "null"
+                                ]
+                            },
+                            "name": {
+                                "type": [
+                                    "string",
+                                    "null"
+                                ]
+                            }
+                        },
+                        "required": [
+                            "id",
+                            "name"
+                        ]
+                    },
+                    "lead_source": {
+                        "type": "object",
+                        "description": "\u30ea\u30fc\u30c9\u7372\u5f97\u5143 \u753b\u9762\u4e0a\u306b\u8868\u793a\u3059\u308b\u30ea\u30fc\u30c9\u7372\u5f97\u5143\n\u53d6\u5f15\u5148\u306b\u306a\u3063\u305f\u7d4c\u8def\u3084\u304d\u3063\u304b\u3051\u3092\u7ba1\u7406\u3057\u307e\u3059\u3002\n\n\u5024\u306e\u4f8b\uff1a\n- HP\n- \u55b6\u696d\n- \u7d39\u4ecb",
+                        "examples": [
+                            {
+                                "id": 1,
+                                "name": "HP"
+                            }
+                        ],
+                        "properties": {
+                            "id": {
+                                "type": "integer"
+                            },
+                            "name": {
+                                "type": "string"
+                            }
+                        },
+                        "required": [
+                            "id",
+                            "name"
+                        ]
+                    }
+                },
+                "required": [
+                    "id",
+                    "name",
+                    "address"
+                ],
+                "title": "CustomerResource"
+            },
             "LoginRequest": {
                 "type": "object",
                 "properties": {

@@ -5,6 +5,58 @@
  * OpenAPI spec version: 0.0.1
  */
 import { customInstance } from './custom-instance';
+/**
+ * 担当者 画面上に表示する担当者です。
+ * 取引先は誰が担当するのかを管理します。
+ */
+export type CustomerResourcePersonInCharge = {
+  /** @nullable */
+  id: number | null;
+  /** @nullable */
+  name: string | null;
+};
+
+/**
+ * リード獲得元 画面上に表示するリード獲得元
+ * 取引先になった経路やきっかけを管理します。
+ *
+ * 値の例：
+ * - HP
+ * - 営業
+ * - 紹介
+ */
+export type CustomerResourceLeadSource = {
+  id: number;
+  name: string;
+};
+
+export interface CustomerResource {
+  /** 取引先ID システム内で取引先を一意で識別する番号です。 */
+  id: number;
+  /** 取引先名 画面上に表示する取引先名です。 */
+  name: string;
+  /**
+     * 住所 画面上に表示する取引先の住所です。
+     * @nullable
+     */
+  address: string | null;
+  /**
+     * 担当者 画面上に表示する担当者です。
+     * 取引先は誰が担当するのかを管理します。
+     */
+  person_in_charge?: CustomerResourcePersonInCharge;
+  /**
+     * リード獲得元 画面上に表示するリード獲得元
+     * 取引先になった経路やきっかけを管理します。
+     *
+     * 値の例：
+     * - HP
+     * - 営業
+     * - 紹介
+     */
+  lead_source?: CustomerResourceLeadSource;
+}
+
 export interface LoginRequest {
   email: string;
   password: string;
@@ -360,6 +412,10 @@ export type LoginStore422 = {
   errors: LoginStore422Errors;
 };
 
+export type CustomerIndex200 = {
+  data: CustomerResource[];
+};
+
 export type Me200 = {
   data: UserResource;
 };
@@ -550,6 +606,66 @@ export const sanctumCsrfCookie = (
       );
     }
 
+/**
+ * @summary Display a listing of the resource
+ */
+export const customerIndex = (
+
+ ) => {
+      return customInstance<CustomerIndex200>(
+      {url: `/customer`, method: 'GET'
+    },
+      );
+    }
+
+/**
+ * @summary Store a newly created resource in storage
+ */
+export const customerStore = (
+
+ ) => {
+      return customInstance<void>(
+      {url: `/customer`, method: 'POST'
+    },
+      );
+    }
+
+/**
+ * @summary Display the specified resource
+ */
+export const customerShow = (
+    customer: number,
+ ) => {
+      return customInstance<void>(
+      {url: `/customer/${customer}`, method: 'GET'
+    },
+      );
+    }
+
+/**
+ * @summary Update the specified resource in storage
+ */
+export const customerUpdate = (
+    customer: number,
+ ) => {
+      return customInstance<void>(
+      {url: `/customer/${customer}`, method: 'PUT'
+    },
+      );
+    }
+
+/**
+ * @summary Remove the specified resource from storage
+ */
+export const customerDestroy = (
+    customer: number,
+ ) => {
+      return customInstance<void>(
+      {url: `/customer/${customer}`, method: 'DELETE'
+    },
+      );
+    }
+
 export const me = (
 
  ) => {
@@ -648,6 +764,11 @@ export const userDestroy = (
 export type LoginStoreResult = NonNullable<Awaited<ReturnType<typeof loginStore>>>
 export type LogoutResult = NonNullable<Awaited<ReturnType<typeof logout>>>
 export type SanctumCsrfCookieResult = NonNullable<Awaited<ReturnType<typeof sanctumCsrfCookie>>>
+export type CustomerIndexResult = NonNullable<Awaited<ReturnType<typeof customerIndex>>>
+export type CustomerStoreResult = NonNullable<Awaited<ReturnType<typeof customerStore>>>
+export type CustomerShowResult = NonNullable<Awaited<ReturnType<typeof customerShow>>>
+export type CustomerUpdateResult = NonNullable<Awaited<ReturnType<typeof customerUpdate>>>
+export type CustomerDestroyResult = NonNullable<Awaited<ReturnType<typeof customerDestroy>>>
 export type MeResult = NonNullable<Awaited<ReturnType<typeof me>>>
 export type RolesIndexResult = NonNullable<Awaited<ReturnType<typeof rolesIndex>>>
 export type UserSetupPasswordResult = NonNullable<Awaited<ReturnType<typeof userSetupPassword>>>
