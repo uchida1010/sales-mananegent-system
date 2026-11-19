@@ -22,28 +22,12 @@ const mainLinksMockdata = [
   { icon: IconUsers, label: "ユーザー管理" },
   { icon: IconBuildingStore, label: "取引先管理" },
   { icon: IconAddressBook, label: "連絡先" },
-  { icon: IconHistory, label: "営業履歴" },
   { icon: IconFileInvoice, label: "受注" },
   { icon: IconFileImport, label: "発注" },
-  { icon: IconTable, label: "在庫表" },
-  { icon: IconPackage, label: "商品マスタ" },
-  { icon: IconTruck, label: "配車依頼" },
-  { icon: IconSettings, label: "設定" },
+  { icon: IconPackage, label: "商品管理" },
 ];
 
-const linksMockdata = [
-  "ダッシュボード",
-  "ユーザー",
-  "取引先",
-  "連絡先",
-  "営業履歴",
-  "受注",
-  "発注",
-  "在庫表",
-  "商品マスタ",
-  "配車依頼",
-  "設定",
-];
+const linksMockdata = ["ダッシュボード", "ユーザー", "取引先", "連絡先", "受注", "発注", "商品"];
 
 export function DoubleNavbar() {
   const [active, setActive] = useState("販売管理システム");
