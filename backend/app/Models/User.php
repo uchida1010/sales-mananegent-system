@@ -78,4 +78,12 @@ class User extends Authenticatable
             'role_id'
         )->withTimestamps();
     }
+
+    /**
+     * @return HasMany<Customer, $this>
+     */
+    public function customers(): HasMany
+    {
+        return $this->hasMany(Customer::class, 'person_in_charge_id');
+    }
 }
