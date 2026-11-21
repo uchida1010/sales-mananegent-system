@@ -87,4 +87,12 @@ class User extends Authenticatable
     {
         return $this->hasMany(Customer::class, 'person_in_charge_id');
     }
+
+    /**
+     * @return HasMany<CustomerContact, $this>
+     */
+    public function customerContacts(): HasMany
+    {
+        return $this->hasMany(CustomerContact::class, 'person_in_charge_id');
+    }
 }
