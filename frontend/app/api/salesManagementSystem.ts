@@ -5,6 +5,17 @@
  * OpenAPI spec version: 0.0.1
  */
 import { customInstance } from './custom-instance';
+export type ClosingDay = typeof ClosingDay[keyof typeof ClosingDay];
+
+
+export const ClosingDay = {
+  NUMBER_10: '10',
+  NUMBER_15: '15',
+  NUMBER_20: '20',
+  NUMBER_25: '25',
+  end_of_month: 'end_of_month',
+} as const;
+
 /**
  * 担当者 画面上に表示する担当者です。
  * 取引先は誰が担当するのかを管理します。
@@ -55,6 +66,880 @@ export interface CustomerResource {
      * - 紹介
      */
   lead_source?: CustomerResourceLeadSource;
+}
+
+export type CustomerStoreRequestContactsItem = {
+  /**
+     * 取引先担当者の氏名を指定します。 新規登録する取引先に紐づく各取引先担当者の氏名を指定してください。
+     * すべての取引先担当者で氏名の入力が必須です。
+     * 最大255文字まで入力できます。
+     *
+     * 入力例：
+     * - 田中太郎
+     * - 山田花子
+     * @maxLength 255
+     */
+  name: string;
+  /**
+     * 取引先担当者の電話番号(代表)を指定します。 新規登録する取引先に紐づく各取引先担当者の電話番号(代表)を指定してください。
+     * ハイフンを含む電話番号も入力できます。
+     * 最大20文字まで入力できます。
+     * 必要がない場合は省略できます。
+     *
+     * 入力例：
+     * - 123-456-7890
+     * - 1234567890
+     * @maxLength 20
+     * @nullable
+     */
+  tel?: string | null;
+  /**
+     * 取引先担当者の携帯電話番号を指定します。 新規登録する取引先に紐づく各取引先担当者の携帯電話番号を指定してください。
+     * ハイフンを含む携帯電話番号も入力できます。
+     * 最大20文字まで入力できます。
+     * 必要がない場合は省略できます。
+     *
+     * 入力例：
+     * - 090-1234-5678
+     * - 080-1234-5678
+     * @maxLength 20
+     * @nullable
+     */
+  mobile?: string | null;
+  /**
+     * 取引先担当者のメールアドレスを指定します。 新規登録する取引先に紐づく各取引先担当者のメールアドレスを指定してください。
+     * 有効なメールアドレス形式で入力してください。
+     * 最大255文字まで入力できます。
+     * 必要がない場合は省略できます。
+     *
+     * 入力例：
+     * - tanaka@example.com
+     * - yamada@example.com
+     * @maxLength 255
+     * @nullable
+     */
+  email?: string | null;
+  /**
+     * 取引先担当者の社内担当者を指定します。 新規登録する取引先に紐づく各取引先担当者の社内担当者を指定してください。
+     * usersテーブルに存在するユーザーIDを指定します。
+     * 必要がない場合は省略できます。
+     *
+     * 入力例：
+     * - 1（田中太郎）
+     * - 2（山田花子）
+     * @nullable
+     */
+  person_in_charge_id?: number | null;
+  /**
+     * 取引先担当者の役割を指定します。 新規登録する取引先に紐づく各取引先担当者の役割を指定してください。
+     * 最大255文字まで入力できます。
+     * 必要がない場合は省略できます。
+     *
+     * 入力例：
+     * - メイン担当者
+     * - 経理担当者
+     * @maxLength 255
+     * @nullable
+     */
+  role?: string | null;
+  /**
+     * 取引先担当者の役職を指定します。 新規登録する取引先に紐づく各取引先担当者の役職を指定してください。
+     * 最大255文字まで入力できます。
+     * 必要がない場合は省略できます。
+     *
+     * 入力例：
+     * - 営業部長
+     * - 代表取締役
+     * @maxLength 255
+     * @nullable
+     */
+  position?: string | null;
+  /**
+     * 取引先担当者の有効状態を指定します。 新規登録する取引先に紐づく各取引先担当者の有効状態を指定してください。
+     * trueの場合は有効、falseの場合は無効として扱います。
+     * 必要がない場合は省略でき、省略時はtrue（有効）として登録します。
+     *
+     * 入力例：
+     * - true（有効）
+     * - false（無効）
+     */
+  is_active?: boolean;
+  /**
+     * 取引先担当者の備考を指定します。 新規登録する取引先に紐づく各取引先担当者の補足情報や注意事項を指定してください。
+     * 最大1000文字まで入力できます。
+     * 必要がない場合は省略できます。
+     *
+     * 入力例：
+     * - 連絡は基本的にメールで対応する
+     * @maxLength 1000
+     * @nullable
+     */
+  remarks?: string | null;
+};
+
+export type CustomerStoreRequestDeliveriesItem = {
+  /**
+     * 配送情報の出荷元名または納品先名を指定します。 新規登録する取引先に紐づく各出荷元名または納品先名を指定してください。
+     * 配送情報を登録する場合は、すべての出荷元名または納品先名の入力が必須です。
+     * 最大255文字まで入力できます。
+     *
+     * 入力例：
+     * - 田中金属株式会社 大阪工場
+     * - 株式会社田中商事 東京営業所
+     * @maxLength 255
+     */
+  name: string;
+  /**
+     * 出荷元または納品先の担当者名を指定します。 新規登録する取引先に紐づく各配送先の担当者名を指定してください。
+     * 最大255文字まで入力できます。
+     * 必要がない場合は省略できます。
+     *
+     * 入力例：
+     * - 田中太郎
+     * - 山田花子
+     * @maxLength 255
+     * @nullable
+     */
+  contact_name?: string | null;
+  /**
+     * 出荷元または納品先の住所を指定します。 新規登録する取引先に紐づく各出荷元または納品先の住所を指定してください。
+     * 配送情報を登録する場合は、すべての出荷元または納品先で住所の入力が必須です。
+     * 最大255文字まで入力できます。
+     *
+     * 入力例：
+     * - 大阪府大阪市北区梅田1-1-1
+     * - 東京都千代田区丸の内1-2-3
+     * - 京都府京都市中京区烏丸通1-2-3
+     * @maxLength 255
+     */
+  address: string;
+  /**
+     * 出荷元または納品先の電話番号を指定します。 新規登録する取引先に紐づく各出荷元または納品先の電話番号を指定してください。
+     * ハイフンを含む電話番号も入力できます。
+     * 最大20文字まで入力できます。
+     * 必要がない場合は省略できます。
+     *
+     * 入力例：
+     * - 123-456-7890
+     * - 1234567890
+     * @maxLength 20
+     * @nullable
+     */
+  tel?: string | null;
+  /**
+     * 出荷元または納品先の備考を指定します。 新規登録する取引先に紐づく各出荷元または納品先の補足情報や注意事項を指定してください。
+     * 最大1000文字まで入力できます。
+     * 必要がない場合は省略できます。
+     *
+     * 入力例：
+     * - 到着の10分前にに担当者への電話連絡が必要。
+     * - 入庫可能時間：13時から15時
+     * @maxLength 1000
+     * @nullable
+     */
+  remarks?: string | null;
+};
+
+export type TermsType = typeof TermsType[keyof typeof TermsType];
+
+
+export const TermsType = {
+  closing: 'closing',
+  each_time: 'each_time',
+} as const;
+
+export type PaymentMonth = typeof PaymentMonth[keyof typeof PaymentMonth];
+
+
+export const PaymentMonth = {
+  next_month: 'next_month',
+  month_after_next: 'month_after_next',
+} as const;
+
+export type PaymentDay = typeof PaymentDay[keyof typeof PaymentDay];
+
+
+export const PaymentDay = {
+  NUMBER_5: '5',
+  NUMBER_10: '10',
+  NUMBER_15: '15',
+  NUMBER_20: '20',
+  NUMBER_25: '25',
+  end_of_month: 'end_of_month',
+} as const;
+
+export type DueType = typeof DueType[keyof typeof DueType];
+
+
+export const DueType = {
+  advance: 'advance',
+  three_business_days: 'three_business_days',
+  seven_business_days: 'seven_business_days',
+  immediate: 'immediate',
+} as const;
+
+export interface CustomerStoreRequest {
+  /**
+     * 取引先名を指定します。 新規登録する取引先名を指定してください。
+     * 取引先名の入力は必須です。
+     * 最大255文字まで入力できます。
+     *
+     * 入力例：
+     * - 田中金属株式会社
+     * - 株式会社田中商事
+     * @maxLength 255
+     */
+  name: string;
+  /**
+     * 取引先名のよみがなを指定します。 新規登録する取引先名のよみがなを指定してください。
+     * 必要がない場合は省略できます。
+     * 最大255文字まで入力できます。
+     *
+     * 入力例：
+     * - たなかきんぞくかぶしきかいしゃ
+     * - かぶしきかいしゃたなかしょうじ
+     * @maxLength 255
+     * @nullable
+     */
+  kana?: string | null;
+  /**
+     * 取引先名の略称を指定します。 新規登録する取引先名の略称を指定してください。
+     * 必要がない場合は省略できます。
+     * 最大255文字まで入力できます。
+     *
+     * 入力例：
+     * - 田中金属
+     * - 田中商事
+     * @maxLength 255
+     * @nullable
+     */
+  short_name?: string | null;
+  /**
+     * 住所を指定します。 新規登録する取引先名の住所を指定してください。
+     * 必要がない場合は省略できます。
+     * 最大255文字まで入力できます。
+     *
+     * 入力例：
+     * - 大阪府大阪市淀川区1-1-1
+     * - 東京都新宿区1-1-1
+     * @maxLength 255
+     * @nullable
+     */
+  address?: string | null;
+  /**
+     * TELを指定します。 新規登録する取引先のTELを指定してください。
+     * 必要がない場合は省略できます。
+     * 最大20文字まで入力できます。
+     *
+     * 入力例：
+     * - 123-456-7890
+     * - 1234567890
+     * @maxLength 20
+     * @nullable
+     */
+  tel?: string | null;
+  /**
+     * FAXを指定します。 新規登録する取引先のFAXを指定してください。
+     * 必要がない場合は省略できます。
+     * 最大20文字まで入力できます。
+     *
+     * 入力例：
+     * - 123-456-7890
+     * - 1234567890
+     * @maxLength 20
+     * @nullable
+     */
+  fax?: string | null;
+  /**
+     * 取引先の社内担当者を指定します。 新規登録する取引先を担当するユーザーIDを指定してください。
+     * usersテーブルに登録されているIDのみ指定できます。
+     * 必要がない場合は省略できます。
+     *
+     * 入力例：
+     * - 1
+     * - 3
+     * @nullable
+     */
+  person_in_charge_id?: number | null;
+  /**
+     * リード獲得元を指定します。 新規登録する取引先のリード獲得元IDを指定してください。
+     * lead_sourcesテーブルに登録されているIDのみ指定できます。
+     * 必要がない場合は省略できます。
+     *
+     * 入力例：
+     * - 1
+     * - 2
+     */
+  lead_source_id: number;
+  /**
+     * 取引先の有効・無効を指定します。 新規登録する取引先が有効か無効かを指定してください。
+     * 必要がない場合は省略できます。
+     *
+     * 入力例：
+     * - true
+     * - false
+     * @nullable
+     */
+  is_active?: boolean | null;
+  /**
+     * 取引先の備考を指定します。 新規登録する取引先に関する補足情報や注意事項を指定してください。
+     * 最大1000文字まで入力できます。
+     * 必要がない場合は省略できます。
+     *
+     * 入力例：
+     * - 毎月の月末に受領書を送付する。
+     * @maxLength 1000
+     * @nullable
+     */
+  remarks?: string | null;
+  /**
+     * 支払方法の種類を指定します。 新規登録する取引先の支払方法を指定してください。
+     * 必要がない場合は省略できます。
+     *
+     * 入力例：
+     * - closing（締め払い）
+     * - each_time（都度払い）
+     */
+  payment_type?: TermsType;
+  /**
+     * 支払締日の種類を指定します。 新規登録する取引先の支払締日を指定してください。
+     * 必要がない場合は省略できます。
+     *
+     * 入力例：
+     * - 10（10日締め）
+     * - 15（15日締め）
+     * - 20（20日締め）
+     * - 25（25日締め）
+     * - end_of_month（月末締め）
+     */
+  payment_closing_day?: ClosingDay;
+  /**
+     * 支払月の種類を指定します。 新規登録する取引先の支払月を指定してください。
+     * 必要がない場合は省略できます。
+     *
+     * 入力例：
+     * - next_month（翌月）
+     * - month_after_next（翌々月）
+     */
+  payment_month?: PaymentMonth;
+  /**
+     * 支払日の種類を指定します。 新規登録する取引先の支払日を指定してください。
+     * 必要がない場合は省略できます。
+     *
+     * 入力例：
+     * - 5（5日払い）
+     * - 10（10日払い）
+     * - 15（15日払い）
+     * - 20（20日払い）
+     * - 25（25日払い）
+     * - end_of_month（月末払い）
+     */
+  payment_day?: PaymentDay;
+  /**
+     * 支払期日の種類を指定します。 新規登録する取引先の支払期日の種類を指定してください。
+     * 必要がない場合は省略できます。
+     *
+     * 入力例：
+     * - advance（前金）
+     * - three_business_days（3営業日）
+     * - seven_business_days（7営業日）
+     * - immediate（都度／即時）
+     */
+  payment_due_type?: DueType;
+  /**
+     * 請求方法の種類を指定します。 新規登録する取引先の請求方法を指定してください。
+     * 必要がない場合は省略できます。
+     *
+     * 入力例：
+     * - closing（締め請求）
+     * - each_time（都度請求）
+     */
+  billing_type?: TermsType;
+  /**
+     * 請求締日の種類を指定します。 新規登録する取引先の請求締日を指定してください。
+     * 必要がない場合は省略できます。
+     *
+     * 入力例：
+     * - 10（10日締め）
+     * - 15（15日締め）
+     * - 20（20日締め）
+     * - 25（25日締め）
+     * - end_of_month（月末締め）
+     */
+  billing_closing_day?: ClosingDay;
+  /**
+     * 請求に対する支払月の種類を指定します。 新規登録する取引先の請求に対する支払月を指定してください。
+     * 必要がない場合は省略できます。
+     *
+     * 入力例：
+     * - next_month（翌月）
+     * - month_after_next（翌々月）
+     */
+  billing_payment_month?: PaymentMonth;
+  /**
+     * 請求に対する支払日の種類を指定します。 新規登録する取引先の請求に対する支払日を指定してください。
+     * 必要がない場合は省略できます。
+     *
+     * 入力例：
+     * - 5（5日払い）
+     * - 10（10日払い）
+     * - 15（15日払い）
+     * - 20（20日払い）
+     * - 25（25日払い）
+     * - end_of_month（月末払い）
+     */
+  billing_payment_day?: PaymentDay;
+  /**
+     * 請求に対する支払期日の種類を指定します。 新規登録する取引先の請求に対する支払期日を指定してください。
+     * 必要がない場合は省略できます。
+     *
+     * 入力例：
+     * - advance（前金）
+     * - three_business_days（3営業日）
+     * - seven_business_days（7営業日）
+     * - immediate（都度／即時）
+     */
+  billing_due_type?: DueType;
+  /**
+     * 取引先の取引先担当者情報を指定します。 新規登録する取引先に紐づく取引先担当者情報を配列で指定してください。
+     * 取引先担当者は最低1件以上の登録が必須です。
+     * 複数の取引先担当者を登録することもできます。
+     *
+     * 入力例：
+     * - 連絡先1：田中太郎、tanaka@example.com
+     * - 連絡先2：山田花子、yamada@example.com
+     * @minItems 1
+     */
+  contacts: CustomerStoreRequestContactsItem[];
+  /**
+     * 取引先の配送情報を指定します。 新規登録する取引先に紐づく配送情報を配列で指定してください。
+     * 複数の配送先を登録することもできます。
+     * 必要がない場合は省略できます。
+     *
+     * 入力例：
+     * - 配送先1：田中金属株式会社 大阪工場
+     * - 配送先2：株式会社田中商事 東京営業所
+     * @nullable
+     */
+  deliveries?: CustomerStoreRequestDeliveriesItem[] | null;
+}
+
+export type CustomerUpdateRequestContactsItem = {
+  /**
+     * 取引先担当者の氏名を指定します。 新規登録する取引先に紐づく各取引先担当者の氏名を指定してください。
+     * すべての取引先担当者で氏名の入力が必須です。
+     * 最大255文字まで入力できます。
+     *
+     * 入力例：
+     * - 田中太郎
+     * - 山田花子
+     * @maxLength 255
+     */
+  name: string;
+  /**
+     * 取引先担当者の電話番号(代表)を指定します。 新規登録する取引先に紐づく各取引先担当者の電話番号(代表)を指定してください。
+     * ハイフンを含む電話番号も入力できます。
+     * 最大20文字まで入力できます。
+     * 必要がない場合は省略できます。
+     *
+     * 入力例：
+     * - 123-456-7890
+     * - 1234567890
+     * @maxLength 20
+     * @nullable
+     */
+  tel?: string | null;
+  /**
+     * 取引先担当者の携帯電話番号を指定します。 新規登録する取引先に紐づく各取引先担当者の携帯電話番号を指定してください。
+     * ハイフンを含む携帯電話番号も入力できます。
+     * 最大20文字まで入力できます。
+     * 必要がない場合は省略できます。
+     *
+     * 入力例：
+     * - 090-1234-5678
+     * - 080-1234-5678
+     * @maxLength 20
+     * @nullable
+     */
+  mobile?: string | null;
+  /**
+     * 取引先担当者のメールアドレスを指定します。 新規登録する取引先に紐づく各取引先担当者のメールアドレスを指定してください。
+     * 有効なメールアドレス形式で入力してください。
+     * 最大255文字まで入力できます。
+     * 必要がない場合は省略できます。
+     *
+     * 入力例：
+     * - tanaka@example.com
+     * - yamada@example.com
+     * @maxLength 255
+     * @nullable
+     */
+  email?: string | null;
+  /**
+     * 取引先担当者の社内担当者を指定します。 新規登録する取引先に紐づく各取引先担当者の社内担当者を指定してください。
+     * usersテーブルに存在するユーザーIDを指定します。
+     * 必要がない場合は省略できます。
+     *
+     * 入力例：
+     * - 1（田中太郎）
+     * - 2（山田花子）
+     * @nullable
+     */
+  person_in_charge_id?: number | null;
+  /**
+     * 取引先担当者の役割を指定します。 新規登録する取引先に紐づく各取引先担当者の役割を指定してください。
+     * 最大255文字まで入力できます。
+     * 必要がない場合は省略できます。
+     *
+     * 入力例：
+     * - メイン担当者
+     * - 経理担当者
+     * @maxLength 255
+     * @nullable
+     */
+  role?: string | null;
+  /**
+     * 取引先担当者の役職を指定します。 新規登録する取引先に紐づく各取引先担当者の役職を指定してください。
+     * 最大255文字まで入力できます。
+     * 必要がない場合は省略できます。
+     *
+     * 入力例：
+     * - 営業部長
+     * - 代表取締役
+     * @maxLength 255
+     * @nullable
+     */
+  position?: string | null;
+  /**
+     * 取引先担当者の有効状態を指定します。 新規登録する取引先に紐づく各取引先担当者の有効状態を指定してください。
+     * trueの場合は有効、falseの場合は無効として扱います。
+     * 必要がない場合は省略でき、省略時はtrue（有効）として登録します。
+     *
+     * 入力例：
+     * - true（有効）
+     * - false（無効）
+     */
+  is_active?: boolean;
+  /**
+     * 取引先担当者の備考を指定します。 新規登録する取引先に紐づく各取引先担当者の補足情報や注意事項を指定してください。
+     * 最大1000文字まで入力できます。
+     * 必要がない場合は省略できます。
+     *
+     * 入力例：
+     * - 連絡は基本的にメールで対応する
+     * @maxLength 1000
+     * @nullable
+     */
+  remarks?: string | null;
+};
+
+export type CustomerUpdateRequestDeliveriesItem = {
+  /**
+     * 配送情報の出荷元名または納品先名を指定します。 新規登録する取引先に紐づく各出荷元名または納品先名を指定してください。
+     * 配送情報を登録する場合は、すべての出荷元名または納品先名の入力が必須です。
+     * 最大255文字まで入力できます。
+     *
+     * 入力例：
+     * - 田中金属株式会社 大阪工場
+     * - 株式会社田中商事 東京営業所
+     * @maxLength 255
+     */
+  name: string;
+  /**
+     * 出荷元または納品先の担当者名を指定します。 新規登録する取引先に紐づく各配送先の担当者名を指定してください。
+     * 最大255文字まで入力できます。
+     * 必要がない場合は省略できます。
+     *
+     * 入力例：
+     * - 田中太郎
+     * - 山田花子
+     * @maxLength 255
+     * @nullable
+     */
+  contact_name?: string | null;
+  /**
+     * 出荷元または納品先の住所を指定します。 新規登録する取引先に紐づく各出荷元または納品先の住所を指定してください。
+     * 配送情報を登録する場合は、すべての出荷元または納品先で住所の入力が必須です。
+     * 最大255文字まで入力できます。
+     *
+     * 入力例：
+     * - 大阪府大阪市北区梅田1-1-1
+     * - 東京都千代田区丸の内1-2-3
+     * - 京都府京都市中京区烏丸通1-2-3
+     * @maxLength 255
+     */
+  address: string;
+  /**
+     * 出荷元または納品先の電話番号を指定します。 新規登録する取引先に紐づく各出荷元または納品先の電話番号を指定してください。
+     * ハイフンを含む電話番号も入力できます。
+     * 最大20文字まで入力できます。
+     * 必要がない場合は省略できます。
+     *
+     * 入力例：
+     * - 123-456-7890
+     * - 1234567890
+     * @maxLength 20
+     * @nullable
+     */
+  tel?: string | null;
+  /**
+     * 出荷元または納品先の備考を指定します。 新規登録する取引先に紐づく各出荷元または納品先の補足情報や注意事項を指定してください。
+     * 最大1000文字まで入力できます。
+     * 必要がない場合は省略できます。
+     *
+     * 入力例：
+     * - 到着の10分前にに担当者への電話連絡が必要。
+     * - 入庫可能時間：13時から15時
+     * @maxLength 1000
+     * @nullable
+     */
+  remarks?: string | null;
+};
+
+export interface CustomerUpdateRequest {
+  /**
+     * 取引先名を指定します。 新規登録する取引先名を指定してください。
+     * 取引先名の入力は必須です。
+     * 最大255文字まで入力できます。
+     *
+     * 入力例：
+     * - 田中金属株式会社
+     * - 株式会社田中商事
+     * @maxLength 255
+     */
+  name: string;
+  /**
+     * 取引先名のよみがなを指定します。 新規登録する取引先名のよみがなを指定してください。
+     * 必要がない場合は省略できます。
+     * 最大255文字まで入力できます。
+     *
+     * 入力例：
+     * - たなかきんぞくかぶしきかいしゃ
+     * - かぶしきかいしゃたなかしょうじ
+     * @maxLength 255
+     * @nullable
+     */
+  kana?: string | null;
+  /**
+     * 取引先名の略称を指定します。 新規登録する取引先名の略称を指定してください。
+     * 必要がない場合は省略できます。
+     * 最大255文字まで入力できます。
+     *
+     * 入力例：
+     * - 田中金属
+     * - 田中商事
+     * @maxLength 255
+     * @nullable
+     */
+  short_name?: string | null;
+  /**
+     * 住所を指定します。 新規登録する取引先名の住所を指定してください。
+     * 必要がない場合は省略できます。
+     * 最大255文字まで入力できます。
+     *
+     * 入力例：
+     * - 大阪府大阪市淀川区1-1-1
+     * - 東京都新宿区1-1-1
+     * @maxLength 255
+     * @nullable
+     */
+  address?: string | null;
+  /**
+     * TELを指定します。 新規登録する取引先のTELを指定してください。
+     * 必要がない場合は省略できます。
+     * 最大20文字まで入力できます。
+     *
+     * 入力例：
+     * - 123-456-7890
+     * - 1234567890
+     * @maxLength 20
+     * @nullable
+     */
+  tel?: string | null;
+  /**
+     * FAXを指定します。 新規登録する取引先のFAXを指定してください。
+     * 必要がない場合は省略できます。
+     * 最大20文字まで入力できます。
+     *
+     * 入力例：
+     * - 123-456-7890
+     * - 1234567890
+     * @maxLength 20
+     * @nullable
+     */
+  fax?: string | null;
+  /**
+     * 取引先の社内担当者を指定します。 新規登録する取引先を担当するユーザーIDを指定してください。
+     * usersテーブルに登録されているIDのみ指定できます。
+     * 必要がない場合は省略できます。
+     *
+     * 入力例：
+     * - 1
+     * - 3
+     * @nullable
+     */
+  person_in_charge_id?: number | null;
+  /**
+     * リード獲得元を指定します。 新規登録する取引先のリード獲得元IDを指定してください。
+     * lead_sourcesテーブルに登録されているIDのみ指定できます。
+     * 必要がない場合は省略できます。
+     *
+     * 入力例：
+     * - 1
+     * - 2
+     */
+  lead_source_id: number;
+  /**
+     * 取引先の有効・無効を指定します。 新規登録する取引先が有効か無効かを指定してください。
+     * 必要がない場合は省略できます。
+     *
+     * 入力例：
+     * - true
+     * - false
+     * @nullable
+     */
+  is_active?: boolean | null;
+  /**
+     * 取引先の備考を指定します。 新規登録する取引先に関する補足情報や注意事項を指定してください。
+     * 最大1000文字まで入力できます。
+     * 必要がない場合は省略できます。
+     *
+     * 入力例：
+     * - 毎月の月末に受領書を送付する。
+     * @maxLength 1000
+     * @nullable
+     */
+  remarks?: string | null;
+  /**
+     * 支払方法の種類を指定します。 新規登録する取引先の支払方法を指定してください。
+     * 必要がない場合は省略できます。
+     *
+     * 入力例：
+     * - closing（締め払い）
+     * - each_time（都度払い）
+     */
+  payment_type?: TermsType;
+  /**
+     * 支払締日の種類を指定します。 新規登録する取引先の支払締日を指定してください。
+     * 必要がない場合は省略できます。
+     *
+     * 入力例：
+     * - 10（10日締め）
+     * - 15（15日締め）
+     * - 20（20日締め）
+     * - 25（25日締め）
+     * - end_of_month（月末締め）
+     */
+  payment_closing_day?: ClosingDay;
+  /**
+     * 支払月の種類を指定します。 新規登録する取引先の支払月を指定してください。
+     * 必要がない場合は省略できます。
+     *
+     * 入力例：
+     * - next_month（翌月）
+     * - month_after_next（翌々月）
+     */
+  payment_month?: PaymentMonth;
+  /**
+     * 支払日の種類を指定します。 新規登録する取引先の支払日を指定してください。
+     * 必要がない場合は省略できます。
+     *
+     * 入力例：
+     * - 5（5日払い）
+     * - 10（10日払い）
+     * - 15（15日払い）
+     * - 20（20日払い）
+     * - 25（25日払い）
+     * - end_of_month（月末払い）
+     */
+  payment_day?: PaymentDay;
+  /**
+     * 支払期日の種類を指定します。 新規登録する取引先の支払期日の種類を指定してください。
+     * 必要がない場合は省略できます。
+     *
+     * 入力例：
+     * - advance（前金）
+     * - three_business_days（3営業日）
+     * - seven_business_days（7営業日）
+     * - immediate（都度／即時）
+     */
+  payment_due_type?: DueType;
+  /**
+     * 請求方法の種類を指定します。 新規登録する取引先の請求方法を指定してください。
+     * 必要がない場合は省略できます。
+     *
+     * 入力例：
+     * - closing（締め請求）
+     * - each_time（都度請求）
+     */
+  billing_type?: TermsType;
+  /**
+     * 請求締日の種類を指定します。 新規登録する取引先の請求締日を指定してください。
+     * 必要がない場合は省略できます。
+     *
+     * 入力例：
+     * - 10（10日締め）
+     * - 15（15日締め）
+     * - 20（20日締め）
+     * - 25（25日締め）
+     * - end_of_month（月末締め）
+     */
+  billing_closing_day?: ClosingDay;
+  /**
+     * 請求に対する支払月の種類を指定します。 新規登録する取引先の請求に対する支払月を指定してください。
+     * 必要がない場合は省略できます。
+     *
+     * 入力例：
+     * - next_month（翌月）
+     * - month_after_next（翌々月）
+     */
+  billing_payment_month?: PaymentMonth;
+  /**
+     * 請求に対する支払日の種類を指定します。 新規登録する取引先の請求に対する支払日を指定してください。
+     * 必要がない場合は省略できます。
+     *
+     * 入力例：
+     * - 5（5日払い）
+     * - 10（10日払い）
+     * - 15（15日払い）
+     * - 20（20日払い）
+     * - 25（25日払い）
+     * - end_of_month（月末払い）
+     */
+  billing_payment_day?: PaymentDay;
+  /**
+     * 請求に対する支払期日の種類を指定します。 新規登録する取引先の請求に対する支払期日を指定してください。
+     * 必要がない場合は省略できます。
+     *
+     * 入力例：
+     * - advance（前金）
+     * - three_business_days（3営業日）
+     * - seven_business_days（7営業日）
+     * - immediate（都度／即時）
+     */
+  billing_due_type?: DueType;
+  /**
+     * 取引先の取引先担当者情報を指定します。 新規登録する取引先に紐づく取引先担当者情報を配列で指定してください。
+     * 取引先担当者は最低1件以上の登録が必須です。
+     * 複数の取引先担当者を登録することもできます。
+     *
+     * 入力例：
+     * - 連絡先1：田中太郎、tanaka@example.com
+     * - 連絡先2：山田花子、yamada@example.com
+     * @minItems 1
+     */
+  contacts: CustomerUpdateRequestContactsItem[];
+  /**
+     * 取引先の配送情報を指定します。 新規登録する取引先に紐づく配送情報を配列で指定してください。
+     * 複数の配送先を登録することもできます。
+     * 必要がない場合は省略できます。
+     *
+     * 入力例：
+     * - 配送先1：田中金属株式会社 大阪工場
+     * - 配送先2：株式会社田中商事 東京営業所
+     * @nullable
+     */
+  deliveries?: CustomerUpdateRequestDeliveriesItem[] | null;
 }
 
 export interface LoginRequest {
@@ -385,6 +1270,11 @@ export type ValidationExceptionResponse = {
   errors: ValidationExceptionResponseErrors;
 };
 
+export type AuthorizationExceptionResponse = {
+  /** Error overview. */
+  message: string;
+};
+
 export type AuthenticationExceptionResponse = {
   /** Error overview. */
   message: string;
@@ -412,8 +1302,149 @@ export type LoginStore422 = {
   errors: LoginStore422Errors;
 };
 
+export type CustomerIndexParams = {
+/**
+ * 取引先名または取引先名（よみがな）で検索します。 部分一致検索を行います。
+ * 入力した文字列が取引先名または取引先のよみがなの住所に一部含まれる取引先を取得します。
+ *
+ * 検索例：
+ * - "田中" → 「田中金属株式会社」「株式会社田中商事」
+ * - "たなか" → 「たなかきんぞくかぶしきかいしゃ」
+ */
+keyword?: string;
+/**
+ * 取引先IDで検索します。 完全一致検索を行います。
+ * 入力した数字と一致する取引先IDを持つ取引先を取得します。
+ *
+ * 検索例：
+ * - 1
+ * - 123
+ */
+id?: number;
+/**
+ * 住所で検索します。 部分一致検索を行います。
+ * 入力した文字列が基本情報または配送情報の住所に一部含まれる取引先を取得します。
+ *
+ * 検索例：
+ * - 大阪府大阪市大正区
+ * - 東京都新宿区
+ */
+address?: string;
+/**
+ * メールアドレスで検索します。 部分一致検索を行います。
+ * 入力した文字列がメールアドレスの一部に含まれる担当者がいる取引先を取得します。
+ *
+ * 検索例：
+ * - tanaka@example.com
+ * - yamada@example.com
+ */
+email?: string;
+/**
+ * TELまたはFAXで検索します。 部分一致検索を行います。
+ * 入力した文字列がTELまたはFAXの一部に含まれる取引先を取得します。
+ *
+ * 検索例：
+ * - 123-456-7890
+ * - 1234567890
+ */
+telFax?: string;
+/**
+ * 担当者IDで検索します。 完全一致検索を行います。
+ * 入力した担当者IDを持つ取引先のみ取得します。
+ *
+ * 担当者IDは users テーブルの主キーを指定してください。
+ *
+ * 指定例：
+ * - 1 : 山田太郎
+ * - 2 : 田中花子
+ */
+personInChargeId?: string;
+/**
+ * リード獲得元IDで検索します。 完全一致検索を行います。
+ * 入力したリード獲得元IDを持つ取引先のみ取得します。
+ *
+ * リード獲得元IDは lead_sources テーブルの主キーを指定してください。
+ *
+ * 指定例：
+ * - 1 : HP
+ * - 2 : 紹介
+ */
+leadSourceId?: string;
+/**
+ * ページ番号を指定します。 ページネーションされた一覧データの取得対象ページを指定します。
+ * 指定しない場合は1ページ目を取得します。
+ *
+ * 1ページあたりの取得件数はサーバー側で設定された件数に従います。
+ *
+ * 指定例：
+ * - 1 : 1ページ目を取得
+ * - 2 : 2ページ目を取得
+ * - 3 : 3ページ目を取得
+ *
+ * リクエスト例：
+ * - /api/customer?page=1
+ * - /api/customer?page=2
+ */
+page?: string;
+};
+
+export type CustomerIndex200Links = {
+  /** @nullable */
+  first: string | null;
+  /** @nullable */
+  last: string | null;
+  /** @nullable */
+  prev: string | null;
+  /** @nullable */
+  next: string | null;
+};
+
+export type CustomerIndex200MetaLinksItem = {
+  /** @nullable */
+  url: string | null;
+  label: string;
+  active: boolean;
+};
+
+export type CustomerIndex200Meta = {
+  /** @minimum 1 */
+  current_page: number;
+  /**
+     * @minimum 1
+     * @nullable
+     */
+  from: number | null;
+  /** @minimum 1 */
+  last_page: number;
+  /** Generated paginator links. */
+  links: CustomerIndex200MetaLinksItem[];
+  /**
+     * Base path for paginator generated URLs.
+     * @nullable
+     */
+  path: string | null;
+  /**
+     * Number of items shown per page.
+     * @minimum 0
+     */
+  per_page: number;
+  /**
+     * Number of the last item in the slice.
+     * @minimum 1
+     * @nullable
+     */
+  to: number | null;
+  /**
+     * Total number of items being paginated.
+     * @minimum 0
+     */
+  total: number;
+};
+
 export type CustomerIndex200 = {
   data: CustomerResource[];
+  links: CustomerIndex200Links;
+  meta: CustomerIndex200Meta;
 };
 
 export type Me200 = {
@@ -438,15 +1469,17 @@ keyword?: string;
 /**
  * ユーザーコードで検索します。 完全一致検索を行います。
  * ユーザーコードを指定してください。
+ * 「E + 3桁の数字」で指定します。
  *
  * 検索例：
- * - 1
- * - 22
+ * - E001
+ * - E022
+ * @pattern ^E\d{3}$
  */
 userCode?: string;
 /**
- * メールアドレスで検索します。 完全一致検索を行います。
- * 指定したメールアドレスを持つユーザーを取得します。
+ * メールアドレスで検索します。 部分一致検索を行います。
+ * 入力した文字列がメールアドレスの一部に含まれるユーザーを取得します。
  *
  * 検索例：
  * - tanaka@example.com
@@ -610,10 +1643,11 @@ export const sanctumCsrfCookie = (
  * @summary Display a listing of the resource
  */
 export const customerIndex = (
-
+    params?: CustomerIndexParams,
  ) => {
       return customInstance<CustomerIndex200>(
-      {url: `/customer`, method: 'GET'
+      {url: `/customer`, method: 'GET',
+        params
     },
       );
     }
@@ -622,10 +1656,12 @@ export const customerIndex = (
  * @summary Store a newly created resource in storage
  */
 export const customerStore = (
-
+    customerStoreRequest: CustomerStoreRequest,
  ) => {
       return customInstance<void>(
-      {url: `/customer`, method: 'POST'
+      {url: `/customer`, method: 'POST',
+      headers: {'Content-Type': 'application/json', },
+      data: customerStoreRequest
     },
       );
     }
@@ -647,9 +1683,12 @@ export const customerShow = (
  */
 export const customerUpdate = (
     customer: number,
+    customerUpdateRequest: CustomerUpdateRequest,
  ) => {
       return customInstance<void>(
-      {url: `/customer/${customer}`, method: 'PUT'
+      {url: `/customer/${customer}`, method: 'PUT',
+      headers: {'Content-Type': 'application/json', },
+      data: customerUpdateRequest
     },
       );
     }
